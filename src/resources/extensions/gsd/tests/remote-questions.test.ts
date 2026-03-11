@@ -3,8 +3,6 @@ import assert from "node:assert/strict";
 import { parseSlackReply, parseDiscordResponse } from "../../remote-questions/format.ts";
 import { resolveRemoteConfig } from "../../remote-questions/config.ts";
 
-const originalEnv = { ...process.env };
-
 test("parseSlackReply handles single-number single-question answers", () => {
   const result = parseSlackReply("2", [{
     id: "choice",
@@ -90,18 +88,30 @@ test("parseDiscordResponse rejects multi-question reaction parsing", () => {
 });
 
 test("resolveRemoteConfig clamps invalid timeout and poll interval values", async () => {
-  process.env.SLACK_BOT_TOKEN = "token";
-  const home = process.env.HOME!;
+  const os = await import("node:os");
   const fs = await import("node:fs");
   const path = await import("node:path");
-  const prefsPath = path.join(home, ".gsd", "preferences.md");
-  fs.mkdirSync(path.dirname(prefsPath), { recursive: true });
-  fs.writeFileSync(prefsPath, `---\nremote_questions:\n  channel: slack\n  channel_id: \"C123\"\n  timeout_minutes: 999\n  poll_interval_seconds: 0\n---\n`, "utf-8");
 
-  const config = resolveRemoteConfig();
-  assert.ok(config);
-  assert.equal(config?.timeoutMs, 30 * 60 * 1000);
-  assert.equal(config?.pollIntervalMs, 2 * 1000);
+  const savedHome = process.env.HOME;
+  const savedUserProfile = process.env.USERPROFILE;
+  const tempHome = path.join(os.tmpdir(), `gsd-remote-config-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  fs.mkdirSync(path.join(tempHome, ".gsd"), { recursive: true });
+  process.env.HOME = tempHome;
+  process.env.USERPROFILE = tempHome;
+  process.env.SLACK_BOT_TOKEN = "token";
 
-  process.env = { ...originalEnv };
+  try {
+    const prefsPath = path.join(tempHome, ".gsd", "preferences.md");
+    fs.writeFileSync(prefsPath, `---\nremote_questions:\n  channel: slack\n  channel_id: \"C123\"\n  timeout_minutes: 999\n  poll_interval_seconds: 0\n---\n`, "utf-8");
+
+    const config = resolveRemoteConfig();
+    assert.ok(config);
+    assert.equal(config?.timeoutMs, 30 * 60 * 1000);
+    assert.equal(config?.pollIntervalMs, 2 * 1000);
+  } finally {
+    process.env.HOME = savedHome;
+    process.env.USERPROFILE = savedUserProfile;
+    delete process.env.SLACK_BOT_TOKEN;
+    fs.rmSync(tempHome, { recursive: true, force: true });
+  }
 });
