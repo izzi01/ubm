@@ -540,5 +540,5 @@ async function ensurePreferencesFile(
 
   await ctx.waitForIdle();
   await ctx.reload();
-  ctx.ui.notify(`Edit ${path} to update ${scope} GSD skill preferences.`, "info");
+  ctx.ui.notify(`Edit ${path} to update ${scope} GSD skill preferences.\nRun /gsd prefs wizard for interactive setup.`, "info");
 }
