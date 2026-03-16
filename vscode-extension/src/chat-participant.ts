@@ -26,9 +26,6 @@ export function registerChatParticipant(
 			return;
 		}
 
-		// If the message starts with /, forward as a slash command prompt
-		const isSlashCommand = message.startsWith("/");
-
 		// Track streaming events while the prompt executes
 		let agentDone = false;
 		let totalInputTokens = 0;
@@ -127,12 +124,7 @@ export function registerChatParticipant(
 		});
 
 		try {
-			if (isSlashCommand) {
-				// Forward slash commands as regular prompts
-				await client.sendPrompt(message);
-			} else {
-				await client.sendPrompt(message);
-			}
+			await client.sendPrompt(message);
 
 			// Wait for agent_end or cancellation
 			await new Promise<void>((resolve) => {

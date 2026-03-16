@@ -199,11 +199,14 @@ export class GsdSidebarProvider implements vscode.WebviewViewProvider {
 			? `<div class="streaming-indicator"><span class="spinner"></span> Agent is working...</div>`
 			: "";
 
+		const nonce = getNonce();
+
 		return /* html */ `<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-${nonce}';">
 	<style>
 		body {
 			font-family: var(--vscode-font-family);
@@ -380,16 +383,16 @@ export class GsdSidebarProvider implements vscode.WebviewViewProvider {
 		<div class="section-title">Controls</div>
 		<div class="btn-group">
 			${info.connected
-				? `<button onclick="send('stop')">Stop Agent</button>
+				? `<button data-command="stop">Stop Agent</button>
 				   <div class="btn-row">
-				     <button class="secondary" onclick="send('newSession')">New Session</button>
-				     <button class="secondary" onclick="send('switchModel')">Model</button>
+				     <button class="secondary" data-command="newSession">New Session</button>
+				     <button class="secondary" data-command="switchModel">Model</button>
 				   </div>
 				   <div class="btn-row">
-				     <button class="secondary" onclick="send('cycleThinking')">Thinking</button>
-				     <button class="secondary" onclick="send('toggleAutoCompaction')">Auto-Compact</button>
+				     <button class="secondary" data-command="cycleThinking">Thinking</button>
+				     <button class="secondary" data-command="toggleAutoCompaction">Auto-Compact</button>
 				   </div>`
-				: `<button onclick="send('start')">Start Agent</button>`
+				: `<button data-command="start">Start Agent</button>`
 			}
 		</div>
 	</div>
@@ -399,22 +402,25 @@ export class GsdSidebarProvider implements vscode.WebviewViewProvider {
 		<div class="section-title">Actions</div>
 		<div class="btn-group">
 			<div class="btn-row">
-				<button class="secondary" onclick="send('compact')">Compact</button>
-				<button class="secondary" onclick="send('exportHtml')">Export</button>
+				<button class="secondary" data-command="compact">Compact</button>
+				<button class="secondary" data-command="exportHtml">Export</button>
 			</div>
 			<div class="btn-row">
-				<button class="secondary" onclick="send('abort')">Abort</button>
-				<button class="secondary" onclick="send('listCommands')">Commands</button>
+				<button class="secondary" data-command="abort">Abort</button>
+				<button class="secondary" data-command="listCommands">Commands</button>
 			</div>
 		</div>
 	</div>
 	` : ""}
 
-	<script>
+	<script nonce="${nonce}">
 		const vscode = acquireVsCodeApi();
-		function send(command, value) {
-			vscode.postMessage({ command, value });
-		}
+		document.addEventListener('click', (e) => {
+			const btn = e.target.closest('[data-command]');
+			if (btn) {
+				vscode.postMessage({ command: btn.dataset.command });
+			}
+		});
 	</script>
 </body>
 </html>`;
@@ -427,4 +433,13 @@ function escapeHtml(text: string): string {
 		.replace(/</g, "&lt;")
 		.replace(/>/g, "&gt;")
 		.replace(/"/g, "&quot;");
+}
+
+function getNonce(): string {
+	const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	let nonce = "";
+	for (let i = 0; i < 32; i++) {
+		nonce += chars.charAt(Math.floor(Math.random() * chars.length));
+	}
+	return nonce;
 }

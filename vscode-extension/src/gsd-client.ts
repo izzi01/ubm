@@ -86,6 +86,7 @@ export class GsdClient implements vscode.Disposable {
 	private requestId = 0;
 	private buffer = "";
 	private restartCount = 0;
+	private restartTimestamps: number[] = [];
 
 	private readonly _onEvent = new vscode.EventEmitter<AgentEvent>();
 	readonly onEvent = this._onEvent.event;
@@ -142,9 +143,21 @@ export class GsdClient implements vscode.Disposable {
 			this.rejectAllPending(`GSD process exited (code=${code}, signal=${signal})`);
 			this._onConnectionChange.fire(false);
 
-			if (this.restartCount < 3 && code !== 0 && signal !== "SIGTERM") {
-				this.restartCount++;
-				setTimeout(() => this.start(), 1000 * this.restartCount);
+			if (code !== 0 && signal !== "SIGTERM") {
+				const now = Date.now();
+				this.restartTimestamps.push(now);
+				// Keep only timestamps within the last 60 seconds
+				this.restartTimestamps = this.restartTimestamps.filter(t => now - t < 60_000);
+
+				if (this.restartTimestamps.length > 3) {
+					// Too many crashes within 60s — stop retrying
+					this._onError.fire(
+						`GSD process crashed ${this.restartTimestamps.length} times within 60s. Not restarting. Use "GSD: Start Agent" to retry manually.`,
+					);
+				} else if (this.restartCount < 3) {
+					this.restartCount++;
+					setTimeout(() => this.start(), 1000 * this.restartCount);
+				}
 			}
 		});
 
