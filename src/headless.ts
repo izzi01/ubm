@@ -1,14 +1,14 @@
 /**
  * Headless Orchestrator — `gsd headless`
  *
- * Runs GSD's auto-mode (or a single unit via --step) without a TUI by
- * spawning a child process in RPC mode, auto-responding to extension UI
- * requests, and streaming progress to stderr.
+ * Runs any /gsd subcommand without a TUI by spawning a child process in
+ * RPC mode, auto-responding to extension UI requests, and streaming
+ * progress to stderr.
  *
  * Exit codes:
- *   0 — complete (auto-mode finished successfully)
+ *   0 — complete (command finished successfully)
  *   1 — error or timeout
- *   2 — blocked (auto-mode reported a blocker)
+ *   2 — blocked (command reported a blocker)
  */
 
 import { existsSync } from 'node:fs'
@@ -25,10 +25,11 @@ import { RpcClient } from '../packages/pi-coding-agent/dist/modes/rpc/rpc-client
 
 export interface HeadlessOptions {
   timeout: number
-  step: boolean
   json: boolean
   verbose: boolean
   model?: string
+  command: string
+  commandArgs: string[]
 }
 
 interface ExtensionUIRequest {
@@ -56,29 +57,38 @@ interface TrackedEvent {
 export function parseHeadlessArgs(argv: string[]): HeadlessOptions {
   const options: HeadlessOptions = {
     timeout: 300_000,
-    step: false,
     json: false,
     verbose: false,
+    command: 'auto',
+    commandArgs: [],
   }
 
   const args = argv.slice(2)
+  let positionalStarted = false
+
   for (let i = 0; i < args.length; i++) {
     const arg = args[i]
     if (arg === 'headless') continue
-    if (arg === '--timeout' && i + 1 < args.length) {
-      options.timeout = parseInt(args[++i], 10)
-      if (Number.isNaN(options.timeout) || options.timeout <= 0) {
-        process.stderr.write('[headless] Error: --timeout must be a positive integer (milliseconds)\n')
-        process.exit(1)
+
+    if (!positionalStarted && arg.startsWith('--')) {
+      if (arg === '--timeout' && i + 1 < args.length) {
+        options.timeout = parseInt(args[++i], 10)
+        if (Number.isNaN(options.timeout) || options.timeout <= 0) {
+          process.stderr.write('[headless] Error: --timeout must be a positive integer (milliseconds)\n')
+          process.exit(1)
+        }
+      } else if (arg === '--json') {
+        options.json = true
+      } else if (arg === '--verbose') {
+        options.verbose = true
+      } else if (arg === '--model' && i + 1 < args.length) {
+        options.model = args[++i]
       }
-    } else if (arg === '--step') {
-      options.step = true
-    } else if (arg === '--json') {
-      options.json = true
-    } else if (arg === '--verbose') {
-      options.verbose = true
-    } else if (arg === '--model' && i + 1 < args.length) {
-      options.model = args[++i]
+    } else if (!positionalStarted) {
+      positionalStarted = true
+      options.command = arg
+    } else {
+      options.commandArgs.push(arg)
     }
   }
 
@@ -195,6 +205,21 @@ function isTerminalNotification(event: Record<string, unknown>): boolean {
 function isBlockedNotification(event: Record<string, unknown>): boolean {
   if (event.type !== 'extension_ui_request' || event.method !== 'notify') return false
   return String(event.message ?? '').toLowerCase().includes('blocked')
+}
+
+// ---------------------------------------------------------------------------
+// Quick Command Detection
+// ---------------------------------------------------------------------------
+
+const QUICK_COMMANDS = new Set([
+  'status', 'queue', 'history', 'hooks', 'export', 'stop', 'pause',
+  'capture', 'skip', 'undo', 'knowledge', 'config', 'prefs',
+  'cleanup', 'migrate', 'doctor', 'remote', 'help', 'steer',
+  'triage', 'visualize',
+])
+
+function isQuickCommand(command: string): boolean {
+  return QUICK_COMMANDS.has(command)
 }
 
 // ---------------------------------------------------------------------------
@@ -326,11 +351,15 @@ export async function runHeadless(options: HeadlessOptions): Promise<void> {
       }
     }
 
-    // agent_end after tool execution — possible completion
-    if (eventObj.type === 'agent_end' && sawToolExecution && !completed) {
-      // Don't immediately resolve — wait for potential terminal notify or idle timeout.
-      // The idle timer handles this case.
+    // Quick commands: resolve on first agent_end
+    if (eventObj.type === 'agent_end' && isQuickCommand(options.command) && !completed) {
+      completed = true
+      resolveCompletion()
+      return
     }
+
+    // Long-running commands: agent_end after tool execution — possible completion
+    // The idle timer + terminal notification handle this case.
   })
 
   // Signal handling
@@ -379,11 +408,11 @@ export async function runHeadless(options: HeadlessOptions): Promise<void> {
   })
 
   if (!options.json) {
-    process.stderr.write('[headless] Starting auto-mode...\n')
+    process.stderr.write(`[headless] Running /gsd ${options.command}${options.commandArgs.length > 0 ? ' ' + options.commandArgs.join(' ') : ''}...\n`)
   }
 
   // Send the command
-  const command = options.step ? '/gsd next' : '/gsd auto'
+  const command = `/gsd ${options.command}${options.commandArgs.length > 0 ? ' ' + options.commandArgs.join(' ') : ''}`
   try {
     await client.prompt(command)
   } catch (err) {

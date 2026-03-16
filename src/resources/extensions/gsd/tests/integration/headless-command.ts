@@ -4,7 +4,7 @@
  * Validates that the headless CLI entry point works end-to-end:
  *   1. Creates a temp dir with a complete .gsd/ project fixture
  *   2. Initializes a git repo in the temp dir
- *   3. Spawns `node dist/loader.js headless --step --json` as a child process
+ *   3. Spawns `node dist/loader.js headless --json next` as a child process
  *   4. Waits for the process to exit (with a 5-minute timeout)
  *   5. Validates exit code, JSONL stdout, stderr progress, and task artifact
  *
@@ -394,7 +394,7 @@ async function main(): Promise<void> {
 
   // ── Step 4: Spawn headless command ──────────────────────────────────────
   console.log("\n[3/6] Spawning headless command...");
-  console.log(`  Command: node ${loaderPath} headless --step --json`);
+  console.log(`  Command: node ${loaderPath} headless --json next`);
   console.log(`  CWD: ${fixtureDir}`);
   console.log(`  Timeout: ${TIMEOUT_MS / 1000}s`);
 
@@ -407,7 +407,7 @@ async function main(): Promise<void> {
     let stderrBuf = "";
     let settled = false;
 
-    const child = spawn("node", [loaderPath, "headless", "--step", "--json"], {
+    const child = spawn("node", [loaderPath, "headless", "--json", "next"], {
       cwd: fixtureDir,
       env: { ...process.env },
       stdio: ["ignore", "pipe", "pipe"],
