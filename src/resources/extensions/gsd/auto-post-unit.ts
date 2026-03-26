@@ -84,7 +84,8 @@ export interface RogueFileWrite {
  * in postUnitPostVerification() eventually ingests rogue files, but explicit
  * detection provides immediate diagnostics so operators know the prompt failed.
  */
-function hasNonEmptyFields(row: Record<string, unknown> | null, fields: string[]): boolean {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function hasNonEmptyFields(row: Record<string, any> | null, fields: string[]): boolean {
   if (!row) return false;
   return fields.some(f => String(row[f] || "").trim().length > 0);
 }
