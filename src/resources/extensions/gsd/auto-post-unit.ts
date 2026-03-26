@@ -23,6 +23,7 @@ import {
   buildTaskFileName,
 } from "./paths.js";
 import { invalidateAllCaches } from "./cache.js";
+import { parseUnitId } from "./unit-id.js";
 import { closeoutUnit, type CloseoutOptions } from "./auto-unit-closeout.js";
 import {
   autoCommitCurrentBranch,
@@ -100,11 +101,10 @@ export function detectRogueFileWrites(
 ): RogueFileWrite[] {
   if (!isDbAvailable()) return [];
 
-  const parts = unitId.split("/");
+  const { milestone: mid, slice: sid, task: tid } = parseUnitId(unitId);
   const rogues: RogueFileWrite[] = [];
 
   if (unitType === "execute-task") {
-    const [mid, sid, tid] = parts;
     if (!mid || !sid || !tid) return [];
 
     const summaryPath = resolveTaskFile(basePath, mid, sid, tid, "SUMMARY");
@@ -115,7 +115,6 @@ export function detectRogueFileWrites(
       rogues.push({ path: summaryPath, unitType, unitId });
     }
   } else if (unitType === "complete-slice") {
-    const [mid, sid] = parts;
     if (!mid || !sid) return [];
 
     const summaryPath = resolveSliceFile(basePath, mid, sid, "SUMMARY");
@@ -126,7 +125,6 @@ export function detectRogueFileWrites(
       rogues.push({ path: summaryPath, unitType, unitId });
     }
   } else if (unitType === "plan-milestone") {
-    const [mid] = parts;
     if (!mid) return [];
 
     const roadmapPath = resolveMilestoneFile(basePath, mid, "ROADMAP");
@@ -139,7 +137,6 @@ export function detectRogueFileWrites(
       rogues.push({ path: roadmapPath, unitType, unitId });
     }
   } else if (unitType === "plan-slice" || unitType === "replan-slice") {
-    const [mid, sid] = parts;
     if (!mid || !sid) return [];
 
     const planPath = resolveSliceFile(basePath, mid, sid, "PLAN");
@@ -158,7 +155,6 @@ export function detectRogueFileWrites(
       rogues.push({ path: replanPath, unitType, unitId });
     }
   } else if (unitType === "reassess-roadmap") {
-    const [mid, sid] = parts;
     if (!mid || !sid) return [];
 
     const assessPath = resolveSliceFile(basePath, mid, sid, "ASSESSMENT");
@@ -175,7 +171,6 @@ export function detectRogueFileWrites(
       }
     }
   } else if (unitType === "plan-task") {
-    const [mid, sid, tid] = parts;
     if (!mid || !sid || !tid) return [];
 
     const taskPlanPath = resolveTaskFile(basePath, mid, sid, tid, "PLAN");
@@ -248,8 +243,7 @@ export async function postUnitPreVerification(pctx: PostUnitContext, opts?: PreV
       let taskContext: TaskCommitContext | undefined;
 
       if (s.currentUnit.type === "execute-task") {
-        const parts = s.currentUnit.id.split("/");
-        const [mid, sid, tid] = parts;
+        const { milestone: mid, slice: sid, task: tid } = parseUnitId(s.currentUnit.id);
         if (mid && sid && tid) {
           const summaryPath = resolveTaskFile(s.basePath, mid, sid, tid, "SUMMARY");
           if (summaryPath) {
@@ -353,8 +347,7 @@ export async function postUnitPreVerification(pctx: PostUnitContext, opts?: PreV
     // Reactive state cleanup on slice completion
     if (s.currentUnit.type === "complete-slice") {
       try {
-        const parts = s.currentUnit.id.split("/");
-        const [mid, sid] = parts;
+        const { milestone: mid, slice: sid } = parseUnitId(s.currentUnit.id);
         if (mid && sid) {
           const { clearReactiveState } = await import("./reactive-graph.js");
           clearReactiveState(s.basePath, mid, sid);
@@ -439,8 +432,7 @@ export async function postUnitPreVerification(pctx: PostUnitContext, opts?: PreV
       // from DB data before giving up (e.g. research-slice produces PLAN from engine).
       if (!triggerArtifactVerified) {
         try {
-          const parts = s.currentUnit.id.split("/");
-          const [mid, sid] = parts;
+          const { milestone: mid, slice: sid } = parseUnitId(s.currentUnit.id);
           if (mid && sid) {
             const regenerated = regenerateIfMissing(s.basePath, mid, sid, "PLAN");
             if (regenerated) {
@@ -540,8 +532,7 @@ export async function postUnitPostVerification(pctx: PostUnitContext): Promise<"
 
         // ── State reset: undo the completion so deriveState re-derives the unit ──
         try {
-          const parts = trigger.unitId.split("/");
-          const [mid, sid, tid] = parts;
+          const { milestone: mid, slice: sid, task: tid } = parseUnitId(trigger.unitId);
 
           // 1. Reset task status in DB and re-render plan checkboxes
           if (mid && sid && tid) {
