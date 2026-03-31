@@ -228,19 +228,15 @@ export async function deriveState(basePath: string): Promise<GSDState> {
   const stopTimer = debugTime("derive-state-impl");
   let result: GSDState;
 
-  // Dual-path: try DB-backed derivation first when hierarchy tables are populated
+  // Dual-path: try DB-backed derivation when DB is available.
+  // Always go through deriveStateFromDb when DB is open — even if hierarchy
+  // tables are empty — because it contains disk→DB reconciliation logic that
+  // discovers milestones created outside the DB write path (#2631).
   if (isDbAvailable()) {
-    const dbMilestones = getAllMilestones();
-    if (dbMilestones.length > 0) {
-      const stopDbTimer = debugTime("derive-state-db");
-      result = await deriveStateFromDb(basePath);
-      stopDbTimer({ phase: result.phase, milestone: result.activeMilestone?.id });
-      _telemetry.dbDeriveCount++;
-    } else {
-      // DB open but empty hierarchy tables — pre-migration project, use filesystem
-      result = await _deriveStateImpl(basePath);
-      _telemetry.markdownDeriveCount++;
-    }
+    const stopDbTimer = debugTime("derive-state-db");
+    result = await deriveStateFromDb(basePath);
+    stopDbTimer({ phase: result.phase, milestone: result.activeMilestone?.id });
+    _telemetry.dbDeriveCount++;
   } else {
     result = await _deriveStateImpl(basePath);
     _telemetry.markdownDeriveCount++;
