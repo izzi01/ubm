@@ -12,5 +12,7 @@ describe("providerDisplayName", () => {
 		assert.equal(providerDisplayName("claude-code"), "claude-code");
 		assert.equal(providerDisplayName("openai"), "openai");
 		assert.equal(providerDisplayName("bedrock"), "bedrock");
+		assert.equal(providerDisplayName("github-copilot"), "github-copilot");
+		assert.equal(providerDisplayName("openrouter"), "openrouter");
 	});
 });
