@@ -235,6 +235,20 @@ export async function showProjectInit(
   // ── Step 9: Bootstrap .gsd/ ────────────────────────────────────────────────
   bootstrapGsdDirectory(basePath, prefs, signals);
 
+  // Initialize SQLite database so GSD starts in full-capability mode (#3880).
+  // Without this, isDbAvailable() returns false and GSD enters degraded
+  // markdown-only mode until a tool handler happens to call ensureDbOpen().
+  let dbReady = false;
+  try {
+    const { ensureDbOpen } = await import("./bootstrap/dynamic-tools.js");
+    dbReady = await ensureDbOpen(basePath);
+  } catch {
+    // Swallowed — warning surfaced below
+  }
+  if (!dbReady) {
+    ctx.ui.notify("Warning: database initialization failed — GSD will run in degraded mode until the next /gsd invocation.", "warning");
+  }
+
   // Ensure .gitignore
   ensureGitignore(basePath);
   untrackRuntimeFiles(basePath);
@@ -248,6 +262,25 @@ export async function showProjectInit(
     }
   } catch {
     // Non-fatal — codebase map generation failure should never block project init
+  }
+
+  // Write initial STATE.md so it exists before the first /gsd invocation.
+  // The explicit /gsd init path (ops.ts) returns without entering showSmartEntry(),
+  // which would otherwise generate STATE.md at guided-flow.ts:1358.
+  let stateReady = false;
+  try {
+    const { deriveState } = await import("./state.js");
+    const { buildStateMarkdown } = await import("./doctor.js");
+    const { saveFile } = await import("./files.js");
+    const { resolveGsdRootFile } = await import("./paths.js");
+    const state = await deriveState(basePath);
+    await saveFile(resolveGsdRootFile(basePath, "STATE"), buildStateMarkdown(state));
+    stateReady = true;
+  } catch {
+    // Swallowed — warning surfaced below
+  }
+  if (!stateReady) {
+    ctx.ui.notify("Warning: initial STATE.md generation failed — it will be created on the next /gsd invocation.", "warning");
   }
 
   ctx.ui.notify("GSD initialized. Starting your first milestone...", "info");
@@ -433,6 +466,7 @@ function bootstrapGsdDirectory(
 
   const gsd = gsdRoot(basePath);
   mkdirSync(join(gsd, "milestones"), { recursive: true });
+  mkdirSync(join(gsd, "runtime"), { recursive: true });
 
   // Write PREFERENCES.md from wizard answers
   const preferencesContent = buildPreferencesFile(prefs);
