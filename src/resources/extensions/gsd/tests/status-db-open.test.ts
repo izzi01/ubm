@@ -38,10 +38,11 @@ describe('status opens DB before deriveState (#3691)', () => {
     );
   });
 
-  test('quick.ts checks getIsolationMode before branching', () => {
-    assert.match(quickSrc, /getIsolationMode\(\)/,
-      'quick.ts should call getIsolationMode()');
-    assert.match(quickSrc, /getIsolationMode\(\)\s*!==\s*"none"/,
-      'quick.ts should compare isolation mode against "none"');
+  test('quick.ts no longer gates on isolation mode (M110)', () => {
+    // After M110: getIsolationMode always returns "worktree", so quick.ts
+    // no longer needs an isolation-mode guard.
+    // Verify getIsolationMode is NOT called in quick.ts.
+    assert.ok(!quickSrc.includes('getIsolationMode()'),
+      'quick.ts should no longer call getIsolationMode()');
   });
 });

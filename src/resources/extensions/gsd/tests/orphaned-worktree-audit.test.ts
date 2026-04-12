@@ -50,18 +50,15 @@ describe("auditOrphanedMilestoneBranches", () => {
     assert.deepStrictEqual(result.warnings, []);
   });
 
-  test("skips in none isolation mode", () => {
-    // Create a milestone branch that would otherwise be detected
+  test("worktree mode detects orphaned branches", () => {
+    // Create a milestone branch that should be detected
     run("git branch milestone/M001", dir);
     insertMilestone({ id: "M001", title: "Test", status: "complete" });
 
-    const result = auditOrphanedMilestoneBranches(dir, "none");
-    assert.deepStrictEqual(result.recovered, []);
-    assert.deepStrictEqual(result.warnings, []);
-
-    // Branch should still exist
-    const branches = run("git branch --list milestone/M001", dir);
-    assert.ok(branches.includes("milestone/M001"), "branch should be preserved in none mode");
+    const result = auditOrphanedMilestoneBranches(dir, "worktree");
+    // Should detect the orphaned branch
+    assert.ok(result.recovered.length > 0 || result.warnings.length > 0,
+      "worktree mode should detect or warn about orphaned milestone branch");
   });
 
   test("deletes merged branch for completed milestone", () => {

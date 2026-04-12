@@ -380,7 +380,7 @@ test("full lifecycle: migration through completion through doctor", async (t) =>
     // ── (h) Doctor zero-fix (R009) ───────────────────────────────────
     const doctorReport = await runGSDDoctor(base, {
       fix: false,
-      isolationMode: "none",
+      isolationMode: "worktree",
     });
     // Filter to only errors (warnings/info about env, git, etc. are expected in a temp dir)
     const errors = doctorReport.issues.filter(i => i.severity === "error");

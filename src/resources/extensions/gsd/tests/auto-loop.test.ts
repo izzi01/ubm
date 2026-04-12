@@ -456,7 +456,7 @@ function makeMockDeps(
     teardownAutoWorktree: () => {},
     createAutoWorktree: () => "/tmp/wt",
     captureIntegrationBranch: () => {},
-    getIsolationMode: () => "none",
+    getIsolationMode: () => "worktree",
     getCurrentBranch: () => "main",
     autoWorktreeBranch: () => "auto/M001",
     resolveMilestoneFile: () => null,

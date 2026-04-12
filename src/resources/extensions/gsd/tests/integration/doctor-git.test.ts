@@ -65,7 +65,7 @@ _None_
 }
 
 /** Write a .gsd/PREFERENCES.md with the given git isolation mode. */
-function writePreferencesFile(dir: string, isolation: "none" | "worktree" | "branch"): void {
+function writePreferencesFile(dir: string, isolation: "worktree"): void {
   const gsdDir = join(dir, ".gsd");
   mkdirSync(gsdDir, { recursive: true });
   writeFileSync(join(gsdDir, "PREFERENCES.md"), `---\ngit:\n  isolation: "${isolation}"\n---\n`);
@@ -304,7 +304,7 @@ describe('doctor-git', async () => {
     // at module load time from process.cwd(). We write the prefs file to
     // the test runner's cwd .gsd/PREFERENCES.md and clean up afterwards.
     if (process.platform !== "win32") {
-    test('none-mode skips orphaned worktree', async () => {
+    test('worktree-mode detects orphaned worktree', async () => {
       const dir = createRepoWithCompletedMilestone();
       cleanups.push(dir);
 
@@ -312,25 +312,25 @@ describe('doctor-git', async () => {
       mkdirSync(join(dir, ".gsd", "worktrees"), { recursive: true });
       run("git worktree add -b milestone/M001 .gsd/worktrees/M001", dir);
 
-      const result = await runGSDDoctor(dir, { isolationMode: "none" });
+      const result = await runGSDDoctor(dir, { isolationMode: "worktree" });
       const orphanIssues = result.issues.filter(i => i.code === "orphaned_auto_worktree");
-      assert.deepStrictEqual(orphanIssues.length, 0, "none-mode: orphaned worktree NOT detected");
+      assert.ok(orphanIssues.length > 0, "worktree-mode: orphaned worktree IS detected");
     });
     } else {
     }
 
     // ─── Test 8: none-mode skips stale branch check ────────────────────
     if (process.platform !== "win32") {
-    test('none-mode skips stale branch', async () => {
+    test('worktree-mode detects stale branch', async () => {
       const dir = createRepoWithCompletedMilestone();
       cleanups.push(dir);
 
       // Create a milestone/M001 branch (no worktree)
       run("git branch milestone/M001", dir);
 
-      const result = await runGSDDoctor(dir, { isolationMode: "none" });
+      const result = await runGSDDoctor(dir, { isolationMode: "worktree" });
       const staleIssues = result.issues.filter(i => i.code === "stale_milestone_branch");
-      assert.deepStrictEqual(staleIssues.length, 0, "none-mode: stale branch NOT detected");
+      assert.ok(staleIssues.length > 0, "worktree-mode: stale branch IS detected");
     });
     } else {
     }
@@ -488,7 +488,7 @@ describe('doctor-git', async () => {
     }
 
     // ─── Test 9: none-mode still detects corrupt merge state ───────────
-    test('none-mode keeps corrupt merge state', async () => {
+    test('worktree-mode still detects corrupt merge state', async () => {
       const dir = createRepoWithCompletedMilestone();
       cleanups.push(dir);
 
@@ -496,13 +496,13 @@ describe('doctor-git', async () => {
       const headHash = run("git rev-parse HEAD", dir);
       writeFileSync(join(dir, ".git", "MERGE_HEAD"), headHash + "\n");
 
-      const result = await runGSDDoctor(dir, { isolationMode: "none" });
+      const result = await runGSDDoctor(dir, { isolationMode: "worktree" });
       const mergeIssues = result.issues.filter(i => i.code === "corrupt_merge_state");
-      assert.ok(mergeIssues.length > 0, "none-mode: corrupt merge state IS detected");
+      assert.ok(mergeIssues.length > 0, "worktree-mode: corrupt merge state IS detected");
     });
 
     // ─── Test 10: none-mode still detects tracked runtime files ────────
-    test('none-mode keeps tracked runtime files', async () => {
+    test('worktree-mode still detects tracked runtime files', async () => {
       const dir = createRepoWithCompletedMilestone();
       cleanups.push(dir);
 
@@ -513,9 +513,9 @@ describe('doctor-git', async () => {
       run("git add -f .gsd/activity/test.log", dir);
       run("git commit -m \"track runtime file\"", dir);
 
-      const result = await runGSDDoctor(dir, { isolationMode: "none" });
+      const result = await runGSDDoctor(dir, { isolationMode: "worktree" });
       const trackedIssues = result.issues.filter(i => i.code === "tracked_runtime_files");
-      assert.ok(trackedIssues.length > 0, "none-mode: tracked runtime files IS detected");
+      assert.ok(trackedIssues.length > 0, "worktree-mode: tracked runtime files IS detected");
     });
 
     // ─── Test: Symlinked .gsd does not cause false orphan detection ────

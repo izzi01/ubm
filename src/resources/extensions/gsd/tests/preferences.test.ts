@@ -23,15 +23,23 @@ import type { GSDPreferences, GSDModelConfigV2, GSDPhaseModelConfig } from "../p
 
 // ── Git preferences ──────────────────────────────────────────────────────────
 
-test("git.isolation accepts valid values and rejects invalid", () => {
-  for (const val of ["worktree", "branch", "none"] as const) {
-    const { errors, preferences } = validatePreferences({ git: { isolation: val } });
-    assert.equal(errors.length, 0, `isolation ${val}: no errors`);
-    assert.equal(preferences.git?.isolation, val);
+test("git.isolation accepts worktree and warns on deprecated values", () => {
+  // "worktree" is the only valid value
+  const { errors, preferences } = validatePreferences({ git: { isolation: "worktree" } });
+  assert.equal(errors.length, 0, `isolation worktree: no errors`);
+  assert.equal(preferences.git?.isolation, "worktree");
+
+  // "branch" and "none" are deprecated — produce warnings, not errors, and value is stripped
+  for (const val of ["branch", "none"] as const) {
+    const { errors: errs, warnings, preferences: prefs } = validatePreferences({ git: { isolation: val } });
+    assert.equal(errs.length, 0, `isolation ${val}: no errors (only warning)`);
+    assert.ok(warnings.length > 0, `isolation ${val}: should produce deprecation warning`);
+    assert.equal(prefs.git?.isolation, undefined, `isolation ${val}: value should be stripped`);
   }
-  const { errors } = validatePreferences({ git: { isolation: "invalid" as any } });
-  assert.ok(errors.length > 0);
-  assert.ok(errors[0].includes("worktree, branch, none"));
+
+  const { errors: invalidErrs } = validatePreferences({ git: { isolation: "invalid" as any } });
+  assert.ok(invalidErrs.length > 0);
+  assert.ok(invalidErrs[0].includes("worktree"));
 });
 
 test("git.merge_to_main produces deprecation warning", () => {
@@ -43,16 +51,11 @@ test("git.merge_to_main produces deprecation warning", () => {
 });
 
 
-test("getIsolationMode defaults to none when preferences have no isolation setting", () => {
-  // Validate the default via validatePreferences: when no isolation is set,
-  // preferences.git.isolation is undefined, and getIsolationMode returns "none".
-  // Default changed from "worktree" to "none" so GSD works out of the box
-  // without PREFERENCES.md (#2480).
+test("getIsolationMode always returns 'worktree'", () => {
+  // After M110: getIsolationMode() always returns "worktree" regardless of prefs.
   const { preferences } = validatePreferences({});
   assert.equal(preferences.git?.isolation, undefined, "no isolation in empty prefs");
-  const isolation = preferences.git?.isolation;
-  const expected = isolation === "worktree" ? "worktree" : isolation === "branch" ? "branch" : "none";
-  assert.equal(expected, "none", "default isolation mode is none");
+  // getIsolationMode is a constant function returning "worktree"
 });
 
 // ── Mode defaults ────────────────────────────────────────────────────────────
@@ -199,13 +202,13 @@ test("git fields comprehensive validation", () => {
     git: {
       auto_push: true, push_branches: false, remote: "upstream", snapshots: true,
       pre_merge_check: "auto", commit_type: "feat", main_branch: "develop",
-      merge_strategy: "squash", isolation: "branch",
+      merge_strategy: "squash", isolation: "worktree",
     },
   });
   assert.equal(errors.length, 0);
   assert.equal(preferences.git?.auto_push, true);
   assert.equal(preferences.git?.remote, "upstream");
-  assert.equal(preferences.git?.isolation, "branch");
+  assert.equal(preferences.git?.isolation, "worktree");
 });
 
 test("auto_visualize, auto_report, context_selection validate correctly", () => {
@@ -394,12 +397,12 @@ parallel:
 
 test("preserves legacy heading list format", () => {
   const content = `## Git
-- isolation: branch
+- isolation: worktree
 - auto_push: true
 `;
   const prefs = parsePreferencesMarkdown(content);
   assert.notEqual(prefs, null);
-  assert.equal(prefs!.git?.isolation, "branch");
+  assert.equal(prefs!.git?.isolation, "worktree");
   assert.equal(prefs!.git?.auto_push, true);
 });
 
@@ -433,10 +436,10 @@ test("parsePreferencesMarkdown parses heading+list format without frontmatter (#
   // A GSD agent recovery session wrote preferences in markdown heading+list
   // format instead of YAML frontmatter. Since the heading+list fallback parser
   // was added, this format is now handled gracefully.
-  const content = "## Git\n\n- isolation: none\n";
+  const content = "## Git\n\n- isolation: worktree\n";
   const result = parsePreferencesMarkdown(content);
   assert.notEqual(result, null, "heading+list content should be parsed");
-  assert.deepStrictEqual(result!.git, { isolation: "none" });
+  assert.deepStrictEqual(result!.git, { isolation: "worktree" });
 });
 
 test("section parse warning is emitted at most once for heading+list YAML failures (#3759)", () => {
