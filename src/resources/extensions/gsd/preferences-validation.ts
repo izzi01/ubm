@@ -36,9 +36,9 @@ export function validatePreferences(preferences: GSDPreferences): {
   // ─── Unknown Key Detection ──────────────────────────────────────────
   // Common key migration hints for pi-level settings that don't map to GSD prefs
   const KEY_MIGRATION_HINTS: Record<string, string> = {
-    taskIsolation: 'use "git.isolation" instead (values: worktree, branch, none)',
-    task_isolation: 'use "git.isolation" instead (values: worktree, branch, none)',
-    isolation: 'use "git.isolation" instead (values: worktree, branch, none)',
+    taskIsolation: 'use "git.isolation" instead (value: worktree)',
+    task_isolation: 'use "git.isolation" instead (value: worktree)',
+    isolation: 'use "git.isolation" instead (value: worktree)',
     manage_gitignore: 'use "git.manage_gitignore" instead',
     auto_push: 'use "git.auto_push" instead',
     main_branch: 'use "git.main_branch" instead',
@@ -718,11 +718,12 @@ export function validatePreferences(preferences: GSDPreferences): {
       }
     }
     if (g.isolation !== undefined) {
-      const validIsolation = new Set(["worktree", "branch", "none"]);
-      if (typeof g.isolation === "string" && validIsolation.has(g.isolation)) {
-        git.isolation = g.isolation as "worktree" | "branch" | "none";
+      if (g.isolation === "worktree") {
+        git.isolation = "worktree";
+      } else if (g.isolation === "none" || g.isolation === "branch") {
+        warnings.push(`git.isolation "${g.isolation}" is deprecated — only "worktree" is supported. Remove this setting or change it to "worktree".`);
       } else {
-        errors.push("git.isolation must be one of: worktree, branch, none");
+        errors.push("git.isolation must be \"worktree\" (values \"none\" and \"branch\" are deprecated and no longer supported)");
       }
     }
     if (g.commit_docs !== undefined) {

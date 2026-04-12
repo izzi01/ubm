@@ -198,27 +198,22 @@ export async function handleQuick(
   const branchName = `gsd/quick/${taskNum}-${slug}`;
   let originalBranch = git.getCurrentBranch();
 
-  const { getIsolationMode } = await import("./preferences.js");
-  const usesBranch = getIsolationMode() !== "none";
-
   let branchCreated = false;
-  if (usesBranch) {
-    try {
-      const current = originalBranch;
-      if (current !== branchName) {
-        // Auto-commit any dirty state before switching
-        try {
-          git.autoCommit("quick-task", `Q${taskNum}`, []);
-        } catch { /* nothing to commit — fine */ }
+  try {
+    const current = originalBranch;
+    if (current !== branchName) {
+      // Auto-commit any dirty state before switching
+      try {
+        git.autoCommit("quick-task", `Q${taskNum}`, []);
+      } catch { /* nothing to commit — fine */ }
 
-        runGit(basePath, ["checkout", "-b", branchName]);
-        branchCreated = true;
-      }
-    } catch (err) {
-      // Branch creation failed — continue on current branch
-      const message = err instanceof Error ? err.message : String(err);
-      ctx.ui.notify(`Could not create branch ${branchName}: ${message}. Working on current branch.`, "warning");
+      runGit(basePath, ["checkout", "-b", branchName]);
+      branchCreated = true;
     }
+  } catch (err) {
+    // Branch creation failed — continue on current branch
+    const message = err instanceof Error ? err.message : String(err);
+    ctx.ui.notify(`Could not create branch ${branchName}: ${message}. Working on current branch.`, "warning");
   }
 
   const actualBranch = branchCreated ? branchName : git.getCurrentBranch();

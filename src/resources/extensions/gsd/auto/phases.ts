@@ -361,9 +361,7 @@ export async function runPreDispatch(
     midTitle = state.activeMilestone?.title;
 
     if (mid) {
-      if (deps.getIsolationMode() !== "none") {
-        deps.captureIntegrationBranch(s.basePath, mid);
-      }
+      deps.captureIntegrationBranch(s.basePath, mid);
       deps.resolver.enterMilestone(mid, ctx.ui);
     } else {
       // mid is undefined — no milestone to capture integration branch for

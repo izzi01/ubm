@@ -33,7 +33,6 @@ import { ChatMode } from "@/components/gsd/chat-mode"
 import { ScopeBadge } from "@/components/gsd/scope-badge"
 import { Badge } from "@/components/ui/badge"
 import { ProjectsPanel, ProjectSelectionGate } from "@/components/gsd/projects-view"
-import { UpdateBanner } from "@/components/gsd/update-banner"
 import { getAuthToken } from "@/lib/auth"
 
 const KNOWN_VIEWS = new Set(["dashboard", "power", "chat", "roadmap", "files", "activity", "visualize"])
@@ -344,8 +343,6 @@ function WorkspaceChrome() {
           </span>
         </div>
       </header>
-
-      <UpdateBanner />
 
       {!isConnecting && visibleError && (
         <div

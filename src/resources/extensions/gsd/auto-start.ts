@@ -138,13 +138,10 @@ export async function openProjectDbIfPresent(basePath: string): Promise<void> {
  */
 export function auditOrphanedMilestoneBranches(
   basePath: string,
-  isolationMode: "worktree" | "branch" | "none",
+  isolationMode: "worktree",
 ): { recovered: string[]; warnings: string[] } {
   const recovered: string[] = [];
   const warnings: string[] = [];
-
-  // Skip in none mode — no milestone branches are created
-  if (isolationMode === "none") return { recovered, warnings };
 
   // Skip if DB not available — can't determine completion status
   if (!isDbAvailable()) return { recovered, warnings };
@@ -634,26 +631,8 @@ export async function bootstrapAutoSession(
 
     // Capture integration branch
     if (s.currentMilestoneId) {
-      if (getIsolationMode() !== "none") {
-        captureIntegrationBranch(base, s.currentMilestoneId);
-      }
+      captureIntegrationBranch(base, s.currentMilestoneId);
       setActiveMilestoneId(base, s.currentMilestoneId);
-    }
-
-    // Guard against stale milestone branch when isolation:none (#3613).
-    // A prior session with isolation:branch/worktree may have left HEAD on
-    // milestone/<MID>. Auto-checkout back to the integration branch.
-    if (getIsolationMode() === "none" && nativeIsRepo(base)) {
-      try {
-        const currentBranch = nativeGetCurrentBranch(base);
-        if (currentBranch.startsWith("milestone/")) {
-          const integrationBranch = nativeDetectMainBranch(base);
-          nativeCheckoutBranch(base, integrationBranch);
-          logWarning("bootstrap", `Returned to "${integrationBranch}" — HEAD was on stale milestone branch "${currentBranch}" (isolation: none does not use milestone branches).`);
-        }
-      } catch (err) {
-        logWarning("bootstrap", `Could not auto-checkout from stale milestone branch: ${err instanceof Error ? err.message : String(err)}`);
-      }
     }
 
     // ── Auto-worktree setup ──

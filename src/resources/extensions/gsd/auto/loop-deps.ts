@@ -111,7 +111,7 @@ export interface LoopDeps {
     basePath: string,
     mid: string,
   ) => void;
-  getIsolationMode: () => string;
+  getIsolationMode: () => "worktree";
   getCurrentBranch: (basePath: string) => string;
   autoWorktreeBranch: (milestoneId: string) => string;
   resolveMilestoneFile: (

@@ -41,7 +41,7 @@ export async function checkGitHealth(
   issues: DoctorIssue[],
   fixesApplied: string[],
   shouldFix: (code: DoctorIssueCode) => boolean,
-  isolationMode: "none" | "worktree" | "branch" = "none",
+  isolationMode: "worktree" = "worktree",
 ): Promise<void> {
   // Degrade gracefully if not a git repo
   if (!nativeIsRepo(basePath)) {
@@ -51,9 +51,6 @@ export async function checkGitHealth(
   const gitDir = resolveGitDir(basePath);
 
   // ── Orphaned auto-worktrees & Stale milestone branches ────────────────
-  // These checks only apply in worktree/branch modes — skip in none mode
-  // where no milestone worktrees or branches are created.
-  if (isolationMode !== "none") {
   try {
     const worktrees = listWorktrees(basePath);
     const milestoneWorktrees = worktrees.filter(wt => wt.branch.startsWith("milestone/"));
@@ -166,7 +163,6 @@ export async function checkGitHealth(
   } catch {
     // listWorktrees or deriveState failed — skip worktree/branch checks
   }
-  } // end isolationMode !== "none"
 
   // ── Corrupt merge state ────────────────────────────────────────────────
   try {

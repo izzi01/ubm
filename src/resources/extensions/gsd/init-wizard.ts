@@ -29,7 +29,7 @@ interface InitWizardResult {
 
 interface ProjectPreferences {
   mode: "solo" | "team";
-  gitIsolation: "worktree" | "branch" | "none";
+  gitIsolation: "worktree";
   mainBranch: string;
   verificationCommands: string[];
   customInstructions: string[];
@@ -384,25 +384,30 @@ async function customizeGitPrefs(
   prefs: ProjectPreferences,
   signals: ProjectSignals,
 ): Promise<void> {
-  // Isolation strategy
+  // Isolation is always worktree — no choice needed
   const hasSubmodules = existsSync(join(process.cwd(), ".gitmodules"));
-  const isolationActions = [
-    { id: "worktree", label: "Worktree", description: "Isolated git worktree per milestone (recommended)", recommended: !hasSubmodules },
-    { id: "branch", label: "Branch", description: "Work on branches in project root (better for submodules)", recommended: hasSubmodules },
-    { id: "none", label: "None", description: "No isolation — commits on current branch" },
-  ];
+  if (hasSubmodules) {
+    ctx.ui.notify(
+      "Note: Submodules detected. Worktree isolation may have limitations with submodules.",
+      "warning",
+    );
+  }
 
-  const isolationSummary = hasSubmodules
-    ? ["Submodules detected — branch mode recommended over worktree."]
-    : ["Worktree isolation creates a separate copy for each milestone."];
-
-  const isolationChoice = await showNextAction(ctx, {
-    title: "Git isolation strategy",
-    summary: isolationSummary,
-    actions: isolationActions,
+  // Main branch selection
+  const currentMainBranch = prefs.mainBranch;
+  const branchChoice = await showNextAction(ctx, {
+    title: "Main branch name",
+    summary: [`Current: ${currentMainBranch}`],
+    actions: [
+      { id: "keep", label: `Keep "${currentMainBranch}"`, description: "Use detected main branch", recommended: true },
+      { id: "change", label: "Change", description: "Set a different main branch name" },
+    ],
   });
-  if (isolationChoice !== "not_yet") {
-    prefs.gitIsolation = isolationChoice as "worktree" | "branch" | "none";
+  if (branchChoice === "change") {
+    const input = await ctx.ui.input("Enter main branch name:", currentMainBranch);
+    if (input?.trim()) {
+      prefs.mainBranch = input.trim();
+    }
   }
 }
 

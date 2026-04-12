@@ -323,7 +323,7 @@ export async function readDoctorHistory(basePath: string, lastN = 50): Promise<D
   } catch { return []; }
 }
 
-export async function runGSDDoctor(basePath: string, options?: { fix?: boolean; dryRun?: boolean; scope?: string; fixLevel?: "task" | "all"; isolationMode?: "none" | "worktree" | "branch"; includeBuild?: boolean; includeTests?: boolean }): Promise<DoctorReport> {
+export async function runGSDDoctor(basePath: string, options?: { fix?: boolean; dryRun?: boolean; scope?: string; fixLevel?: "task" | "all"; isolationMode?: "worktree"; includeBuild?: boolean; includeTests?: boolean }): Promise<DoctorReport> {
   const issues: DoctorIssue[] = [];
   const fixesApplied: string[] = [];
   const fix = options?.fix === true;
@@ -361,9 +361,7 @@ export async function runGSDDoctor(basePath: string, options?: { fix?: boolean; 
 
   // Git health checks — timed
   const t0git = Date.now();
-  const isolationMode: "none" | "worktree" | "branch" = options?.isolationMode ??
-    (prefs?.preferences?.git?.isolation === "worktree" ? "worktree" :
-    prefs?.preferences?.git?.isolation === "branch" ? "branch" : "none");
+  const isolationMode: "worktree" = options?.isolationMode ?? "worktree";
   await checkGitHealth(basePath, issues, fixesApplied, shouldFix, isolationMode);
   const gitMs = Date.now() - t0git;
 

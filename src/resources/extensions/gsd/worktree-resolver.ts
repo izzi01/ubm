@@ -26,7 +26,7 @@ import { emitJournalEvent } from "./journal.js";
 export interface WorktreeResolverDeps {
   isInAutoWorktree: (basePath: string) => boolean;
   shouldUseWorktreeIsolation: () => boolean;
-  getIsolationMode: () => "worktree" | "branch" | "none";
+  getIsolationMode: () => "worktree";
   mergeMilestoneToMain: (
     basePath: string,
     milestoneId: string,
@@ -356,22 +356,8 @@ export class WorktreeResolver {
     // "none"): the worktree branch still holds real commits that need merging.
     const inWorktree = this.deps.isInAutoWorktree(this.s.basePath) && this.s.originalBasePath;
 
-    if (mode === "none" && !inWorktree) {
-      debugLog("WorktreeResolver", {
-        action: "mergeAndExit",
-        milestoneId,
-        skipped: true,
-        reason: "mode-none",
-      });
-      return;
-    }
-
-    if (
-      mode === "worktree" || inWorktree
-    ) {
+    if (mode === "worktree" || inWorktree) {
       this._mergeWorktreeMode(milestoneId, ctx);
-    } else if (mode === "branch") {
-      this._mergeBranchMode(milestoneId, ctx);
     }
   }
 
@@ -538,82 +524,6 @@ export class WorktreeResolver {
       result: "done",
       basePath: this.s.basePath,
     });
-  }
-
-  /** Branch-mode merge: check current branch, merge if on milestone branch. */
-  private _mergeBranchMode(milestoneId: string, ctx: NotifyCtx): void {
-    try {
-      const currentBranch = this.deps.getCurrentBranch(this.s.basePath);
-      const milestoneBranch = this.deps.autoWorktreeBranch(milestoneId);
-
-      if (currentBranch !== milestoneBranch) {
-        debugLog("WorktreeResolver", {
-          action: "mergeAndExit",
-          milestoneId,
-          mode: "branch",
-          skipped: true,
-          reason: "not-on-milestone-branch",
-          currentBranch,
-          milestoneBranch,
-        });
-        return;
-      }
-
-      const roadmapPath = this.deps.resolveMilestoneFile(
-        this.s.basePath,
-        milestoneId,
-        "ROADMAP",
-      );
-      if (!roadmapPath) {
-        debugLog("WorktreeResolver", {
-          action: "mergeAndExit",
-          milestoneId,
-          mode: "branch",
-          skipped: true,
-          reason: "no-roadmap",
-        });
-        return;
-      }
-
-      const roadmapContent = this.deps.readFileSync(roadmapPath, "utf-8");
-      const mergeResult = this.deps.mergeMilestoneToMain(
-        this.s.basePath,
-        milestoneId,
-        roadmapContent,
-      );
-
-      // Rebuild GitService after merge (branch HEAD changed)
-      this.rebuildGitService();
-
-      if (mergeResult.codeFilesChanged) {
-        ctx.notify(
-          `Milestone ${milestoneId} merged (branch mode).${mergeResult.pushed ? " Pushed to remote." : ""}`,
-          "info",
-        );
-      } else {
-        ctx.notify(
-          `WARNING: Milestone ${milestoneId} merged (branch mode) but contained NO code changes — only .gsd/ metadata. ` +
-            `Review the milestone output and re-run if code is missing.`,
-          "warning",
-        );
-      }
-      debugLog("WorktreeResolver", {
-        action: "mergeAndExit",
-        milestoneId,
-        mode: "branch",
-        result: "success",
-      });
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : String(err);
-      debugLog("WorktreeResolver", {
-        action: "mergeAndExit",
-        milestoneId,
-        mode: "branch",
-        result: "error",
-        error: msg,
-      });
-      ctx.notify(`Milestone merge failed (branch mode): ${msg}`, "warning");
-    }
   }
 
   // ── Merge and Enter Next ───────────────────────────────────────────────

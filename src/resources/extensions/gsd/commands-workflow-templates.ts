@@ -421,10 +421,10 @@ export async function handleStart(
     mkdirSync(join(basePath, artifactDir), { recursive: true });
   }
 
-  // ─── Create git branch (unless isolation: none) ─────────────────────────
+  // ─── Create git branch (worktree isolation is always active) ────────────
 
   const git = createGitService(basePath);
-  const skipBranch = git.prefs.isolation === "none";
+  const skipBranch = git.prefs.isolation !== "worktree";
   const slug = slugify(description || templateId);
   const branchName = `gsd/${templateId}/${slug}`;
   let branchCreated = false;
