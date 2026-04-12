@@ -26,7 +26,7 @@ import assert from 'node:assert/strict';
 
 const RUNNER_PREFS_PATH = join(process.cwd(), ".gsd", "PREFERENCES.md");
 
-function writeRunnerPreferences(isolation: "none" | "worktree" | "branch"): void {
+function writeRunnerPreferences(isolation: "worktree"): void {
   mkdirSync(join(process.cwd(), ".gsd"), { recursive: true });
   writeFileSync(RUNNER_PREFS_PATH, `---\ngit:\n  isolation: "${isolation}"\n---\n`);
 }
@@ -36,28 +36,6 @@ function removeRunnerPreferences(): void {
 }
 
 // --- Tests ---
-
-test('shouldUseWorktreeIsolation returns false for none', () => {
-try {
-  writeRunnerPreferences("none");
-  invalidateAllCaches();
-  assert.deepStrictEqual(shouldUseWorktreeIsolation(), false, "shouldUseWorktreeIsolation() with none prefs");
-} finally {
-  removeRunnerPreferences();
-  invalidateAllCaches();
-}
-});
-
-test('shouldUseWorktreeIsolation returns false for branch', () => {
-try {
-  writeRunnerPreferences("branch");
-  invalidateAllCaches();
-  assert.deepStrictEqual(shouldUseWorktreeIsolation(), false, "shouldUseWorktreeIsolation() with branch prefs");
-} finally {
-  removeRunnerPreferences();
-  invalidateAllCaches();
-}
-});
 
 test('shouldUseWorktreeIsolation returns true for worktree', () => {
 try {
@@ -70,8 +48,8 @@ try {
 }
 });
 
-// Test 4: shouldUseWorktreeIsolation returns false for no prefs (default: none)
-// Worktree isolation requires explicit opt-in — default is "none" so GSD
+// Test: shouldUseWorktreeIsolation returns false for no prefs (default: no isolation)
+// Worktree isolation requires explicit opt-in — default is no isolation so GSD
 // works out of the box without PREFERENCES.md (#2480).
 // Skip if global prefs exist — they override the default and this test
 // cannot control ~/.gsd/PREFERENCES.md.
@@ -106,33 +84,11 @@ test('getIsolationMode returns "none" with no prefs (default)', () => {
   }
 });
 
-test('getIsolationMode returns "none" with none prefs', () => {
-try {
-  writeRunnerPreferences("none");
-  invalidateAllCaches();
-  assert.deepStrictEqual(getIsolationMode(), "none", "getIsolationMode() with none prefs");
-} finally {
-  removeRunnerPreferences();
-  invalidateAllCaches();
-}
-});
-
 test('getIsolationMode returns "worktree" with worktree prefs', () => {
 try {
   writeRunnerPreferences("worktree");
   invalidateAllCaches();
   assert.deepStrictEqual(getIsolationMode(), "worktree", "getIsolationMode() with worktree prefs");
-} finally {
-  removeRunnerPreferences();
-  invalidateAllCaches();
-}
-});
-
-test('getIsolationMode returns "branch" with branch prefs', () => {
-try {
-  writeRunnerPreferences("branch");
-  invalidateAllCaches();
-  assert.deepStrictEqual(getIsolationMode(), "branch", "getIsolationMode() with branch prefs");
 } finally {
   removeRunnerPreferences();
   invalidateAllCaches();

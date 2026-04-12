@@ -17,7 +17,6 @@ import { inlinePriorMilestoneSummary } from '../../files.ts';
 import { getPriorSliceCompletionBlocker } from '../../dispatch-guard.ts';
 import {
   getSliceBranchName,
-  parseSliceBranch,
 } from '../../worktree.ts';
 import { clearPathCache } from '../../paths.ts';
 import { describe, test, beforeEach, afterEach } from 'node:test';
@@ -525,13 +524,6 @@ test('Group 6: Branch name helpers with new-format IDs', () => {
       'gsd/M001-abc123/S01',
       'G6: getSliceBranchName returns gsd/M001-abc123/S01',
     );
-
-    // Test parseSliceBranch with new-format branch name
-    const parsed = parseSliceBranch('gsd/M001-abc123/S01');
-    assert.ok(parsed !== null, 'G6: parseSliceBranch returns non-null for new-format');
-    assert.deepStrictEqual(parsed?.milestoneId, 'M001-abc123', 'G6: parsed milestoneId is M001-abc123');
-    assert.deepStrictEqual(parsed?.sliceId, 'S01', 'G6: parsed sliceId is S01');
-    assert.deepStrictEqual(parsed?.worktreeName, null, 'G6: parsed worktreeName is null (no worktree)');
 });
 
   // ─── Summary ──────────────────────────────────────────────────────────

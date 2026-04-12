@@ -10,10 +10,8 @@ import {
   getCurrentBranch,
   getMainBranch,
   getSliceBranchName,
-  parseSliceBranch,
   resolveProjectRoot,
   setActiveMilestoneId,
-  SLICE_BRANCH_RE,
   _resetServiceCache,
 } from "../worktree.ts";
 import { readIntegrationBranch } from "../git-service.ts";
@@ -68,32 +66,6 @@ describe('worktree', async () => {
   assert.deepStrictEqual(getSliceBranchName("M001", "S01"), "gsd/M001/S01", "branch name format correct");
   assert.deepStrictEqual(getSliceBranchName("M001", "S01", null), "gsd/M001/S01", "null worktree = plain branch");
   assert.deepStrictEqual(getSliceBranchName("M001", "S01", "my-wt"), "gsd/my-wt/M001/S01", "worktree-namespaced branch");
-
-  console.log("\n=== parseSliceBranch ===");
-  const plain = parseSliceBranch("gsd/M001/S01");
-  assert.ok(plain !== null, "parses plain branch");
-  assert.deepStrictEqual(plain!.worktreeName, null, "plain branch has no worktree name");
-  assert.deepStrictEqual(plain!.milestoneId, "M001", "plain branch milestone");
-  assert.deepStrictEqual(plain!.sliceId, "S01", "plain branch slice");
-
-  const namespaced = parseSliceBranch("gsd/feature-auth/M001/S01");
-  assert.ok(namespaced !== null, "parses worktree-namespaced branch");
-  assert.deepStrictEqual(namespaced!.worktreeName, "feature-auth", "worktree name extracted");
-  assert.deepStrictEqual(namespaced!.milestoneId, "M001", "namespaced branch milestone");
-  assert.deepStrictEqual(namespaced!.sliceId, "S01", "namespaced branch slice");
-
-  const invalid = parseSliceBranch("main");
-  assert.deepStrictEqual(invalid, null, "non-slice branch returns null");
-
-  const worktreeBranch = parseSliceBranch("worktree/foo");
-  assert.deepStrictEqual(worktreeBranch, null, "worktree/ prefix is not a slice branch");
-
-  console.log("\n=== SLICE_BRANCH_RE ===");
-  assert.ok(SLICE_BRANCH_RE.test("gsd/M001/S01"), "regex matches plain branch");
-  assert.ok(SLICE_BRANCH_RE.test("gsd/my-wt/M001/S01"), "regex matches worktree branch");
-  assert.ok(!SLICE_BRANCH_RE.test("main"), "regex rejects main");
-  assert.ok(!SLICE_BRANCH_RE.test("gsd/"), "regex rejects bare gsd/");
-  assert.ok(!SLICE_BRANCH_RE.test("worktree/foo"), "regex rejects worktree/foo");
 
   console.log("\n=== detectWorktreeName ===");
   assert.deepStrictEqual(detectWorktreeName("/projects/myapp"), null, "no worktree in plain path");

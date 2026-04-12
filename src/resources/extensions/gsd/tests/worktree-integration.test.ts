@@ -25,7 +25,6 @@ import {
   getMainBranch,
   getSliceBranchName,
   autoCommitCurrentBranch,
-  SLICE_BRANCH_RE,
   _resetServiceCache,
 } from "../worktree.ts";
 
@@ -118,7 +117,6 @@ describe('worktree-integration', async () => {
   const sliceBranch = getSliceBranchName("M001", "S01", "alpha");
   run(`git checkout -b ${sliceBranch}`, wt.path);
   assert.deepStrictEqual(getCurrentBranch(wt.path), "gsd/alpha/M001/S01", "worktree-namespaced slice branch");
-  assert.ok(SLICE_BRANCH_RE.test(getCurrentBranch(wt.path)), "slice branch regex matches namespaced branch");
 
   // ── Do work on slice branch, then merge to worktree branch ─────────────────
 

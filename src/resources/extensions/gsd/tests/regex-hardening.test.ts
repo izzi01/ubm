@@ -4,8 +4,7 @@
 // Sections:
 //   (a) Directory scanning regex — findMilestoneIds pattern
 //   (b) Title-strip regex — milestone title cleanup
-//   (c) SLICE_BRANCH_RE — branch name parsing (with/without worktree prefix)
-//   (d) Milestone detection regex — hasExistingMilestones pattern
+//   (c) Milestone detection regex — hasExistingMilestones pattern
 //   (e) MILESTONE_CONTEXT_RE — context write-gate filename match
 //   (f) Prompt dispatch regexes — executeMatch and resumeMatch capture
 //   (g) milestoneIdSort — mixed-format ordering
@@ -19,7 +18,7 @@ import {
   milestoneIdSort,
 } from '../guided-flow.ts';
 
-import { SLICE_BRANCH_RE } from '../worktree.ts';
+
 import { createTestContext } from './test-helpers.ts';
 
 
@@ -97,55 +96,7 @@ async function main(): Promise<void> {
     assertEq('S01: Slice Title'.replace(TITLE_STRIP_RE, ''), 'S01: Slice Title', 'does not strip S01 prefix');
   }
 
-  // (c) SLICE_BRANCH_RE — from worktree.ts
-  //     Pattern: /^gsd\/(?:([a-zA-Z0-9_-]+)\/)?(M\d+(?:-[a-z0-9]{6})?)\/(S\d+)$/
-  {
-    console.log('  (c) SLICE_BRANCH_RE');
-
-    // Classic format — no worktree prefix
-    {
-      const m = 'gsd/M001/S01'.match(SLICE_BRANCH_RE);
-      assertTrue(m !== null, 'matches gsd/M001/S01');
-      assertEq(m?.[1], undefined, 'no worktree prefix for gsd/M001/S01');
-      assertEq(m?.[2], 'M001', 'captures M001');
-      assertEq(m?.[3], 'S01', 'captures S01');
-    }
-
-    // Unique format — no worktree prefix
-    {
-      const m = 'gsd/M001-abc123/S01'.match(SLICE_BRANCH_RE);
-      assertTrue(m !== null, 'matches gsd/M001-abc123/S01');
-      assertEq(m?.[1], undefined, 'no worktree prefix for unique format');
-      assertEq(m?.[2], 'M001-abc123', 'captures M001-abc123');
-      assertEq(m?.[3], 'S01', 'captures S01');
-    }
-
-    // Classic format — with worktree prefix
-    {
-      const m = 'gsd/worktree/M001/S01'.match(SLICE_BRANCH_RE);
-      assertTrue(m !== null, 'matches gsd/worktree/M001/S01');
-      assertEq(m?.[1], 'worktree', 'captures worktree prefix');
-      assertEq(m?.[2], 'M001', 'captures M001 with worktree');
-      assertEq(m?.[3], 'S01', 'captures S01 with worktree');
-    }
-
-    // Unique format — with worktree prefix
-    {
-      const m = 'gsd/worktree/M001-abc123/S01'.match(SLICE_BRANCH_RE);
-      assertTrue(m !== null, 'matches gsd/worktree/M001-abc123/S01');
-      assertEq(m?.[1], 'worktree', 'captures worktree prefix with unique format');
-      assertEq(m?.[2], 'M001-abc123', 'captures M001-abc123 with worktree');
-      assertEq(m?.[3], 'S01', 'captures S01 with worktree and unique format');
-    }
-
-    // Rejects
-    assertTrue(!SLICE_BRANCH_RE.test('gsd/S01'), 'rejects gsd/S01 (no milestone)');
-    assertTrue(!SLICE_BRANCH_RE.test('main'), 'rejects main');
-    assertTrue(!SLICE_BRANCH_RE.test('gsd/M001'), 'rejects gsd/M001 (no slice)');
-    assertTrue(!SLICE_BRANCH_RE.test('feature/M001/S01'), 'rejects feature/ prefix');
-  }
-
-  // (d) Milestone detection regex — used in worktree-command.ts (hasExistingMilestones)
+  // (c) Milestone detection regex — used in worktree-command.ts (hasExistingMilestones)
   //     Pattern: /^M\d+(?:-[a-z0-9]{6})?/
   {
     console.log('  (d) Milestone detection regex');
@@ -251,9 +202,9 @@ async function main(): Promise<void> {
     assertEq([...newOnly].sort(milestoneIdSort), ['M001-def456', 'M002-ghi789', 'M003-abc123'], 'sorts unique-format IDs');
   }
 
-  // (h) extractMilestoneSeq — numeric extraction from both formats
+  // (g) extractMilestoneSeq — numeric extraction from both formats
   {
-    console.log('  (h) extractMilestoneSeq');
+    console.log('  (g) extractMilestoneSeq');
 
     // Classic format
     assertEq(extractMilestoneSeq('M001'), 1, 'M001 → 1');
@@ -276,6 +227,6 @@ async function main(): Promise<void> {
   report();
 }
 
-test('regex-hardening: all 12 sites accept both formats', async () => {
+test('regex-hardening: all 11 sites accept both formats', async () => {
   await main();
 });
