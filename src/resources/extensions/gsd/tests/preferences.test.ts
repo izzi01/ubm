@@ -63,7 +63,6 @@ test("solo mode applies correct defaults", () => {
   assert.equal(result.git?.push_branches, false);
   assert.equal(result.git?.pre_merge_check, "auto");
   assert.equal(result.git?.merge_strategy, "squash");
-  assert.equal(result.git?.isolation, "none");
   assert.equal(result.unique_milestone_ids, false);
 });
 

@@ -67,6 +67,9 @@ export function captureIntegrationBranch(basePath: string, milestoneId: string):
   if (detectWorktreeName(basePath)) return;
   const svc = getService(basePath);
   const current = svc.getCurrentBranch();
+  // No-op if on a GSD-managed branch (milestone slice, quick, or workflow).
+  // These are never the integration branch users want to merge back to.
+  if (current.startsWith("gsd/")) return;
   writeIntegrationBranch(basePath, milestoneId, current);
 }
 
