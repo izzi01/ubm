@@ -1,15 +1,9 @@
 /**
  * GSD Worktree Utilities
  *
- * Pure utility functions for worktree name detection, legacy branch name
- * parsing, and integration branch capture.
- *
- * Pure utility functions (detectWorktreeName, getSliceBranchName, parseSliceBranch,
- * SLICE_BRANCH_RE) remain standalone for backwards compatibility.
+ * Pure utility functions for worktree name detection and integration branch capture.
  *
  * Branchless architecture: all work commits sequentially on the milestone branch.
- * Pure utility functions (detectWorktreeName, getSliceBranchName, parseSliceBranch,
- * SLICE_BRANCH_RE) remain for backwards compatibility with legacy branches.
  */
 
 import { existsSync, readFileSync, realpathSync, utimesSync } from "node:fs";
@@ -243,28 +237,6 @@ export function getSliceBranchName(milestoneId: string, sliceId: string, worktre
     return `gsd/${worktreeName}/${milestoneId}/${sliceId}`;
   }
   return `gsd/${milestoneId}/${sliceId}`;
-}
-
-/** Re-export for backward compatibility — canonical definition in branch-patterns.ts */
-export { SLICE_BRANCH_RE } from "./branch-patterns.js";
-import { SLICE_BRANCH_RE } from "./branch-patterns.js";
-
-/**
- * Parse a slice branch name into its components.
- * Handles both `gsd/M001/S01` and `gsd/myworktree/M001/S01`.
- */
-export function parseSliceBranch(branchName: string): {
-  worktreeName: string | null;
-  milestoneId: string;
-  sliceId: string;
-} | null {
-  const match = branchName.match(SLICE_BRANCH_RE);
-  if (!match) return null;
-  return {
-    worktreeName: match[1] ?? null,
-    milestoneId: match[2]!,
-    sliceId: match[3]!,
-  };
 }
 
 // ─── Git-Mutation Functions (delegate to GitServiceImpl) ───────────────────
