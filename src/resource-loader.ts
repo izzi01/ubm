@@ -4,7 +4,7 @@ import { homedir } from 'node:os'
 import { chmodSync, copyFileSync, cpSync, existsSync, lstatSync, mkdirSync, openSync, closeSync, readFileSync, readlinkSync, readdirSync, rmSync, statSync, symlinkSync, unlinkSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { compareSemver } from './update-check.js'
+
 import { discoverExtensionEntryPaths } from './extension-discovery.js'
 import { loadRegistry, readManifestFromEntryPath, isExtensionEnabled, ensureRegistryEntries } from './extension-registry.js'
 
@@ -156,6 +156,19 @@ function collectFileEntries(dir: string, root: string, out: string[]): void {
   }
 }
 
+
+/** Compares two semver strings. Returns 1 if a > b, -1 if a < b, 0 if equal. */
+function compareSemver(a: string, b: string): number {
+  const pa = a.split('.').map(Number)
+  const pb = b.split('.').map(Number)
+  for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+    const va = pa[i] || 0
+    const vb = pb[i] || 0
+    if (va > vb) return 1
+    if (va < vb) return -1
+  }
+  return 0
+}
 
 export function getNewerManagedResourceVersion(agentDir: string, currentVersion: string): string | null {
   const managedVersion = readManagedResourceVersion(agentDir)

@@ -20,7 +20,6 @@ import { migratePiCredentials } from './pi-migration.js'
 import { validateConfiguredModel } from './startup-model-validation.js'
 import { shouldRunOnboarding, runOnboarding } from './onboarding.js'
 import chalk from 'chalk'
-import { checkForUpdates } from './update-check.js'
 import { printHelp, printSubcommandHelp } from './help-text.js'
 import { applySecurityOverrides } from './security-overrides.js'
 import {
@@ -31,7 +30,7 @@ import {
 import { stopWebMode } from './web-mode.js'
 import { getProjectSessionsDir } from './project-sessions.js'
 import { markStartup, printStartupTimings } from './startup-timings.js'
-import { bootstrapRtk, GSD_RTK_DISABLED_ENV } from './rtk.js'
+import { bootstrapRtk, UMB_RTK_DISABLED_ENV } from './rtk.js'
 import { loadEffectiveGSDPreferences } from './resources/extensions/gsd/preferences.js'
 
 // ---------------------------------------------------------------------------
@@ -66,7 +65,7 @@ interface CliFlags {
 }
 
 function exitIfManagedResourcesAreNewer(currentAgentDir: string): void {
-  const currentVersion = process.env.GSD_VERSION || '0.0.0'
+  const currentVersion = process.env.UMB_VERSION || '0.0.0'
   const managedVersion = getNewerManagedResourceVersion(currentAgentDir, currentVersion)
   if (!managedVersion) {
     return
@@ -75,7 +74,7 @@ function exitIfManagedResourcesAreNewer(currentAgentDir: string): void {
   process.stderr.write(
     `[gsd] ${chalk.yellow('Version mismatch detected')}\n` +
     `[gsd] Synced resources are from ${chalk.bold(`v${managedVersion}`)}, but this \`gsd\` binary is ${chalk.dim(`v${currentVersion}`)}.\n` +
-    `[gsd] Run ${chalk.bold('npm install -g gsd-pi@latest')} or ${chalk.bold('gsd update')}, then try again.\n`,
+    `[gsd] Run ${chalk.bold('npm install -g umb-cli@latest')}, then try again.\n`,
   )
   process.exit(1)
 }
@@ -105,7 +104,7 @@ function parseCliArgs(argv: string[]): CliFlags {
     } else if (arg === '--list-models') {
       flags.listModels = (i + 1 < args.length && !args[i + 1].startsWith('-')) ? args[++i] : true
     } else if (arg === '--version' || arg === '-v') {
-      process.stdout.write((process.env.GSD_VERSION || '0.0.0') + '\n')
+      process.stdout.write((process.env.UMB_VERSION || '0.0.0') + '\n')
       process.exit(0)
     } else if (arg === '--worktree' || arg === '-w') {
       // -w with no value → auto-generate name; -w <name> → use that name
@@ -115,7 +114,7 @@ function parseCliArgs(argv: string[]): CliFlags {
         flags.worktree = true
       }
     } else if (arg === '--help' || arg === '-h') {
-      printHelp(process.env.GSD_VERSION || '0.0.0')
+      printHelp(process.env.UMB_VERSION || '0.0.0')
       process.exit(0)
     } else if (arg === '--web') {
       flags.web = true
@@ -141,11 +140,11 @@ async function ensureRtkBootstrap(): Promise<void> {
   // RTK is opt-in via experimental.rtk preference. Default: disabled.
   // Honor GSD_RTK_DISABLED if already explicitly set in the environment
   // (env var takes precedence over preferences for manual override).
-  if (!process.env[GSD_RTK_DISABLED_ENV]) {
+  if (!process.env[UMB_RTK_DISABLED_ENV]) {
     const prefs = loadEffectiveGSDPreferences();
     const rtkEnabled = prefs?.preferences.experimental?.rtk === true;
     if (!rtkEnabled) {
-      process.env[GSD_RTK_DISABLED_ENV] = "1";
+      process.env[UMB_RTK_DISABLED_ENV] = "1";
     }
   }
 
@@ -155,13 +154,6 @@ async function ensureRtkBootstrap(): Promise<void> {
   if (!rtkStatus.available && rtkStatus.supported && rtkStatus.enabled && rtkStatus.reason) {
     process.stderr.write(`[gsd] Warning: RTK unavailable — continuing without shell-command compression (${rtkStatus.reason}).\n`)
   }
-}
-
-// `gsd update` — update to the latest version via npm
-if (cliFlags.messages[0] === 'update') {
-  const { runUpdate } = await import('./update-cmd.js')
-  await runUpdate()
-  process.exit(0)
 }
 
 exitIfManagedResourcesAreNewer(agentDir)
@@ -183,7 +175,7 @@ if (!process.stdin.isTTY && !isPrintMode && !hasSubcommand && !cliFlags.listMode
 // `gsd <subcommand> --help` — show subcommand-specific help
 const subcommand = cliFlags.messages[0]
 if (subcommand && process.argv.includes('--help')) {
-  if (printSubcommandHelp(subcommand, process.env.GSD_VERSION || '0.0.0')) {
+  if (printSubcommandHelp(subcommand, process.env.UMB_VERSION || '0.0.0')) {
     process.exit(0)
   }
 }
@@ -357,13 +349,6 @@ if (!isPrintMode && shouldRunOnboarding(authStorage, settingsManager.getDefaultP
   process.stdin.removeAllListeners('keypress')
   if (process.stdin.setRawMode) process.stdin.setRawMode(false)
   process.stdin.pause()
-}
-
-// Update check — non-blocking banner check; interactive prompt deferred to avoid
-// blocking startup. The passive checkForUpdates() prints a banner if an update is
-// available (using cached data or a background fetch) without blocking the TUI.
-if (!isPrintMode) {
-  checkForUpdates().catch(() => {})
 }
 
 // Warn if terminal is too narrow for readable output
@@ -543,7 +528,7 @@ if (isPrintMode) {
     const { startMcpServer } = await import('./mcp-server.js')
     await startMcpServer({
       tools: session.agent.state.tools ?? [],
-      version: process.env.GSD_VERSION || '0.0.0',
+      version: process.env.UMB_VERSION || '0.0.0',
     })
     // MCP server runs until the transport closes; keep alive
     await new Promise(() => {})
@@ -773,7 +758,7 @@ if (!process.stdin.isTTY || !process.stdout.isTTY) {
 
 // Welcome screen — shown on every fresh interactive session before TUI takes over.
 // Skip when the first-run banner was already printed in loader.ts (prevents double banner).
-if (!process.env.GSD_FIRST_RUN_BANNER) {
+if (!process.env.UMB_FIRST_RUN_BANNER) {
   const { printWelcomeScreen } = await import('./welcome-screen.js')
   let remoteChannel: string | undefined
   try {
@@ -782,7 +767,7 @@ if (!process.env.GSD_FIRST_RUN_BANNER) {
     if (rc) remoteChannel = rc.channel
   } catch { /* non-fatal */ }
   printWelcomeScreen({
-    version: process.env.GSD_VERSION || '0.0.0',
+    version: process.env.UMB_VERSION || '0.0.0',
     modelName: settingsManager.getDefaultModel() || undefined,
     provider: settingsManager.getDefaultProvider() || undefined,
     remoteChannel,

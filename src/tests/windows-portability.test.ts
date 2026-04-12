@@ -58,10 +58,6 @@ test("Windows launch points use shell-safe shims", () => {
 		path.join(process.cwd(), "vscode-extension", "src", "gsd-client.ts"),
 		"utf8",
 	);
-	const updateService = readFileSync(
-		path.join(process.cwd(), "src", "web", "update-service.ts"),
-		"utf8",
-	);
 	const preExecution = readFileSync(
 		path.join(process.cwd(), "src", "resources", "extensions", "gsd", "pre-execution-checks.ts"),
 		"utf8",
@@ -72,7 +68,6 @@ test("Windows launch points use shell-safe shims", () => {
 	);
 
 	assert.match(gsdClient, /shell:\s*process\.platform === "win32"/);
-	assert.match(updateService, /npm\.cmd/);
 	assert.match(preExecution, /npm\.cmd/);
 	assert.match(validatePack, /shell:\s*process\.platform === 'win32'/);
 });
