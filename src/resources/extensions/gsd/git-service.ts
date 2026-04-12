@@ -19,7 +19,7 @@ import { loadEffectiveGSDPreferences } from "./preferences.js";
 import {
   detectWorktreeName,
 } from "./worktree.js";
-import { SLICE_BRANCH_RE, QUICK_BRANCH_RE, WORKFLOW_BRANCH_RE } from "./branch-patterns.js";
+import { QUICK_BRANCH_RE, WORKFLOW_BRANCH_RE } from "./branch-patterns.js";
 import {
   nativeGetCurrentBranch,
   nativeDetectMainBranch,
@@ -53,10 +53,9 @@ export interface GitPreferences {
   merge_strategy?: "squash" | "merge";
   /** Controls auto-mode git isolation strategy.
    *  - "worktree": creates a milestone worktree for isolated work
-   *  - "branch": works directly in the project root (for submodule-heavy repos)
-   *  - "none": (default) no git isolation — commits land on the user's current branch directly
+   *  - undefined: (default) no git isolation — commits land on the user's current branch directly
    */
-  isolation?: "worktree" | "branch" | "none";
+  isolation?: "worktree";
   /** When false, GSD will not modify .gitignore at all — no baseline patterns
    *  are added and no self-healing occurs. Use this if you manage your own
    *  .gitignore and don't want GSD touching it.
@@ -258,8 +257,6 @@ export function writeIntegrationBranch(
   milestoneId: string,
   branch: string,
 ): void {
-  // Don't record slice branches as the integration target
-  if (SLICE_BRANCH_RE.test(branch)) return;
   // Don't record quick-task branches — they are ephemeral and merge back
   // to their origin branch on completion. Recording one as the integration
   // target causes milestone merges to land on the wrong branch (#1293).
