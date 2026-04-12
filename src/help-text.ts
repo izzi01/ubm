@@ -1,6 +1,6 @@
 const SUBCOMMAND_HELP: Record<string, string> = {
   config: [
-    'Usage: gsd config',
+    'Usage: umb config',
     '',
     'Re-run the interactive setup wizard to configure:',
     '  - LLM provider (Anthropic, OpenAI, Google, OpenRouter, Ollama, LM Studio, etc.)',
@@ -15,15 +15,15 @@ const SUBCOMMAND_HELP: Record<string, string> = {
   ].join('\n'),
 
   update: [
-    'Usage: gsd update',
+    'Usage: umb update',
     '',
-    'Update GSD to the latest version.',
+    'Update UMB to the latest version.',
     '',
-    'Equivalent to: npm install -g gsd-pi@latest',
+    'Equivalent to: npm install -g umb-cli@latest',
   ].join('\n'),
 
   sessions: [
-    'Usage: gsd sessions',
+    'Usage: umb sessions',
     '',
     'List all saved sessions for the current directory and interactively',
     'pick one to resume. Shows date, message count, and a preview of the',
@@ -36,31 +36,31 @@ const SUBCOMMAND_HELP: Record<string, string> = {
   ].join('\n'),
 
   install: [
-    'Usage: gsd install <source> [-l, --local]',
+    'Usage: umb install <source> [-l, --local]',
     '',
     'Install a package/extension source and run post-install validation (dependency checks, setup).',
     '',
     'Examples:',
-    '  gsd install npm:@foo/bar',
-    '  gsd install git:github.com/user/repo',
-    '  gsd install https://github.com/user/repo',
-    '  gsd install ./local/path',
+    '  umb install npm:@foo/bar',
+    '  umb install git:github.com/user/repo',
+    '  umb install https://github.com/user/repo',
+    '  umb install ./local/path',
   ].join('\n'),
 
   remove: [
-    'Usage: gsd remove <source> [-l, --local]',
+    'Usage: umb remove <source> [-l, --local]',
     '',
     'Remove an installed package source and its settings entry.',
   ].join('\n'),
 
   list: [
-    'Usage: gsd list',
+    'Usage: umb list',
     '',
     'List installed package sources from user and project settings.',
   ].join('\n'),
 
   worktree: [
-    'Usage: gsd worktree <command> [args]',
+    'Usage: umb worktree <command> [args]',
     '',
     'Manage isolated git worktrees for parallel work streams.',
     '',
@@ -71,35 +71,35 @@ const SUBCOMMAND_HELP: Record<string, string> = {
     '  remove <name>        Remove a worktree (--force to remove with unmerged changes)',
     '',
     'The -w flag creates/resumes worktrees for interactive sessions:',
-    '  gsd -w               Auto-name a new worktree, or resume the only active one',
-    '  gsd -w my-feature    Create or resume a named worktree',
+    '  umb -w               Auto-name a new worktree, or resume the only active one',
+    '  umb -w my-feature    Create or resume a named worktree',
     '',
     'Lifecycle:',
-    '  1. gsd -w             Create worktree, start session inside it',
+    '  1. umb -w             Create worktree, start session inside it',
     '  2. (work normally)    All changes happen on the worktree branch',
     '  3. Ctrl+C             Exit — dirty work is auto-committed',
-    '  4. gsd -w             Resume where you left off',
-    '  5. gsd worktree merge Squash-merge into main when done',
+    '  4. umb -w             Resume where you left off',
+    '  5. umb worktree merge Squash-merge into main when done',
     '',
     'Examples:',
-    '  gsd -w                              Start in a new auto-named worktree',
-    '  gsd -w auth-refactor                Create/resume "auth-refactor" worktree',
-    '  gsd worktree list                   See all worktrees and their status',
-    '  gsd worktree merge auth-refactor    Merge and clean up',
-    '  gsd worktree clean                  Remove all merged/empty worktrees',
-    '  gsd worktree remove old-branch      Remove a specific worktree',
-    '  gsd worktree remove old-branch --force  Remove even with unmerged changes',
+    '  umb -w                              Start in a new auto-named worktree',
+    '  umb -w auth-refactor                Create/resume "auth-refactor" worktree',
+    '  umb worktree list                   See all worktrees and their status',
+    '  umb worktree merge auth-refactor    Merge and clean up',
+    '  umb worktree clean                  Remove all merged/empty worktrees',
+    '  umb worktree remove old-branch      Remove a specific worktree',
+    '  umb worktree remove old-branch --force  Remove even with unmerged changes',
   ].join('\n'),
 
   headless: [
-    'Usage: gsd headless [flags] [command] [args...]',
+    'Usage: umb headless [flags] [command] [args...]',
     '',
-    'Run /gsd commands without the TUI. Default command: auto',
+    'Run commands without the TUI.',
     '',
     'Flags:',
     '  --timeout N            Overall timeout in ms (default: 300000)',
-    '  --json                 JSONL event stream to stdout (alias for --output-format stream-json)',
-    '  --output-format <fmt>  Output format: text (default), json (structured result), stream-json (JSONL events)',
+    '  --json                 JSONL event stream to stdout',
+    '  --output-format <fmt>  Output format: text (default), json, stream-json',
     '  --bare                 Minimal context: skip CLAUDE.md, AGENTS.md, user settings, user skills',
     '  --resume <id>          Resume a prior headless session by ID',
     '  --model ID             Override model',
@@ -112,46 +112,17 @@ const SUBCOMMAND_HELP: Record<string, string> = {
     '  auto                 Run all queued units continuously (default)',
     '  next                 Run one unit',
     '  status               Show progress dashboard',
-    '  new-milestone        Create a milestone from a specification document',
-    '  query                JSON snapshot: state + next dispatch + costs (no LLM)',
-    '',
-    'new-milestone flags:',
-    '  --context <path>     Path to spec/PRD file (use \'-\' for stdin)',
-    '  --context-text <txt> Inline specification text',
-    '  --auto               Start auto-mode after milestone creation',
-    '  --verbose            Show tool calls in progress output',
-    '',
-    'Output formats:',
-    '  text         Human-readable progress on stderr (default)',
-    '  json         Collect events silently, emit structured HeadlessJsonResult on stdout at exit',
-    '  stream-json  Stream JSONL events to stdout in real time (same as --json)',
-    '',
-    'Examples:',
-    '  gsd headless                                    Run /gsd auto',
-    '  gsd headless next                               Run one unit',
-    '  gsd headless --output-format json auto           Structured JSON result on stdout',
-    '  gsd headless --json status                      Machine-readable JSONL stream',
-    '  gsd headless --timeout 60000                    With 1-minute timeout',
-    '  gsd headless --bare auto                        Minimal context (CI/ecosystem use)',
-    '  gsd headless --resume abc123 auto               Resume a prior session',
-    '  gsd headless new-milestone --context spec.md    Create milestone from file',
-    '  cat spec.md | gsd headless new-milestone --context -   From stdin',
-    '  gsd headless new-milestone --context spec.md --auto    Create + auto-execute',
-    '  gsd headless --supervised auto                     Supervised orchestrator mode',
-    '  gsd headless --answers answers.json auto              With pre-supplied answers',
-    '  gsd headless --events agent_end,extension_ui_request auto   Filtered event stream',
-    '  gsd headless query                              Instant JSON state snapshot',
     '',
     'Exit codes: 0 = success, 1 = error/timeout, 10 = blocked, 11 = cancelled',
   ].join('\n'),
 }
 
-// Alias: `gsd wt --help` → same as `gsd worktree --help`
+// Alias: `umb wt --help` → same as `umb worktree --help`
 SUBCOMMAND_HELP['wt'] = SUBCOMMAND_HELP['worktree']
 
 export function printHelp(version: string): void {
-  process.stdout.write(`GSD v${version} — Get Shit Done\n\n`)
-  process.stdout.write('Usage: gsd [options] [message...]\n\n')
+  process.stdout.write(`UMB v${version} — Umbrella Blade\n\n`)
+  process.stdout.write('Usage: umb [options] [message...]\n\n')
   process.stdout.write('Options:\n')
   process.stdout.write('  --mode <text|json|rpc|mcp> Output mode (default: interactive)\n')
   process.stdout.write('  --print, -p              Single-shot print mode\n')
@@ -169,18 +140,17 @@ export function printHelp(version: string): void {
   process.stdout.write('  install <source>         Install a package/extension source\n')
   process.stdout.write('  remove <source>          Remove an installed package source\n')
   process.stdout.write('  list                     List installed package sources\n')
-  process.stdout.write('  update                   Update GSD to the latest version\n')
+  process.stdout.write('  update                   Update UMB to the latest version\n')
   process.stdout.write('  sessions                 List and resume a past session\n')
   process.stdout.write('  worktree <cmd>           Manage worktrees (list, merge, clean, remove)\n')
-  process.stdout.write('  auto [args]              Run auto-mode without TUI (pipeable)\n')
-  process.stdout.write('  headless [cmd] [args]    Run /gsd commands without TUI (default: auto)\n')
-  process.stdout.write('\nRun gsd <subcommand> --help for subcommand-specific help.\n')
+  process.stdout.write('  headless [cmd] [args]    Run commands without TUI\n')
+  process.stdout.write('\nRun umb <subcommand> --help for subcommand-specific help.\n')
 }
 
 export function printSubcommandHelp(subcommand: string, version: string): boolean {
   const help = SUBCOMMAND_HELP[subcommand]
   if (!help) return false
-  process.stdout.write(`GSD v${version} — Get Shit Done\n\n`)
+  process.stdout.write(`UMB v${version} — Umbrella Blade\n\n`)
   process.stdout.write(help + '\n')
   return true
 }

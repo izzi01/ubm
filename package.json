@@ -1,7 +1,7 @@
 {
-  "name": "gsd-pi",
+  "name": "umb-cli",
   "version": "2.70.1",
-  "description": "GSD — Get Shit Done coding agent",
+  "description": "UMB — Umbrella Blade coding terminal",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -17,8 +17,7 @@
     "studio"
   ],
   "bin": {
-    "gsd": "dist/loader.js",
-    "gsd-cli": "dist/loader.js"
+    "umb": "dist/loader.js"
   },
   "files": [
     "dist",
@@ -33,8 +32,8 @@
     "README.md"
   ],
   "piConfig": {
-    "name": "gsd",
-    "configDir": ".gsd"
+    "name": "umb",
+    "configDir": ".umb"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -107,9 +106,11 @@
     "@octokit/rest": "^22.0.1",
     "@silvia-odwyer/photon-node": "^0.3.4",
     "@sinclair/typebox": "^0.34.41",
+    "@types/better-sqlite3": "^7.6.13",
     "@types/mime-types": "^2.1.4",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
+    "better-sqlite3": "^12.8.0",
     "chalk": "^5.6.2",
     "chokidar": "^5.0.0",
     "diff": "^8.0.2",

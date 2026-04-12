@@ -1,8 +1,8 @@
 {
-  "name": "@glittercowboy/gsd",
+  "name": "umb-cli",
   "version": "2.70.1",
   "piConfig": {
-    "name": "gsd",
-    "configDir": ".gsd"
+    "name": "umb",
+    "configDir": ".umb"
   }
 }

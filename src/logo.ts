@@ -1,5 +1,5 @@
 /**
- * Shared GSD block-letter ASCII logo.
+ * UMB block-letter ASCII logo.
  *
  * Single source of truth — imported by:
  *   - scripts/postinstall.js (via dist/logo.js)
@@ -7,13 +7,12 @@
  */
 
 /** Raw logo lines — no ANSI codes, no leading newline. */
-export const GSD_LOGO: readonly string[] = [
-  '   ██████╗ ███████╗██████╗ ',
-  '  ██╔════╝ ██╔════╝██╔══██╗',
-  '  ██║  ███╗███████╗██║  ██║',
-  '  ██║   ██║╚════██║██║  ██║',
-  '  ╚██████╔╝███████║██████╔╝',
-  '   ╚═════╝ ╚══════╝╚═════╝ ',
+export const UMB_LOGO: readonly string[] = [
+  '  ▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄ ',
+  '  █ ▄▄▀ ██▀▄▄▀█ ▄▄▀██ ',
+  '  █ ▀▀  █▀▀▀▄ █ ▀▀ █ ',
+  '  █ ▄▄▄ █▀▀▀ █ ▄▄▄██ ',
+  '  ▀ ▀▀▀ ▀▀▀▀▀ ▀▀▀▀▀  ',
 ]
 
 /**
@@ -23,5 +22,5 @@ export const GSD_LOGO: readonly string[] = [
  * @returns Ready-to-write string with leading/trailing newlines.
  */
 export function renderLogo(color: (s: string) => string): string {
-  return '\n' + GSD_LOGO.map(color).join('\n') + '\n'
+  return '\n' + UMB_LOGO.map(color).join('\n') + '\n'
 }

@@ -96,10 +96,16 @@ try {
 
   const requiredFiles = [
     'dist/loader.js',
+    'dist/help-text.js',
+    'dist/cli.js',
+    'dist/app-paths.js',
     'packages/pi-coding-agent/dist/index.js',
     'packages/rpc-client/dist/index.js',
     'packages/mcp-server/dist/cli.js',
+    'pkg/package.json',
+    'scripts/postinstall.js',
     'scripts/link-workspace-packages.cjs',
+    'scripts/ensure-workspace-builds.cjs',
     'dist/web/standalone/server.js',
   ];
 
@@ -107,6 +113,18 @@ try {
   for (const required of requiredFiles) {
     if (!packedFiles.has(required)) {
       console.log(`    MISSING: ${required}`);
+      missing = true;
+    }
+  }
+
+  // Check for required directories (at least one file must exist under prefix)
+  const requiredPrefixes = [
+    'src/resources/extensions/umb/',
+  ];
+  for (const prefix of requiredPrefixes) {
+    const found = Array.from(packedFiles).some(f => f.startsWith(prefix));
+    if (!found) {
+      console.log(`    MISSING directory: ${prefix} (no files found)`);
       missing = true;
     }
   }
