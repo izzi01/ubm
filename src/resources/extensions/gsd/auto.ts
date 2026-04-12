@@ -136,7 +136,6 @@ import {
   getCurrentBranch,
   getMainBranch,
   MergeConflictError,
-  parseSliceBranch,
   setActiveMilestoneId,
 } from "./worktree.js";
 import { GitServiceImpl } from "./git-service.js";
