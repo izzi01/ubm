@@ -70,15 +70,35 @@ TODOS.md
 docs/coherence-audit/
 .plans/
 
-# ── GSD project state (per-worktree, never committed) ──
-.gsd/
+# ── GSD runtime files (planning artifacts are tracked) ──
+.gsd/gsd.db
+.gsd/gsd.db-shm
+.gsd/gsd.db-wal
+.gsd/STATE.md
+.gsd/activity/
+.gsd/runtime/
+.gsd/journal/
+.gsd/auto.lock
+.gsd/metrics.json
+.gsd/completed-units.json
+.gsd/completed-units-M104.json
+.gsd/doctor-history.jsonl
+.gsd/event-log.jsonl
+.gsd/notifications.jsonl
+.gsd/state-manifest.json
+.gsd/repo-meta.json
+.gsd/routing-history.json
+.gsd/reports/
+.gsd/research/
+.gsd/milestones/**/*-VERIFY.json
+.gsd/milestones/**/*-PRE-EXEC-VERIFY.json
+.gsd/milestones/**/*-CONTINUE.md
+.gsd/milestones/**/continue.md
+.gsd/milestones/**/anchors/
 
 # ── Stale lock files (npm is canonical) ──
 pnpm-lock.yaml
 bun.lock
 
 # ── GSD baseline (auto-generated) ──
-.gsd
 
-# ── GSD baseline (auto-generated) ──
-.gsd-id
