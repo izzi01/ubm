@@ -32,11 +32,6 @@ export interface WorktreeResolverDeps {
     milestoneId: string,
     roadmapContent: string,
   ) => { pushed: boolean; codeFilesChanged: boolean };
-  syncWorktreeStateBack: (
-    mainBasePath: string,
-    worktreePath: string,
-    milestoneId: string,
-  ) => { synced: string[] };
   teardownAutoWorktree: (
     basePath: string,
     milestoneId: string,
@@ -376,25 +371,10 @@ export class WorktreeResolver {
     }
 
     try {
-      const { synced } = this.deps.syncWorktreeStateBack(
-        originalBase,
-        this.s.basePath,
-        milestoneId,
-      );
-      if (synced.length > 0) {
-        debugLog("WorktreeResolver", {
-          action: "mergeAndExit",
-          milestoneId,
-          phase: "reverse-sync",
-          synced: synced.length,
-        });
-      }
-
       // Resolve roadmap — try project root first, then worktree path as fallback.
-      // The worktree may hold the only copy when syncWorktreeStateBack fails
-      // silently or .gsd/ is not symlinked. Without the fallback, a missing
-      // roadmap triggers bare teardown which deletes the branch and orphans all
-      // milestone commits (#1573).
+      // The worktree may hold the only copy when .gsd/ is not symlinked.
+      // Without the fallback, a missing roadmap triggers bare teardown which
+      // deletes the branch and orphans all milestone commits (#1573).
       let roadmapPath = this.deps.resolveMilestoneFile(
         originalBase,
         milestoneId,

@@ -38,7 +38,6 @@ import {
   diagnoseExpectedArtifact,
 } from "./auto-recovery.js";
 import { regenerateIfMissing } from "./workflow-projections.js";
-import { syncStateToProjectRoot } from "./auto-worktree.js";
 import { isDbAvailable, getTask, getSlice, getMilestone, updateTaskStatus, updateSliceStatus, _getAdapter } from "./gsd-db.js";
 import { renderPlanCheckboxes } from "./markdown-renderer.js";
 import { consumeSignal } from "./session-status-io.js";
@@ -234,7 +233,6 @@ export function detectRogueFileWrites(
 
 export interface PreVerificationOpts {
   skipSettleDelay?: boolean;
-  skipWorktreeSync?: boolean;
 }
 
 export interface PostUnitContext {
@@ -366,13 +364,6 @@ export async function postUnitPreVerification(pctx: PostUnitContext, opts?: PreV
         debugLog("postUnit", { phase: "browser-teardown", status: "closed" });
       }
     });
-
-    // Sync worktree state back to project root (skipped for lightweight sidecars)
-    if (!opts?.skipWorktreeSync && s.originalBasePath && s.originalBasePath !== s.basePath) {
-      await runSafely("postUnit", "worktree-sync", () => {
-        syncStateToProjectRoot(s.basePath, s.originalBasePath!, s.currentMilestoneId);
-      });
-    }
 
     // Rewrite-docs completion
     if (s.currentUnit.type === "rewrite-docs") {

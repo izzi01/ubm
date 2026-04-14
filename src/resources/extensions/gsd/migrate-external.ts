@@ -34,7 +34,7 @@ export interface MigrationResult {
  * 3. On failure: rename `.gsd.migrating` back to `.gsd` (rollback)
  */
 export function migrateToExternalState(basePath: string): MigrationResult {
-  // Worktrees get their .gsd via syncGsdStateToWorktree(), not migration.
+  // Worktrees get their .gsd via the external state symlink, not migration.
   // Migration inside a worktree would compute the same external hash as the
   // main repo (externalGsdRoot hashes remoteUrl + gitRoot), creating a broken
   // junction and orphaning .gsd.migrating (#2970).

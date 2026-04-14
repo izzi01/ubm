@@ -149,9 +149,6 @@ import {
   getAutoWorktreeOriginalBase,
   mergeMilestoneToMain,
   autoWorktreeBranch,
-  syncWorktreeStateBack,
-  syncProjectRootToWorktree,
-  syncStateToProjectRoot,
   readResourceVersion,
   checkResourcesStale,
   escapeStaleWorktree,
@@ -992,7 +989,6 @@ function buildResolverDeps(): WorktreeResolverDeps {
     shouldUseWorktreeIsolation,
     getIsolationMode,
     mergeMilestoneToMain,
-    syncWorktreeStateBack,
     teardownAutoWorktree,
     createAutoWorktree,
     enterAutoWorktree,
@@ -1050,8 +1046,8 @@ function buildLoopDeps(): LoopDeps {
     // Pre-dispatch health gate
     preDispatchHealthGate,
 
-    // Worktree sync
-    syncProjectRootToWorktree,
+    // Pre-dispatch health gate
+    preDispatchHealthGate,
 
     // Resource version guard
     checkResourcesStale,

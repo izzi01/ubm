@@ -623,9 +623,9 @@ function ensureGsdSymlinkCore(projectPath: string): string {
 
     if (stat.isDirectory()) {
       // Real directory in the main repo — migration will handle this later.
-      // In worktrees, keep the directory in place and let syncGsdStateToWorktree
-      // refresh its contents. Replacing a git-tracked .gsd directory with a
-      // symlink makes git think tracked planning files were deleted.
+      // In worktrees, keep the directory in place and let the external state
+      // symlink provide the shared state. Replacing a git-tracked .gsd directory
+      // with a symlink makes git think tracked planning files were deleted.
       return localGsd;
     }
   } catch {

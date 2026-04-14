@@ -65,13 +65,6 @@ export interface LoopDeps {
     basePath: string,
   ) => Promise<{ proceed: boolean; reason?: string; fixesApplied: string[] }>;
 
-  // Worktree sync
-  syncProjectRootToWorktree: (
-    originalBase: string,
-    basePath: string,
-    milestoneId: string | null,
-  ) => void;
-
   // Resource version guard
   checkResourcesStale: (version: string | null) => string | null;
 

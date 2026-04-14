@@ -292,3 +292,13 @@
 - Factory pattern: `createGsdCommandHandlers(engine, opts?)` accepts optional `pipelineRunner` override
 - Tests inject a mock pipelineRunner to avoid executing real BMAD pipelines
 - Same pattern as gsd-tools factory — proven testability approach in this codebase
+
+## Git Tracking (M113)
+
+### .gsd real directory vs symlink for branch-portable planning artifacts
+- `.gsd` was a symlink to `~/.gsd/projects/<hash>/` — planning artifacts lived outside the repo and didn't travel with branches
+- Converted to a real directory so `git worktree add` and `git checkout` give correct milestone state automatically
+- `.gitignore` uses 25 specific runtime patterns instead of blanket `.gsd/` ignore — this is the key pattern for tracked-but-not-noisy
+- Planning artifacts: PROJECT.md, REQUIREMENTS.md, DECISIONS.md, KNOWLEDGE.md, QUEUE.md, PRD.md, CODEBASE.md, RESEARCH.md + all milestones/*.md
+- Runtime files ignored: gsd.db*, STATE.md, activity/, runtime/, journal/, auto.lock, metrics.json, completed-units*.json, doctor-history.jsonl, event-log.jsonl, notifications.jsonl, state-manifest.json, repo-meta.json, routing-history.json, reports/, research/, milestones/**/*-VERIFY.json, milestones/**/*-PRE-EXEC-VERIFY.json, milestones/**/*-CONTINUE.md, milestones/**/continue.md, milestones/**/anchors/
+- The GSD extension already supported this mode (ensureGsdSymlinkCore returns localGsd for real dirs)

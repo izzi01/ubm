@@ -71,29 +71,6 @@ const gsdHome = process.env.GSD_HOME || join(homedir(), ".gsd");
 const PROJECT_PREFERENCES_FILE = "PREFERENCES.md";
 const LEGACY_PROJECT_PREFERENCES_FILE = "preferences.md";
 
-// ─── Shared Constants & Helpers ─────────────────────────────────────────────
-
-/**
- * Root-level .gsd/ state files synced between worktree and project root.
- * Single source of truth — used by syncGsdStateToWorktree, syncWorktreeStateBack,
- * and the dispatch-level sync functions.
- */
-const ROOT_STATE_FILES = [
-  "DECISIONS.md",
-  "REQUIREMENTS.md",
-  "PROJECT.md",
-  "KNOWLEDGE.md",
-  "OVERRIDES.md",
-  "QUEUE.md",
-  "completed-units.json",
-  "metrics.json",
-  "mcp.json",
-  // NOTE: project preferences are intentionally NOT in ROOT_STATE_FILES.
-  // Forward-sync (main → worktree) is handled explicitly in syncGsdStateToWorktree().
-  // Back-sync (worktree → main) must NEVER overwrite the project root's copy
-  // because the project root is authoritative for preferences (#2684).
-] as const;
-
 /**
  * Check if two filesystem paths resolve to the same real location.
  * Returns false if either path cannot be resolved (e.g. doesn't exist).
@@ -104,70 +81,6 @@ function isSamePath(a: string, b: string): boolean {
   } catch (e) {
     logWarning("worktree", `isSamePath failed: ${(e as Error).message}`);
     return false;
-  }
-}
-
-// ─── ASSESSMENT Force-Sync Helper (#2821) ─────────────────────────────────
-
-/** Regex matching YAML frontmatter `verdict:` field. */
-const VERDICT_RE = /verdict:\s*[\w-]+/i;
-
-/**
- * Walk a milestone directory and force-overwrite ASSESSMENT files in the
- * destination when the source copy contains a `verdict:` field.
- *
- * This is the targeted fix for the UAT stuck-loop (#2821): the main
- * safeCopyRecursive uses force:false to protect worktree-authoritative
- * files (#1886), but ASSESSMENT files written by run-uat must be
- * forward-synced when the project root has a verdict. Without this,
- * the worktree retains a stale FAIL or missing ASSESSMENT and
- * checkNeedsRunUat re-dispatches run-uat indefinitely.
- *
- * Only overwrites when the source has a verdict — never clobbers a
- * worktree ASSESSMENT with a verdictless project-root copy.
- */
-function forceOverwriteAssessmentsWithVerdict(
-  srcMilestoneDir: string,
-  dstMilestoneDir: string,
-): void {
-  if (!existsSync(srcMilestoneDir)) return;
-
-  // Walk slices/<SID>/ looking for *-ASSESSMENT.md files
-  const slicesDir = join(srcMilestoneDir, "slices");
-  if (!existsSync(slicesDir)) return;
-
-  try {
-    for (const sliceEntry of readdirSync(slicesDir, { withFileTypes: true })) {
-      if (!sliceEntry.isDirectory()) continue;
-      const srcSliceDir = join(slicesDir, sliceEntry.name);
-      const dstSliceDir = join(dstMilestoneDir, "slices", sliceEntry.name);
-
-      try {
-        for (const fileEntry of readdirSync(srcSliceDir, { withFileTypes: true })) {
-          if (!fileEntry.isFile()) continue;
-          if (!fileEntry.name.endsWith("-ASSESSMENT.md")) continue;
-
-          const srcFile = join(srcSliceDir, fileEntry.name);
-          try {
-            const srcContent = readFileSync(srcFile, "utf-8");
-            if (!VERDICT_RE.test(srcContent)) continue; // no verdict in source — skip
-
-            // Source has a verdict — force-copy into worktree
-            mkdirSync(dstSliceDir, { recursive: true });
-            safeCopy(srcFile, join(dstSliceDir, fileEntry.name), { force: true });
-          } catch (err) {
-            /* non-fatal per file */
-            logWarning("worktree", `assessment force-copy failed: ${err instanceof Error ? err.message : String(err)}`);
-          }
-        }
-      } catch (err) {
-        /* non-fatal per slice */
-        logWarning("worktree", `assessment slice scan failed: ${err instanceof Error ? err.message : String(err)}`);
-      }
-    }
-  } catch (err) {
-    /* non-fatal */
-    logWarning("worktree", `assessment sync failed: ${err instanceof Error ? err.message : String(err)}`);
   }
 }
 
@@ -195,11 +108,9 @@ function clearProjectRootStateFiles(basePath: string, milestoneId: string): void
     }
   }
 
-  // Clean up entire synced milestone directory and runtime/units.
-  // syncStateToProjectRoot() copies these into the project root during
-  // execution.  If they remain as untracked files when we attempt
-  // `git merge --squash`, git rejects the merge with "local changes would
-  // be overwritten", causing silent data loss (#1738).
+  // Clean up milestone directory and runtime/units.
+  // These directories may contain untracked files that prevent
+  // `git merge --squash` from succeeding, causing silent data loss (#1738).
   const syncedDirs = [
     join(gsdDir, "milestones", milestoneId),
     join(gsdDir, "runtime", "units"),

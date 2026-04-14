@@ -205,19 +205,6 @@ export async function runPreDispatch(
     logWarning("engine", "Pre-dispatch health gate threw unexpectedly", { error: String(e) });
   }
 
-  // Sync project root artifacts into worktree
-  if (
-    s.originalBasePath &&
-    s.basePath !== s.originalBasePath &&
-    s.currentMilestoneId
-  ) {
-    deps.syncProjectRootToWorktree(
-      s.originalBasePath,
-      s.basePath,
-      s.currentMilestoneId,
-    );
-  }
-
   // Derive state
   let state = await deps.deriveState(s.basePath);
   deps.syncCmuxSidebar(prefs, state);

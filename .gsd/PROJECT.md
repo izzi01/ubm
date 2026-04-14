@@ -41,6 +41,7 @@ A **coding agent terminal** forked from [GSD-2](https://github.com/gsd-build/gsd
 - **M110 complete**: Complete isolation mode cleanup — S01 remove 'none'/'branch' from getIsolationMode and all consumers ✅ (getIsolationMode() now constant 'worktree', ~180 lines dead code removed, 2 obsolete test files deleted)
 - **M111 complete**: Fix umb pattern test compilation — S01 fix vitest imports, .js extensions, and implicit any types ✅ (34 TS errors fixed across 11 test files, zero pattern test errors remaining)
 - **M112 complete**: Implement BMAD method — S01 install BMAD skills + _bmad/ ✅, S02 BMAD skill execution engine ✅, S03 auto-analysis pipeline ✅, S04 auto-planning pipeline ✅, S05 auto-solutioning pipeline ✅, S06 auto-implementation pipeline ✅, S07 gsd-orchestrator integration ✅ (/bmad auto umbrella command, executeAutoPipeline() shared executor, /gsd build-from-spec BMAD→GSD orchestration, 118 tests pass)
+- **M113 in progress**: Branchless worktree architecture — S01 .gitignore + tracking fix ✅ (.gsd converted from symlink to real directory, 8 planning artifacts + 355 milestone files tracked in git, runtime files gitignored)
 
 ## Architecture Notes
 
