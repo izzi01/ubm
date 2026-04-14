@@ -224,40 +224,6 @@ describe("auto-worktree-milestone-merge", { timeout: 300_000 }, () => {
     assert.strictEqual(typeof result.pushed, "boolean", "pushed flag remains boolean");
   });
 
-  test("auto-resolve .gsd/ state file conflicts", () => {
-    const repo = freshRepo();
-    const wtPath = createAutoWorktree(repo, "M050");
-
-    addSliceToMilestone(repo, wtPath, "M050", "S01", "Conflict test", [
-      { file: "feature.ts", content: "export const feature = true;\n", message: "add feature" },
-    ]);
-
-    writeFileSync(join(wtPath, ".gsd", "STATE.md"), "# State\n\n## Updated on milestone branch\n");
-    run("git add .", wtPath);
-    run('git commit -m "chore: update state on milestone branch"', wtPath);
-
-    run("git checkout main", repo);
-    writeFileSync(join(repo, ".gsd", "STATE.md"), "# State\n\n## Updated on main\n");
-    run("git add .", repo);
-    run('git commit -m "chore: update state on main"', repo);
-
-    process.chdir(wtPath);
-
-    const roadmap = makeRoadmap("M050", "Conflict resolution", [
-      { id: "S01", title: "Conflict test" },
-    ]);
-
-    let threw = false;
-    try {
-      const result = mergeMilestoneToMain(repo, "M050", roadmap);
-      assert.ok(result.commitMessage.includes("feat:") && result.commitMessage.includes("GSD-Milestone: M050"), "merge commit created despite .gsd conflict");
-    } catch (err) {
-      threw = true;
-    }
-    assert.ok(!threw, "auto-resolves .gsd/ state file conflicts without throwing");
-    assert.ok(existsSync(join(repo, "feature.ts")), "feature.ts merged to main");
-  });
-
   test("skip checkout when main already current (#757)", () => {
     const repo = freshRepo();
     const wtPath = createAutoWorktree(repo, "M060");
@@ -402,7 +368,7 @@ describe("auto-worktree-milestone-merge", { timeout: 300_000 }, () => {
     assert.ok(existsSync(join(repo, "sync-test.ts")), "sync-test.ts on main after merge");
   });
 
-  test("#1738 e2e: dirty tree is stashed before merge (#2151)", () => {
+  test("#2151 e2e: dirty tree rejects merge with GSDError", () => {
     const repo = freshRepo();
     const wtPath = createAutoWorktree(repo, "M100");
 
@@ -416,16 +382,22 @@ describe("auto-worktree-milestone-merge", { timeout: 300_000 }, () => {
       { id: "S01", title: "E2E test" },
     ]);
 
-    // Since #2151, dirty files are stashed before the squash merge instead
-    // of causing an immediate rejection.  The merge should succeed.
+    // After stash removal, dirty tree now causes GSDError instead of being
+    // silently stashed. The merge should throw with dirty file details.
     let threw = false;
+    let errMsg = "";
     try {
-      const result = mergeMilestoneToMain(repo, "M100", roadmap);
-      assert.ok(result.commitMessage.includes("feat:") && result.commitMessage.includes("GSD-Milestone: M100"), "#2151: merge succeeds after stashing dirty files");
-    } catch {
+      mergeMilestoneToMain(repo, "M100", roadmap);
+    } catch (err: unknown) {
       threw = true;
+      errMsg = err instanceof Error ? err.message : String(err);
     }
-    assert.ok(!threw, "#2151: dirty tree no longer rejects — stash handles it");
+    assert.ok(threw, "#2151: dirty tree should reject the merge with GSDError");
+    assert.ok(errMsg.includes("dirty"), "error message mentions dirty files (#2151)");
+    assert.ok(errMsg.includes("e2e.ts"), "error message lists the conflicting file (#2151)");
+
+    const branches = run("git branch", repo);
+    assert.ok(branches.includes("milestone/M100"), "milestone branch preserved on dirty-tree rejection");
   });
 
   test("throw on unanchored code changes after empty commit (#1792)", () => {

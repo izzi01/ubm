@@ -36,7 +36,7 @@ Conflict handling simplifies to: dirty tree → throw GSDError; any conflicts �
   - Files: `src/resources/extensions/gsd/auto-worktree.ts`
   - Verify: tsc --noEmit passes; grep -n 'stash|shelter|isSafeToAutoResolve|SAFE_AUTO_RESOLVE' src/resources/extensions/gsd/auto-worktree.ts returns no production code hits
 
-- [ ] **T02: Clean up tests and verify final line count ≤250** `est:45m`
+- [x] **T02: Clean up tests and verify final line count ≤250** `est:45m`
   After T01 removed stash/shelter/auto-resolve from production code, clean up the test suite to match.
 
 Delete 4 test files that exclusively test removed functionality:
