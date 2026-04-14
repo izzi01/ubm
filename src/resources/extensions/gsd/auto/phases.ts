@@ -1495,9 +1495,7 @@ export async function runFinalize(
   // behind `if (s.currentUnit)`. The next iteration sets a fresh currentUnit.
   // Sidecar items use lightweight pre-verification opts
   const preVerificationOpts: PreVerificationOpts | undefined = sidecarItem
-    ? sidecarItem.kind === "hook"
-      ? { skipSettleDelay: true, skipWorktreeSync: true }
-      : { skipSettleDelay: true }
+    ? { skipSettleDelay: true }
     : undefined;
   const preUnitSnapshot = s.currentUnit
     ? { type: s.currentUnit.type, id: s.currentUnit.id, startedAt: s.currentUnit.startedAt }

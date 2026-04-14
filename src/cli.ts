@@ -13,7 +13,7 @@ import {
 import { readFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { agentDir, sessionsDir, authFilePath } from './app-paths.js'
-import { initResources, buildResourceLoader, getNewerManagedResourceVersion } from './resource-loader.js'
+import { initResources, buildResourceLoader } from './resource-loader.js'
 import { ensureManagedTools } from './tool-bootstrap.js'
 import { loadStoredEnvKeys } from './wizard.js'
 import { migratePiCredentials } from './pi-migration.js'
@@ -64,19 +64,12 @@ interface CliFlags {
   _selectedSessionPath?: string
 }
 
-function exitIfManagedResourcesAreNewer(currentAgentDir: string): void {
-  const currentVersion = process.env.UMB_VERSION || '0.0.0'
-  const managedVersion = getNewerManagedResourceVersion(currentAgentDir, currentVersion)
-  if (!managedVersion) {
-    return
-  }
-
-  process.stderr.write(
-    `[gsd] ${chalk.yellow('Version mismatch detected')}\n` +
-    `[gsd] Synced resources are from ${chalk.bold(`v${managedVersion}`)}, but this \`gsd\` binary is ${chalk.dim(`v${currentVersion}`)}.\n` +
-    `[gsd] Run ${chalk.bold('npm install -g umb-cli@latest')}, then try again.\n`,
-  )
-  process.exit(1)
+function exitIfManagedResourcesAreNewer(_currentAgentDir: string): void {
+  // The upstream GSD binary gates startup when managed-resources.json was
+  // written by a newer binary.  In the umb fork, resources are always built
+  // alongside the binary (same `npm run build` step), so this check is
+  // unnecessary and would falsely block startup whenever an upstream sync
+  // writes a newer gsdVersion to the manifest.
 }
 
 function parseCliArgs(argv: string[]): CliFlags {
