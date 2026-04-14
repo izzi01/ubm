@@ -13,6 +13,11 @@
  * merge sequences, this left cwd on the integration branch, causing the next
  * merge's autoCommitDirtyState to commit dirty files from OTHER milestones
  * onto main.
+ *
+ * Note: Bug 1's original description referenced syncStateToProjectRoot as the
+ * source of dirty files. After the sync layer was removed (worktrees receive
+ * correct state via git), the dirty-file scenario still applies via parallel
+ * merge cwd leakage.
  */
 
 import { describe, test, beforeEach, afterEach } from "node:test";
@@ -133,7 +138,7 @@ describe("merge cwd restore (#2929)", () => {
 
     // Simulate the parallel-mode state: cwd is on main with dirty files
     // from another milestone (as if a prior merge's MergeConflictError
-    // left cwd on main and syncStateToProjectRoot wrote these files).
+    // left cwd on main with stale files from another milestone).
     writeFileSync(join(repo, "dirty-from-m020.txt"), "should not be committed\n");
 
     // Set up roadmap so mergeMilestoneToMain can find milestone metadata

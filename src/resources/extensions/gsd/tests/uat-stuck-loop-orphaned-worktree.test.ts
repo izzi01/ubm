@@ -1,13 +1,7 @@
 /**
  * uat-stuck-loop-orphaned-worktree.test.ts — Regression tests for #2821.
  *
- * Reproduces two cascading bugs:
- *
- * Bug 1 — UAT stuck-loop: syncProjectRootToWorktree uses force:false for
- *   milestone files. When the project root has an ASSESSMENT with a verdict
- *   but the worktree has a stale/empty ASSESSMENT (or none at all after DB
- *   rebuild), the verdict is NOT synced into the worktree. checkNeedsRunUat
- *   finds no verdict → re-dispatches run-uat indefinitely.
+ * Reproduces the orphaned worktree bug:
  *
  * Bug 2 — Orphaned worktree: removeWorktree silently swallows failures when
  *   git worktree remove fails (untracked files, CWD inside worktree, etc.).
@@ -24,13 +18,11 @@ import {
   writeFileSync,
   rmSync,
   existsSync,
-  readFileSync,
 } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { execFileSync } from "node:child_process";
 
-import { syncProjectRootToWorktree } from "../auto-worktree.ts";
 import {
   createWorktree,
   removeWorktree,
@@ -56,149 +48,6 @@ function makeBaseRepo(): string {
   git(["commit", "-m", "init"], base);
   return base;
 }
-
-// ─── Bug 1: ASSESSMENT force-sync ─────────────────────────────────────────
-
-describe("#2821 Bug 1 — ASSESSMENT file force-synced on resume", () => {
-  let mainBase: string;
-  let wtBase: string;
-
-  beforeEach(() => {
-    mainBase = mkdtempSync(join(tmpdir(), "gsd-2821-main-"));
-    wtBase = mkdtempSync(join(tmpdir(), "gsd-2821-wt-"));
-    mkdirSync(join(mainBase, ".gsd", "milestones", "M011", "slices", "S01"), {
-      recursive: true,
-    });
-    mkdirSync(join(wtBase, ".gsd", "milestones", "M011", "slices", "S01"), {
-      recursive: true,
-    });
-  });
-
-  afterEach(() => {
-    rmSync(mainBase, { recursive: true, force: true });
-    rmSync(wtBase, { recursive: true, force: true });
-  });
-
-  test("force-syncs ASSESSMENT with verdict from project root into worktree when worktree copy has no verdict", () => {
-    // Project root has ASSESSMENT with a PASS verdict (written by run-uat, synced by post-unit)
-    const prAssessment = join(
-      mainBase,
-      ".gsd",
-      "milestones",
-      "M011",
-      "slices",
-      "S01",
-      "S01-ASSESSMENT.md",
-    );
-    writeFileSync(
-      prAssessment,
-      "---\nverdict: pass\n---\n# S01 Assessment\nAll tests pass.\n",
-    );
-
-    // Worktree has a stale ASSESSMENT with FAIL verdict (from the initial run-uat execution)
-    const wtAssessment = join(
-      wtBase,
-      ".gsd",
-      "milestones",
-      "M011",
-      "slices",
-      "S01",
-      "S01-ASSESSMENT.md",
-    );
-    writeFileSync(
-      wtAssessment,
-      "---\nverdict: fail\n---\n# S01 Assessment\nSome tests fail.\n",
-    );
-
-    syncProjectRootToWorktree(mainBase, wtBase, "M011");
-
-    // The worktree ASSESSMENT must now have the project root's PASS verdict
-    const content = readFileSync(wtAssessment, "utf-8");
-    assert.ok(
-      content.includes("verdict: pass"),
-      `Expected worktree ASSESSMENT to have verdict:pass after sync, got: ${content.slice(0, 100)}`,
-    );
-  });
-
-  test("force-syncs ASSESSMENT from project root when worktree has no ASSESSMENT at all", () => {
-    // Project root has ASSESSMENT with verdict
-    const prAssessment = join(
-      mainBase,
-      ".gsd",
-      "milestones",
-      "M011",
-      "slices",
-      "S01",
-      "S01-ASSESSMENT.md",
-    );
-    writeFileSync(
-      prAssessment,
-      "---\nverdict: pass\n---\n# S01 Assessment\n",
-    );
-
-    // Worktree has NO ASSESSMENT (deleted during DB rebuild)
-    // — file simply doesn't exist
-
-    syncProjectRootToWorktree(mainBase, wtBase, "M011");
-
-    const wtAssessment = join(
-      wtBase,
-      ".gsd",
-      "milestones",
-      "M011",
-      "slices",
-      "S01",
-      "S01-ASSESSMENT.md",
-    );
-    assert.ok(
-      existsSync(wtAssessment),
-      "ASSESSMENT should be copied to worktree when missing",
-    );
-    const content = readFileSync(wtAssessment, "utf-8");
-    assert.ok(
-      content.includes("verdict: pass"),
-      `Synced ASSESSMENT should contain verdict:pass, got: ${content.slice(0, 100)}`,
-    );
-  });
-
-  test("does NOT overwrite worktree ASSESSMENT when project root has no verdict", () => {
-    // Project root has ASSESSMENT without verdict (incomplete)
-    const prAssessment = join(
-      mainBase,
-      ".gsd",
-      "milestones",
-      "M011",
-      "slices",
-      "S01",
-      "S01-ASSESSMENT.md",
-    );
-    writeFileSync(prAssessment, "# S01 Assessment\nIn progress...\n");
-
-    // Worktree has ASSESSMENT with verdict:fail
-    const wtAssessment = join(
-      wtBase,
-      ".gsd",
-      "milestones",
-      "M011",
-      "slices",
-      "S01",
-      "S01-ASSESSMENT.md",
-    );
-    writeFileSync(
-      wtAssessment,
-      "---\nverdict: fail\n---\n# S01 Assessment\nSome tests fail.\n",
-    );
-
-    syncProjectRootToWorktree(mainBase, wtBase, "M011");
-
-    // Worktree copy should NOT be overwritten by the verdictless project root copy
-    const content = readFileSync(wtAssessment, "utf-8");
-    assert.ok(
-      content.includes("verdict: fail"),
-      `Worktree ASSESSMENT should keep verdict:fail when project root has no verdict, got: ${content.slice(0, 100)}`,
-    );
-  });
-});
 
 // ─── Bug 2: Orphaned worktree cleanup ─────────────────────────────────────
 

@@ -62,7 +62,7 @@ describe("gsdRoot() worktree detection (#2594)", () => {
   });
 
   test("returns worktree .gsd when basePath is a worktree with its own .gsd (fast path)", () => {
-    // Simulates a worktree that already had copyPlanningArtifacts() run,
+    // Simulates a worktree that already had its .gsd/ populated,
     // so it has its own .gsd/ directory.
     const worktreeBase = join(projectGsd, "worktrees", "M008");
     const worktreeGsd = join(worktreeBase, ".gsd");

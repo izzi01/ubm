@@ -30,7 +30,6 @@ function makeDeps(
     shouldUseWorktreeIsolation: () => true,
     getIsolationMode: () => "worktree",
     mergeMilestoneToMain: () => ({ pushed: false, codeFilesChanged: true }),
-    syncWorktreeStateBack: () => ({ synced: [] }),
     teardownAutoWorktree: () => {},
     createAutoWorktree: (_basePath: string, milestoneId: string) =>
       `/project/.gsd/worktrees/${milestoneId}`,

@@ -278,7 +278,6 @@ describe("#2945 Bug 3: mergeAndExit must teardown worktree after successful merg
       shouldUseWorktreeIsolation: () => true,
       getIsolationMode: () => "worktree" as const,
       mergeMilestoneToMain: () => ({ pushed: false, codeFilesChanged: true }),
-      syncWorktreeStateBack: () => ({ synced: [] }),
       teardownAutoWorktree: (basePath: string, mid: string) => {
         teardownCalled = true;
         teardownMilestoneId = mid;

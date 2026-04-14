@@ -1046,9 +1046,6 @@ function buildLoopDeps(): LoopDeps {
     // Pre-dispatch health gate
     preDispatchHealthGate,
 
-    // Pre-dispatch health gate
-    preDispatchHealthGate,
-
     // Resource version guard
     checkResourcesStale,
 

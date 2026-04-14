@@ -20,7 +20,6 @@ import {
   enterAutoWorktree,
   getAutoWorktreeOriginalBase,
   getActiveAutoWorktreeContext,
-  syncGsdStateToWorktree,
 } from "../../auto-worktree.ts";
 
 // Note: execSync is used intentionally in tests for git operations with
@@ -288,7 +287,7 @@ describe("auto-worktree lifecycle", () => {
     }
   });
 
-  test("#2791: mcp.json copied into worktree via copyPlanningArtifacts", () => {
+  test("#2791: mcp.json copied into worktree on creation", () => {
     tempDir = createTempRepo();
     const msDir = join(tempDir, ".gsd", "milestones", "M003");
     mkdirSync(msDir, { recursive: true });
@@ -297,7 +296,7 @@ describe("auto-worktree lifecycle", () => {
     run("git commit -m \"add milestone\"", tempDir);
 
     // Create mcp.json in .gsd/ AFTER the commit (untracked, like real usage).
-    // copyPlanningArtifacts should copy it into the worktree's .gsd/.
+    // mcp.json should be copied into the worktree's .gsd/.
     writeFileSync(
       join(tempDir, ".gsd", "mcp.json"),
       JSON.stringify({ servers: { test: { command: "echo" } } }),
@@ -309,37 +308,6 @@ describe("auto-worktree lifecycle", () => {
       assert.ok(
         existsSync(join(wtPath, ".gsd", "mcp.json")),
         "mcp.json should be copied into worktree .gsd/ on creation",
-      );
-    } finally {
-      teardownAutoWorktree(tempDir, "M003");
-    }
-  });
-
-  test("#2791: mcp.json synced via syncGsdStateToWorktree (ROOT_STATE_FILES)", () => {
-    tempDir = createTempRepo();
-    const msDir = join(tempDir, ".gsd", "milestones", "M003");
-    mkdirSync(msDir, { recursive: true });
-    writeFileSync(join(msDir, "CONTEXT.md"), "# M003 Context\n");
-    run("git add .", tempDir);
-    run("git commit -m \"add milestone\"", tempDir);
-
-    // Create worktree first (no mcp.json yet)
-    const wtPath = createAutoWorktree(tempDir, "M003");
-
-    try {
-      // Now add mcp.json to the main .gsd/ after worktree was created
-      writeFileSync(
-        join(tempDir, ".gsd", "mcp.json"),
-        JSON.stringify({ servers: { test: { command: "echo" } } }),
-      );
-
-      // Sync should pick up the new mcp.json
-      const { synced } = syncGsdStateToWorktree(tempDir, wtPath);
-
-      assert.ok(synced.includes("mcp.json"), "mcp.json should be in the synced list");
-      assert.ok(
-        existsSync(join(wtPath, ".gsd", "mcp.json")),
-        "mcp.json should exist in worktree after sync",
       );
     } finally {
       teardownAutoWorktree(tempDir, "M003");

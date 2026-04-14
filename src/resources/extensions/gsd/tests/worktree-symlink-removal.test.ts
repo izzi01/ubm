@@ -80,7 +80,7 @@ describe('worktree-symlink-removal', async () => {
   const computedPath = worktreePath(base, "M002");
   assert.ok(existsSync(computedPath), "computed path exists (via symlink)");
 
-  // Simulate what syncStateToProjectRoot does: replace the .gsd symlink with
+  // Simulate what a stale sync artifact does: replace the .gsd symlink with
   // a real directory containing stale worktree data. This causes worktreePath()
   // to compute a LOCAL path that differs from git's REGISTERED path (the
   // resolved external path). The stale local dir passes existsSync but is not
@@ -88,7 +88,7 @@ describe('worktree-symlink-removal', async () => {
   unlinkSync(join(base, ".gsd"));  // remove the symlink
   mkdirSync(join(base, ".gsd", "worktrees", "M002"), { recursive: true });
   // Write a dummy file so the stale directory is non-empty
-  writeFileSync(join(base, ".gsd", "worktrees", "M002", "stale.txt"), "stale sync artifact", "utf-8");
+  writeFileSync(join(base, ".gsd", "worktrees", "M002", "stale.txt"), "stale artifact", "utf-8");
 
   // Now worktreePath(base, "M002") points to the LOCAL stale dir, not the
   // external path where git actually registered the worktree.

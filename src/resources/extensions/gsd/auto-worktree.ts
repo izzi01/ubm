@@ -365,6 +365,7 @@ export function autoWorktreeBranch(milestoneId: string): string {
  * Atomic: chdir + originalBase update happen in the same try block
  * to prevent split-brain.
  */
+export function createAutoWorktree(
   basePath: string,
   milestoneId: string,
 ): string {

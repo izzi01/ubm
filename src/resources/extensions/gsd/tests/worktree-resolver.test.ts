@@ -54,17 +54,6 @@ function makeDeps(
       });
       return { pushed: false, codeFilesChanged: true };
     },
-    syncWorktreeStateBack: (
-      mainBasePath: string,
-      worktreePath: string,
-      milestoneId: string,
-    ) => {
-      calls.push({
-        fn: "syncWorktreeStateBack",
-        args: [mainBasePath, worktreePath, milestoneId],
-      });
-      return { synced: [] };
-    },
     teardownAutoWorktree: (
       basePath: string,
       milestoneId: string,
@@ -407,7 +396,6 @@ test("mergeAndExit in worktree mode reads roadmap and merges", () => {
 
   resolver.mergeAndExit("M001", ctx);
 
-  assert.equal(findCalls(deps.calls, "syncWorktreeStateBack").length, 1);
   assert.equal(findCalls(deps.calls, "resolveMilestoneFile").length, 1);
   assert.equal(findCalls(deps.calls, "readFileSync").length, 1);
   assert.equal(findCalls(deps.calls, "mergeMilestoneToMain").length, 1);

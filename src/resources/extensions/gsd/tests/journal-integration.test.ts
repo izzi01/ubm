@@ -54,7 +54,6 @@ function makeMockDeps(
     }) as any,
     loadEffectiveGSDPreferences: () => ({ preferences: {} }),
     preDispatchHealthGate: async () => ({ proceed: true, fixesApplied: [] }),
-    syncProjectRootToWorktree: () => {},
     checkResourcesStale: () => null,
     validateSessionLock: () => ({ valid: true }) as SessionLockStatus,
     updateSessionLock: () => {},

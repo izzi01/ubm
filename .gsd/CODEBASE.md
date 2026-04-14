@@ -1,12 +1,13 @@
 # Codebase Map
 
-Generated: 2026-04-12T16:11:20Z | Files: 500 | Described: 0/500
-<!-- gsd:codebase-meta {"generatedAt":"2026-04-12T16:11:20Z","fingerprint":"e9930918de3f52ca3aa3410853dce1caa4795dbe","fileCount":500,"truncated":true} -->
+Generated: 2026-04-14T03:18:24Z | Files: 500 | Described: 0/500
+<!-- gsd:codebase-meta {"generatedAt":"2026-04-14T03:18:24Z","fingerprint":"c5b8336ff1737ff946cd7cfacff8a0570cd7569d","fileCount":500,"truncated":true} -->
 Note: Truncated to first 500 files. Run with higher --max-files to include all.
 
 ### (root)/
 - `.dockerignore`
 - `.gitignore`
+- `.gsd-id`
 - `.mcp.json`
 - `.npmignore`
 - `.npmrc`
@@ -16,8 +17,6 @@ Note: Truncated to first 500 files. Run with higher --max-files to include all.
 - `CONTRIBUTING.md`
 - `Dockerfile`
 - `LICENSE`
-- `package-lock.json`
-- `package.json`
 - `README.md`
 - `VISION.md`
 
@@ -38,6 +37,423 @@ Note: Truncated to first 500 files. Run with higher --max-files to include all.
 - `.github/workflows/cleanup-dev-versions.yml`
 - `.github/workflows/pipeline.yml`
 - `.github/workflows/pr-risk.yml`
+
+### _bmad/_config/
+- `_bmad/_config/agent-manifest.csv`
+- `_bmad/_config/bmad-help.csv`
+- `_bmad/_config/files-manifest.csv`
+- `_bmad/_config/manifest.yaml`
+- `_bmad/_config/skill-manifest.csv`
+
+### _bmad/bmm/
+- `_bmad/bmm/config.yaml`
+- `_bmad/bmm/module-help.csv`
+- `_bmad/bmm/module.yaml`
+
+### _bmad/bmm/1-analysis/bmad-agent-analyst/
+- `_bmad/bmm/1-analysis/bmad-agent-analyst/bmad-skill-manifest.yaml`
+- `_bmad/bmm/1-analysis/bmad-agent-analyst/SKILL.md`
+
+### _bmad/bmm/1-analysis/bmad-agent-tech-writer/
+- `_bmad/bmm/1-analysis/bmad-agent-tech-writer/bmad-skill-manifest.yaml`
+- `_bmad/bmm/1-analysis/bmad-agent-tech-writer/explain-concept.md`
+- `_bmad/bmm/1-analysis/bmad-agent-tech-writer/mermaid-gen.md`
+- `_bmad/bmm/1-analysis/bmad-agent-tech-writer/SKILL.md`
+- `_bmad/bmm/1-analysis/bmad-agent-tech-writer/validate-doc.md`
+- `_bmad/bmm/1-analysis/bmad-agent-tech-writer/write-document.md`
+
+### _bmad/bmm/1-analysis/bmad-document-project/
+- `_bmad/bmm/1-analysis/bmad-document-project/checklist.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/documentation-requirements.csv`
+- `_bmad/bmm/1-analysis/bmad-document-project/instructions.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/SKILL.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/workflow.md`
+
+### _bmad/bmm/1-analysis/bmad-document-project/templates/
+- `_bmad/bmm/1-analysis/bmad-document-project/templates/deep-dive-template.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/templates/index-template.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/templates/project-overview-template.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/templates/project-scan-report-schema.json`
+- `_bmad/bmm/1-analysis/bmad-document-project/templates/source-tree-template.md`
+
+### _bmad/bmm/1-analysis/bmad-document-project/workflows/
+- `_bmad/bmm/1-analysis/bmad-document-project/workflows/deep-dive-instructions.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/workflows/deep-dive-workflow.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/workflows/full-scan-instructions.md`
+- `_bmad/bmm/1-analysis/bmad-document-project/workflows/full-scan-workflow.md`
+
+### _bmad/bmm/1-analysis/bmad-prfaq/
+- `_bmad/bmm/1-analysis/bmad-prfaq/bmad-manifest.json`
+- `_bmad/bmm/1-analysis/bmad-prfaq/SKILL.md`
+
+### _bmad/bmm/1-analysis/bmad-prfaq/agents/
+- `_bmad/bmm/1-analysis/bmad-prfaq/agents/artifact-analyzer.md`
+- `_bmad/bmm/1-analysis/bmad-prfaq/agents/web-researcher.md`
+
+### _bmad/bmm/1-analysis/bmad-prfaq/assets/
+- `_bmad/bmm/1-analysis/bmad-prfaq/assets/prfaq-template.md`
+
+### _bmad/bmm/1-analysis/bmad-prfaq/references/
+- `_bmad/bmm/1-analysis/bmad-prfaq/references/customer-faq.md`
+- `_bmad/bmm/1-analysis/bmad-prfaq/references/internal-faq.md`
+- `_bmad/bmm/1-analysis/bmad-prfaq/references/press-release.md`
+- `_bmad/bmm/1-analysis/bmad-prfaq/references/verdict.md`
+
+### _bmad/bmm/1-analysis/bmad-product-brief/
+- `_bmad/bmm/1-analysis/bmad-product-brief/bmad-manifest.json`
+- `_bmad/bmm/1-analysis/bmad-product-brief/SKILL.md`
+
+### _bmad/bmm/1-analysis/bmad-product-brief/agents/
+- `_bmad/bmm/1-analysis/bmad-product-brief/agents/artifact-analyzer.md`
+- `_bmad/bmm/1-analysis/bmad-product-brief/agents/opportunity-reviewer.md`
+- `_bmad/bmm/1-analysis/bmad-product-brief/agents/skeptic-reviewer.md`
+- `_bmad/bmm/1-analysis/bmad-product-brief/agents/web-researcher.md`
+
+### _bmad/bmm/1-analysis/bmad-product-brief/prompts/
+- `_bmad/bmm/1-analysis/bmad-product-brief/prompts/contextual-discovery.md`
+- `_bmad/bmm/1-analysis/bmad-product-brief/prompts/draft-and-review.md`
+- `_bmad/bmm/1-analysis/bmad-product-brief/prompts/finalize.md`
+- `_bmad/bmm/1-analysis/bmad-product-brief/prompts/guided-elicitation.md`
+
+### _bmad/bmm/1-analysis/bmad-product-brief/resources/
+- `_bmad/bmm/1-analysis/bmad-product-brief/resources/brief-template.md`
+
+### _bmad/bmm/1-analysis/research/bmad-domain-research/
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/research.template.md`
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/SKILL.md`
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/workflow.md`
+
+### _bmad/bmm/1-analysis/research/bmad-domain-research/domain-steps/
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/domain-steps/step-01-init.md`
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/domain-steps/step-02-domain-analysis.md`
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/domain-steps/step-03-competitive-landscape.md`
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/domain-steps/step-04-regulatory-focus.md`
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/domain-steps/step-05-technical-trends.md`
+- `_bmad/bmm/1-analysis/research/bmad-domain-research/domain-steps/step-06-research-synthesis.md`
+
+### _bmad/bmm/1-analysis/research/bmad-market-research/
+- `_bmad/bmm/1-analysis/research/bmad-market-research/research.template.md`
+- `_bmad/bmm/1-analysis/research/bmad-market-research/SKILL.md`
+- `_bmad/bmm/1-analysis/research/bmad-market-research/workflow.md`
+
+### _bmad/bmm/1-analysis/research/bmad-market-research/steps/
+- `_bmad/bmm/1-analysis/research/bmad-market-research/steps/step-01-init.md`
+- `_bmad/bmm/1-analysis/research/bmad-market-research/steps/step-02-customer-behavior.md`
+- `_bmad/bmm/1-analysis/research/bmad-market-research/steps/step-03-customer-pain-points.md`
+- `_bmad/bmm/1-analysis/research/bmad-market-research/steps/step-04-customer-decisions.md`
+- `_bmad/bmm/1-analysis/research/bmad-market-research/steps/step-05-competitive-analysis.md`
+- `_bmad/bmm/1-analysis/research/bmad-market-research/steps/step-06-research-completion.md`
+
+### _bmad/bmm/1-analysis/research/bmad-technical-research/
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/research.template.md`
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/SKILL.md`
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/workflow.md`
+
+### _bmad/bmm/1-analysis/research/bmad-technical-research/technical-steps/
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/technical-steps/step-01-init.md`
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/technical-steps/step-02-technical-overview.md`
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/technical-steps/step-03-integration-patterns.md`
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/technical-steps/step-04-architectural-patterns.md`
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/technical-steps/step-05-implementation-research.md`
+- `_bmad/bmm/1-analysis/research/bmad-technical-research/technical-steps/step-06-research-synthesis.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-agent-pm/
+- `_bmad/bmm/2-plan-workflows/bmad-agent-pm/bmad-skill-manifest.yaml`
+- `_bmad/bmm/2-plan-workflows/bmad-agent-pm/SKILL.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-agent-ux-designer/
+- `_bmad/bmm/2-plan-workflows/bmad-agent-ux-designer/bmad-skill-manifest.yaml`
+- `_bmad/bmm/2-plan-workflows/bmad-agent-ux-designer/SKILL.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-create-prd/
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/SKILL.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/workflow.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-create-prd/data/
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/data/domain-complexity.csv`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/data/prd-purpose.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/data/project-types.csv`
+
+### _bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-01-init.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-01b-continue.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-02-discovery.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-02b-vision.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-02c-executive-summary.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-03-success.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-04-journeys.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-05-domain.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-06-innovation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-07-project-type.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-08-scoping.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-09-functional.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-10-nonfunctional.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-11-polish.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/steps-c/step-12-complete.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-create-prd/templates/
+- `_bmad/bmm/2-plan-workflows/bmad-create-prd/templates/prd-template.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-create-ux-design/
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/SKILL.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/ux-design-template.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/workflow.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-01-init.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-01b-continue.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-02-discovery.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-03-core-experience.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-04-emotional-response.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-05-inspiration.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-06-design-system.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-07-defining-experience.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-08-visual-foundation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-09-design-directions.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-10-user-journeys.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-11-component-strategy.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-12-ux-patterns.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-13-responsive-accessibility.md`
+- `_bmad/bmm/2-plan-workflows/bmad-create-ux-design/steps/step-14-complete.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-edit-prd/
+- `_bmad/bmm/2-plan-workflows/bmad-edit-prd/SKILL.md`
+- `_bmad/bmm/2-plan-workflows/bmad-edit-prd/workflow.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-edit-prd/data/
+- `_bmad/bmm/2-plan-workflows/bmad-edit-prd/data/prd-purpose.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-edit-prd/steps-e/
+- `_bmad/bmm/2-plan-workflows/bmad-edit-prd/steps-e/step-e-01-discovery.md`
+- `_bmad/bmm/2-plan-workflows/bmad-edit-prd/steps-e/step-e-01b-legacy-conversion.md`
+- `_bmad/bmm/2-plan-workflows/bmad-edit-prd/steps-e/step-e-02-review.md`
+- `_bmad/bmm/2-plan-workflows/bmad-edit-prd/steps-e/step-e-03-edit.md`
+- `_bmad/bmm/2-plan-workflows/bmad-edit-prd/steps-e/step-e-04-complete.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-validate-prd/
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/SKILL.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/workflow.md`
+
+### _bmad/bmm/2-plan-workflows/bmad-validate-prd/data/
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/data/domain-complexity.csv`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/data/prd-purpose.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/data/project-types.csv`
+
+### _bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-01-discovery.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-02-format-detection.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-02b-parity-check.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-03-density-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-04-brief-coverage-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-05-measurability-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-06-traceability-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-07-implementation-leakage-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-08-domain-compliance-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-09-project-type-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-10-smart-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-11-holistic-quality-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-12-completeness-validation.md`
+- `_bmad/bmm/2-plan-workflows/bmad-validate-prd/steps-v/step-v-13-report-complete.md`
+
+### _bmad/bmm/3-solutioning/bmad-agent-architect/
+- `_bmad/bmm/3-solutioning/bmad-agent-architect/bmad-skill-manifest.yaml`
+- `_bmad/bmm/3-solutioning/bmad-agent-architect/SKILL.md`
+
+### _bmad/bmm/3-solutioning/bmad-check-implementation-readiness/
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/SKILL.md`
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/workflow.md`
+
+### _bmad/bmm/3-solutioning/bmad-check-implementation-readiness/steps/
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/steps/step-01-document-discovery.md`
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/steps/step-02-prd-analysis.md`
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/steps/step-03-epic-coverage-validation.md`
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/steps/step-04-ux-alignment.md`
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/steps/step-05-epic-quality-review.md`
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/steps/step-06-final-assessment.md`
+
+### _bmad/bmm/3-solutioning/bmad-check-implementation-readiness/templates/
+- `_bmad/bmm/3-solutioning/bmad-check-implementation-readiness/templates/readiness-report-template.md`
+
+### _bmad/bmm/3-solutioning/bmad-create-architecture/
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/architecture-decision-template.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/SKILL.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/workflow.md`
+
+### _bmad/bmm/3-solutioning/bmad-create-architecture/data/
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/data/domain-complexity.csv`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/data/project-types.csv`
+
+### _bmad/bmm/3-solutioning/bmad-create-architecture/steps/
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-01-init.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-01b-continue.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-02-context.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-03-starter.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-04-decisions.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-05-patterns.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-06-structure.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-07-validation.md`
+- `_bmad/bmm/3-solutioning/bmad-create-architecture/steps/step-08-complete.md`
+
+### _bmad/bmm/3-solutioning/bmad-create-epics-and-stories/
+- `_bmad/bmm/3-solutioning/bmad-create-epics-and-stories/SKILL.md`
+- `_bmad/bmm/3-solutioning/bmad-create-epics-and-stories/workflow.md`
+
+### _bmad/bmm/3-solutioning/bmad-create-epics-and-stories/steps/
+- `_bmad/bmm/3-solutioning/bmad-create-epics-and-stories/steps/step-01-validate-prerequisites.md`
+- `_bmad/bmm/3-solutioning/bmad-create-epics-and-stories/steps/step-02-design-epics.md`
+- `_bmad/bmm/3-solutioning/bmad-create-epics-and-stories/steps/step-03-create-stories.md`
+- `_bmad/bmm/3-solutioning/bmad-create-epics-and-stories/steps/step-04-final-validation.md`
+
+### _bmad/bmm/3-solutioning/bmad-create-epics-and-stories/templates/
+- `_bmad/bmm/3-solutioning/bmad-create-epics-and-stories/templates/epics-template.md`
+
+### _bmad/bmm/3-solutioning/bmad-generate-project-context/
+- `_bmad/bmm/3-solutioning/bmad-generate-project-context/project-context-template.md`
+- `_bmad/bmm/3-solutioning/bmad-generate-project-context/SKILL.md`
+- `_bmad/bmm/3-solutioning/bmad-generate-project-context/workflow.md`
+
+### _bmad/bmm/3-solutioning/bmad-generate-project-context/steps/
+- `_bmad/bmm/3-solutioning/bmad-generate-project-context/steps/step-01-discover.md`
+- `_bmad/bmm/3-solutioning/bmad-generate-project-context/steps/step-02-generate.md`
+- `_bmad/bmm/3-solutioning/bmad-generate-project-context/steps/step-03-complete.md`
+
+### _bmad/bmm/4-implementation/bmad-agent-dev/
+- `_bmad/bmm/4-implementation/bmad-agent-dev/bmad-skill-manifest.yaml`
+- `_bmad/bmm/4-implementation/bmad-agent-dev/SKILL.md`
+
+### _bmad/bmm/4-implementation/bmad-checkpoint-preview/
+- `_bmad/bmm/4-implementation/bmad-checkpoint-preview/generate-trail.md`
+- `_bmad/bmm/4-implementation/bmad-checkpoint-preview/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-checkpoint-preview/step-01-orientation.md`
+- `_bmad/bmm/4-implementation/bmad-checkpoint-preview/step-02-walkthrough.md`
+- `_bmad/bmm/4-implementation/bmad-checkpoint-preview/step-03-detail-pass.md`
+- `_bmad/bmm/4-implementation/bmad-checkpoint-preview/step-04-testing.md`
+- `_bmad/bmm/4-implementation/bmad-checkpoint-preview/step-05-wrapup.md`
+
+### _bmad/bmm/4-implementation/bmad-code-review/
+- `_bmad/bmm/4-implementation/bmad-code-review/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-code-review/workflow.md`
+
+### _bmad/bmm/4-implementation/bmad-code-review/steps/
+- `_bmad/bmm/4-implementation/bmad-code-review/steps/step-01-gather-context.md`
+- `_bmad/bmm/4-implementation/bmad-code-review/steps/step-02-review.md`
+- `_bmad/bmm/4-implementation/bmad-code-review/steps/step-03-triage.md`
+- `_bmad/bmm/4-implementation/bmad-code-review/steps/step-04-present.md`
+
+### _bmad/bmm/4-implementation/bmad-correct-course/
+- `_bmad/bmm/4-implementation/bmad-correct-course/checklist.md`
+- `_bmad/bmm/4-implementation/bmad-correct-course/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-correct-course/workflow.md`
+
+### _bmad/bmm/4-implementation/bmad-create-story/
+- `_bmad/bmm/4-implementation/bmad-create-story/checklist.md`
+- `_bmad/bmm/4-implementation/bmad-create-story/discover-inputs.md`
+- `_bmad/bmm/4-implementation/bmad-create-story/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-create-story/template.md`
+- `_bmad/bmm/4-implementation/bmad-create-story/workflow.md`
+
+### _bmad/bmm/4-implementation/bmad-dev-story/
+- `_bmad/bmm/4-implementation/bmad-dev-story/checklist.md`
+- `_bmad/bmm/4-implementation/bmad-dev-story/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-dev-story/workflow.md`
+
+### _bmad/bmm/4-implementation/bmad-qa-generate-e2e-tests/
+- `_bmad/bmm/4-implementation/bmad-qa-generate-e2e-tests/checklist.md`
+- `_bmad/bmm/4-implementation/bmad-qa-generate-e2e-tests/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-qa-generate-e2e-tests/workflow.md`
+
+### _bmad/bmm/4-implementation/bmad-quick-dev/
+- `_bmad/bmm/4-implementation/bmad-quick-dev/compile-epic-context.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/spec-template.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/step-01-clarify-and-route.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/step-02-plan.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/step-03-implement.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/step-04-review.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/step-05-present.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/step-oneshot.md`
+- `_bmad/bmm/4-implementation/bmad-quick-dev/workflow.md`
+
+### _bmad/bmm/4-implementation/bmad-retrospective/
+- `_bmad/bmm/4-implementation/bmad-retrospective/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-retrospective/workflow.md`
+
+### _bmad/bmm/4-implementation/bmad-sprint-planning/
+- `_bmad/bmm/4-implementation/bmad-sprint-planning/checklist.md`
+- `_bmad/bmm/4-implementation/bmad-sprint-planning/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-sprint-planning/sprint-status-template.yaml`
+- `_bmad/bmm/4-implementation/bmad-sprint-planning/workflow.md`
+
+### _bmad/bmm/4-implementation/bmad-sprint-status/
+- `_bmad/bmm/4-implementation/bmad-sprint-status/SKILL.md`
+- `_bmad/bmm/4-implementation/bmad-sprint-status/workflow.md`
+
+### _bmad/core/
+- `_bmad/core/config.yaml`
+- `_bmad/core/module-help.csv`
+- `_bmad/core/module.yaml`
+
+### _bmad/core/bmad-advanced-elicitation/
+- `_bmad/core/bmad-advanced-elicitation/methods.csv`
+- `_bmad/core/bmad-advanced-elicitation/SKILL.md`
+
+### _bmad/core/bmad-brainstorming/
+- `_bmad/core/bmad-brainstorming/brain-methods.csv`
+- `_bmad/core/bmad-brainstorming/SKILL.md`
+- `_bmad/core/bmad-brainstorming/template.md`
+- `_bmad/core/bmad-brainstorming/workflow.md`
+
+### _bmad/core/bmad-brainstorming/steps/
+- `_bmad/core/bmad-brainstorming/steps/step-01-session-setup.md`
+- `_bmad/core/bmad-brainstorming/steps/step-01b-continue.md`
+- `_bmad/core/bmad-brainstorming/steps/step-02a-user-selected.md`
+- `_bmad/core/bmad-brainstorming/steps/step-02b-ai-recommended.md`
+- `_bmad/core/bmad-brainstorming/steps/step-02c-random-selection.md`
+- `_bmad/core/bmad-brainstorming/steps/step-02d-progressive-flow.md`
+- `_bmad/core/bmad-brainstorming/steps/step-03-technique-execution.md`
+- `_bmad/core/bmad-brainstorming/steps/step-04-idea-organization.md`
+
+### _bmad/core/bmad-distillator/
+- `_bmad/core/bmad-distillator/SKILL.md`
+
+### _bmad/core/bmad-distillator/agents/
+- `_bmad/core/bmad-distillator/agents/distillate-compressor.md`
+- `_bmad/core/bmad-distillator/agents/round-trip-reconstructor.md`
+
+### _bmad/core/bmad-distillator/resources/
+- `_bmad/core/bmad-distillator/resources/compression-rules.md`
+- `_bmad/core/bmad-distillator/resources/distillate-format-reference.md`
+- `_bmad/core/bmad-distillator/resources/splitting-strategy.md`
+
+### _bmad/core/bmad-distillator/scripts/
+- `_bmad/core/bmad-distillator/scripts/analyze_sources.py`
+
+### _bmad/core/bmad-distillator/scripts/tests/
+- `_bmad/core/bmad-distillator/scripts/tests/test_analyze_sources.py`
+
+### _bmad/core/bmad-editorial-review-prose/
+- `_bmad/core/bmad-editorial-review-prose/SKILL.md`
+
+### _bmad/core/bmad-editorial-review-structure/
+- `_bmad/core/bmad-editorial-review-structure/SKILL.md`
+
+### _bmad/core/bmad-help/
+- `_bmad/core/bmad-help/SKILL.md`
+
+### _bmad/core/bmad-index-docs/
+- `_bmad/core/bmad-index-docs/SKILL.md`
+
+### _bmad/core/bmad-party-mode/
+- `_bmad/core/bmad-party-mode/SKILL.md`
+
+### _bmad/core/bmad-review-adversarial-general/
+- `_bmad/core/bmad-review-adversarial-general/SKILL.md`
+
+### _bmad/core/bmad-review-edge-case-hunter/
+- `_bmad/core/bmad-review-edge-case-hunter/SKILL.md`
+
+### _bmad/core/bmad-shard-doc/
+- `_bmad/core/bmad-shard-doc/SKILL.md`
 
 ### docker/
 - `docker/.env.example`
@@ -195,279 +611,13 @@ Note: Truncated to first 500 files. Run with higher --max-files to include all.
 - `native/crates/engine/Cargo.toml`
 
 ### native/crates/engine/src/
-- *(22 files: 22 .rs)*
-
-### native/crates/grep/
-- `native/crates/grep/Cargo.toml`
-
-### native/crates/grep/src/
-- `native/crates/grep/src/lib.rs`
-
-### native/npm/darwin-arm64/
-- `native/npm/darwin-arm64/package.json`
-
-### native/npm/darwin-x64/
-- `native/npm/darwin-x64/package.json`
-
-### native/npm/linux-arm64-gnu/
-- `native/npm/linux-arm64-gnu/package.json`
-
-### native/npm/linux-x64-gnu/
-- `native/npm/linux-x64-gnu/package.json`
-
-### native/npm/win32-x64-msvc/
-- `native/npm/win32-x64-msvc/package.json`
-
-### native/scripts/
-- `native/scripts/build.js`
-- `native/scripts/sync-platform-versions.cjs`
-
-### packages/daemon/
-- `packages/daemon/package.json`
-- `packages/daemon/tsconfig.json`
-
-### packages/daemon/src/
-- *(27 files: 27 .ts)*
-
-### packages/mcp-server/
-- `packages/mcp-server/.npmignore`
-- `packages/mcp-server/package.json`
-- `packages/mcp-server/README.md`
-- `packages/mcp-server/tsconfig.json`
-
-### packages/mcp-server/src/
-- `packages/mcp-server/src/cli.ts`
-- `packages/mcp-server/src/import-candidates.test.ts`
-- `packages/mcp-server/src/index.ts`
-- `packages/mcp-server/src/mcp-server.test.ts`
-- `packages/mcp-server/src/server.ts`
-- `packages/mcp-server/src/session-manager.ts`
-- `packages/mcp-server/src/tool-credentials.test.ts`
-- `packages/mcp-server/src/tool-credentials.ts`
-- `packages/mcp-server/src/types.ts`
-- `packages/mcp-server/src/workflow-tools.test.ts`
-- `packages/mcp-server/src/workflow-tools.ts`
-
-### packages/mcp-server/src/readers/
-- `packages/mcp-server/src/readers/captures.ts`
-- `packages/mcp-server/src/readers/doctor-lite.ts`
-- `packages/mcp-server/src/readers/index.ts`
-- `packages/mcp-server/src/readers/knowledge.ts`
-- `packages/mcp-server/src/readers/metrics.ts`
-- `packages/mcp-server/src/readers/paths.ts`
-- `packages/mcp-server/src/readers/readers.test.ts`
-- `packages/mcp-server/src/readers/roadmap.ts`
-- `packages/mcp-server/src/readers/state.ts`
-
-### packages/native/
-- `packages/native/package.json`
-- `packages/native/tsconfig.json`
-
-### packages/native/src/
-- `packages/native/src/index.ts`
-- `packages/native/src/native.ts`
-
-### packages/native/src/__tests__/
-- `packages/native/src/__tests__/clipboard.test.mjs`
-- `packages/native/src/__tests__/diff.test.mjs`
-- `packages/native/src/__tests__/fd.test.mjs`
-- `packages/native/src/__tests__/glob.test.mjs`
-- `packages/native/src/__tests__/grep.test.mjs`
-- `packages/native/src/__tests__/highlight.test.mjs`
-- `packages/native/src/__tests__/html.test.mjs`
-- `packages/native/src/__tests__/image.test.mjs`
-- `packages/native/src/__tests__/json-parse.test.mjs`
-- `packages/native/src/__tests__/module-compat.test.mjs`
-- `packages/native/src/__tests__/ps.test.mjs`
-- `packages/native/src/__tests__/stream-process.test.mjs`
-- `packages/native/src/__tests__/text.test.mjs`
-- `packages/native/src/__tests__/truncate.test.mjs`
-- `packages/native/src/__tests__/ttsr.test.mjs`
-- `packages/native/src/__tests__/xxhash.test.mjs`
-
-### packages/native/src/ast/
-- `packages/native/src/ast/index.ts`
-- `packages/native/src/ast/types.ts`
-
-### packages/native/src/clipboard/
-- `packages/native/src/clipboard/index.ts`
-- `packages/native/src/clipboard/types.ts`
-
-### packages/native/src/diff/
-- `packages/native/src/diff/index.ts`
-- `packages/native/src/diff/types.ts`
-
-### packages/native/src/fd/
-- `packages/native/src/fd/index.ts`
-- `packages/native/src/fd/types.ts`
-
-### packages/native/src/glob/
-- `packages/native/src/glob/index.ts`
-- `packages/native/src/glob/types.ts`
-
-### packages/native/src/grep/
-- `packages/native/src/grep/index.ts`
-- `packages/native/src/grep/types.ts`
-
-### packages/native/src/gsd-parser/
-- `packages/native/src/gsd-parser/index.ts`
-- `packages/native/src/gsd-parser/types.ts`
-
-### packages/native/src/highlight/
-- `packages/native/src/highlight/index.ts`
-- `packages/native/src/highlight/types.ts`
-
-### packages/native/src/html/
-- `packages/native/src/html/index.ts`
-- `packages/native/src/html/types.ts`
-
-### packages/native/src/image/
-- `packages/native/src/image/index.ts`
-- `packages/native/src/image/types.ts`
-
-### packages/native/src/json-parse/
-- `packages/native/src/json-parse/index.ts`
-
-### packages/native/src/ps/
-- `packages/native/src/ps/index.ts`
-- `packages/native/src/ps/types.ts`
-
-### packages/native/src/stream-process/
-- `packages/native/src/stream-process/index.ts`
-
-### packages/native/src/text/
-- `packages/native/src/text/index.ts`
-- `packages/native/src/text/types.ts`
-
-### packages/native/src/truncate/
-- `packages/native/src/truncate/index.ts`
-
-### packages/native/src/ttsr/
-- `packages/native/src/ttsr/index.ts`
-- `packages/native/src/ttsr/types.ts`
-
-### packages/native/src/xxhash/
-- `packages/native/src/xxhash/index.ts`
-
-### packages/pi-agent-core/
-- `packages/pi-agent-core/package.json`
-- `packages/pi-agent-core/tsconfig.json`
-
-### packages/pi-agent-core/src/
-- `packages/pi-agent-core/src/agent-loop.test.ts`
-- `packages/pi-agent-core/src/agent-loop.ts`
-- `packages/pi-agent-core/src/agent.test.ts`
-- `packages/pi-agent-core/src/agent.ts`
-- `packages/pi-agent-core/src/index.ts`
-- `packages/pi-agent-core/src/proxy.ts`
-- `packages/pi-agent-core/src/types.ts`
-
-### packages/pi-ai/
-- `packages/pi-ai/bedrock-provider.d.ts`
-- `packages/pi-ai/bedrock-provider.js`
-- `packages/pi-ai/oauth.d.ts`
-- `packages/pi-ai/oauth.js`
-- `packages/pi-ai/package.json`
-- `packages/pi-ai/tsconfig.json`
-
-### packages/pi-ai/scripts/
-- `packages/pi-ai/scripts/generate-models.ts`
-
-### packages/pi-ai/src/
-- `packages/pi-ai/src/api-registry.ts`
-- `packages/pi-ai/src/bedrock-provider.ts`
-- `packages/pi-ai/src/cli.ts`
-- `packages/pi-ai/src/env-api-keys.ts`
-- `packages/pi-ai/src/index.ts`
-- `packages/pi-ai/src/models.custom.ts`
-- `packages/pi-ai/src/models.generated.ts`
-- `packages/pi-ai/src/models.test.ts`
-- `packages/pi-ai/src/models.ts`
-- `packages/pi-ai/src/oauth.ts`
-- `packages/pi-ai/src/stream.ts`
-- `packages/pi-ai/src/types.ts`
-- `packages/pi-ai/src/web-runtime-env-api-keys.ts`
-- `packages/pi-ai/src/web-runtime-oauth.ts`
-
-### packages/pi-ai/src/providers/
-- *(24 files: 24 .ts)*
-
-### packages/pi-ai/src/utils/
-- `packages/pi-ai/src/utils/event-stream.ts`
-- `packages/pi-ai/src/utils/hash.ts`
-- `packages/pi-ai/src/utils/json-parse.ts`
-- `packages/pi-ai/src/utils/overflow.ts`
-- `packages/pi-ai/src/utils/repair-tool-json.ts`
-- `packages/pi-ai/src/utils/sanitize-unicode.ts`
-- `packages/pi-ai/src/utils/typebox-helpers.ts`
-- `packages/pi-ai/src/utils/validation.ts`
-
-### packages/pi-ai/src/utils/oauth/
-- `packages/pi-ai/src/utils/oauth/github-copilot.ts`
-- `packages/pi-ai/src/utils/oauth/google-antigravity.ts`
-- `packages/pi-ai/src/utils/oauth/google-gemini-cli.ts`
-- `packages/pi-ai/src/utils/oauth/google-oauth-utils.ts`
-- `packages/pi-ai/src/utils/oauth/index.ts`
-- `packages/pi-ai/src/utils/oauth/openai-codex.ts`
-- `packages/pi-ai/src/utils/oauth/pkce.ts`
-- `packages/pi-ai/src/utils/oauth/types.ts`
-
-### packages/pi-ai/src/utils/tests/
-- `packages/pi-ai/src/utils/tests/json-parse.test.ts`
-- `packages/pi-ai/src/utils/tests/repair-tool-json.test.ts`
-
-### packages/pi-coding-agent/
-- `packages/pi-coding-agent/package.json`
-
-### packages/pi-coding-agent/scripts/
-- `packages/pi-coding-agent/scripts/copy-assets.cjs`
-
-### packages/pi-coding-agent/src/
-- `packages/pi-coding-agent/src/cli.ts`
-- `packages/pi-coding-agent/src/config.ts`
-
-### packages/pi-coding-agent/src/cli/
-- `packages/pi-coding-agent/src/cli/args.ts`
-- `packages/pi-coding-agent/src/cli/config-selector.ts`
-- `packages/pi-coding-agent/src/cli/file-processor.ts`
-- `packages/pi-coding-agent/src/cli/list-models.ts`
-- `packages/pi-coding-agent/src/cli/session-picker.ts`
-
-### packages/pi-coding-agent/src/core/
-- *(31 files: 31 .ts)*
-
-### packages/pi-coding-agent/src/core/compaction/
-- `packages/pi-coding-agent/src/core/compaction/branch-summarization.ts`
-- `packages/pi-coding-agent/src/core/compaction/compaction.test.ts`
-- `packages/pi-coding-agent/src/core/compaction/compaction.ts`
-- `packages/pi-coding-agent/src/core/compaction/index.ts`
-- `packages/pi-coding-agent/src/core/compaction/utils.ts`
-
-### packages/pi-coding-agent/src/core/export-html/
-- `packages/pi-coding-agent/src/core/export-html/ansi-to-html.ts`
-- `packages/pi-coding-agent/src/core/export-html/index.ts`
-- `packages/pi-coding-agent/src/core/export-html/template.css`
-- `packages/pi-coding-agent/src/core/export-html/template.html`
-- `packages/pi-coding-agent/src/core/export-html/template.js`
-- `packages/pi-coding-agent/src/core/export-html/tool-renderer.ts`
-
-### packages/pi-coding-agent/src/core/extensions/
-- `packages/pi-coding-agent/src/core/extensions/extension-manifest.test.ts`
-- `packages/pi-coding-agent/src/core/extensions/extension-manifest.ts`
-- `packages/pi-coding-agent/src/core/extensions/extension-sort.test.ts`
-- `packages/pi-coding-agent/src/core/extensions/extension-sort.ts`
-- `packages/pi-coding-agent/src/core/extensions/index.ts`
-- `packages/pi-coding-agent/src/core/extensions/loader.test.ts`
-- `packages/pi-coding-agent/src/core/extensions/loader.ts`
-- `packages/pi-coding-agent/src/core/extensions/project-trust.ts`
-- `packages/pi-coding-agent/src/core/extensions/provider-registration.test.ts`
-- `packages/pi-coding-agent/src/core/extensions/runner.test.ts`
-- `packages/pi-coding-agent/src/core/extensions/runner.ts`
-- `packages/pi-coding-agent/src/core/extensions/types.ts`
-- `packages/pi-coding-agent/src/core/extensions/wrapper.ts`
-
-### packages/pi-coding-agent/src/core/lsp/
-- `packages/pi-coding-agent/src/core/lsp/client.ts`
-- `packages/pi-coding-agent/src/core/lsp/config.ts`
-- `packages/pi-coding-agent/src/core/lsp/defaults.json`
-- `packages/pi-coding-agent/src/core/lsp/edits.ts`
+- `native/crates/engine/src/ast.rs`
+- `native/crates/engine/src/clipboard.rs`
+- `native/crates/engine/src/diff.rs`
+- `native/crates/engine/src/fd.rs`
+- `native/crates/engine/src/fs_cache.rs`
+- `native/crates/engine/src/git.rs`
+- `native/crates/engine/src/glob_util.rs`
+- `native/crates/engine/src/glob.rs`
+- `native/crates/engine/src/grep.rs`
+- `native/crates/engine/src/gsd_parser.rs`

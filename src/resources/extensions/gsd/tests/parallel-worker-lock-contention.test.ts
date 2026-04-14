@@ -1,11 +1,9 @@
 /**
  * parallel-worker-lock-contention.test.ts — Regression tests for #2184.
  *
- * Covers all four bugs from the parallel worker contention issue:
+ * Covers lock-related bugs from the parallel worker contention issue:
  *   Bug 1: Session lock contention — per-milestone lock isolation
  *   Bug 2: Budget ceiling scoped to current session for parallel workers
- *   Bug 3: syncProjectRootToWorktree skips when source === destination (symlinks)
- *   Bug 4: createMilestoneWorktree copies planning artifacts
  *
  * Copyright (c) 2026 Jeremy McSpadden <jeremy@fluxlabs.net>
  */
@@ -16,8 +14,6 @@ import {
   writeFileSync,
   rmSync,
   existsSync,
-  symlinkSync,
-  readFileSync,
 } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
@@ -29,10 +25,6 @@ import {
   effectiveLockTarget,
 } from "../session-lock.ts";
 import { gsdRoot } from "../paths.ts";
-import {
-  syncProjectRootToWorktree,
-  syncStateToProjectRoot,
-} from "../auto-worktree.ts";
 import { writeLock, readCrashLock, clearLock } from "../crash-recovery.ts";
 import { describe, test, beforeEach, afterEach } from "node:test";
 import assert from "node:assert/strict";
@@ -149,77 +141,6 @@ describe("parallel-worker-lock-contention (#2184)", () => {
     } finally {
       delete process.env.GSD_PARALLEL_WORKER;
       delete process.env.GSD_MILESTONE_LOCK;
-      rmSync(base, { recursive: true, force: true });
-    }
-  });
-
-  // ─── Bug 3: syncProjectRootToWorktree skips same-path symlinks ───────────
-  test("Bug 3: syncProjectRootToWorktree skips when .gsd resolves to same path (symlink)", () => {
-    const base = mkdtempSync(join(tmpdir(), "gsd-symlink-sync-"));
-    const externalGsd = join(base, "external-gsd");
-    const projectRoot = join(base, "project");
-    const worktreePath = join(base, "worktree");
-
-    mkdirSync(externalGsd, { recursive: true });
-    mkdirSync(projectRoot, { recursive: true });
-    mkdirSync(worktreePath, { recursive: true });
-
-    // Create the external state directory with a milestone
-    mkdirSync(join(externalGsd, "milestones", "M001"), { recursive: true });
-    writeFileSync(
-      join(externalGsd, "milestones", "M001", "M001-ROADMAP.md"),
-      "# Roadmap",
-    );
-
-    // Symlink both project and worktree .gsd to the same external directory
-    symlinkSync(externalGsd, join(projectRoot, ".gsd"));
-    symlinkSync(externalGsd, join(worktreePath, ".gsd"));
-
-    try {
-      // This should NOT throw ERR_FS_CP_EINVAL — it should skip silently
-      let threw = false;
-      try {
-        syncProjectRootToWorktree(projectRoot, worktreePath, "M001");
-      } catch {
-        threw = true;
-      }
-      assert.ok(!threw, "syncProjectRootToWorktree does not throw on same-path symlink");
-
-      // Same for reverse direction
-      threw = false;
-      try {
-        syncStateToProjectRoot(worktreePath, projectRoot, "M001");
-      } catch {
-        threw = true;
-      }
-      assert.ok(!threw, "syncStateToProjectRoot does not throw on same-path symlink");
-    } finally {
-      rmSync(base, { recursive: true, force: true });
-    }
-  });
-
-  // ─── Bug 3b: sync still works when paths are different ───────────────────
-  test("Bug 3b: syncProjectRootToWorktree copies when .gsd paths are different", () => {
-    const base = mkdtempSync(join(tmpdir(), "gsd-diff-sync-"));
-    const projectRoot = join(base, "project");
-    const worktreePath = join(base, "worktree");
-
-    mkdirSync(join(projectRoot, ".gsd", "milestones", "M001"), { recursive: true });
-    mkdirSync(join(worktreePath, ".gsd", "milestones"), { recursive: true });
-
-    writeFileSync(
-      join(projectRoot, ".gsd", "milestones", "M001", "M001-ROADMAP.md"),
-      "# Roadmap content",
-    );
-
-    try {
-      syncProjectRootToWorktree(projectRoot, worktreePath, "M001");
-
-      // The roadmap should have been copied
-      const copied = join(worktreePath, ".gsd", "milestones", "M001", "M001-ROADMAP.md");
-      assert.ok(existsSync(copied), "milestone roadmap copied to worktree");
-      assert.equal(readFileSync(copied, "utf-8"), "# Roadmap content");
-    } finally {
       rmSync(base, { recursive: true, force: true });
     }
   });
