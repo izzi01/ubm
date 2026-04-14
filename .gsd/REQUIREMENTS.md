@@ -12,14 +12,6 @@ This file is the explicit capability and coverage contract for the project.
 - Source: PRD-branchless-worktree-architecture
 - Primary owning slice: M113/S01
 
-### R025 — mergeMilestoneToMain() is simplified from ~650 lines to ≤250 lines. Removed: stash/pop, milestone shelter, .gsd/ conflict auto-resolution. Kept: auto-commit dirty state, checkout main, squash merge, commit, worktree teardown, auto-push, code change detection, branch-ref divergence check.
-- Class: architectural
-- Status: active
-- Description: mergeMilestoneToMain() is simplified from ~650 lines to ≤250 lines. Removed: stash/pop, milestone shelter, .gsd/ conflict auto-resolution. Kept: auto-commit dirty state, checkout main, squash merge, commit, worktree teardown, auto-push, code change detection, branch-ref divergence check.
-- Why it matters: The defensive merge code exists to handle .gsd/ file divergence between branches — a problem that tracked artifacts (R023) eliminate. The simplified function is easier to reason about, test, and maintain.
-- Source: PRD-branchless-worktree-architecture
-- Primary owning slice: M113/S03
-
 ### R026 — Sync-specific test files are deleted. Remaining tests compile and pass. git-self-heal.ts is simplified to crash-recovery-only (no merge-specific recovery). No production or test code references deleted sync functions.
 - Class: operational
 - Status: active
@@ -94,6 +86,15 @@ This file is the explicit capability and coverage contract for the project.
 - Primary owning slice: M113/S02
 - Validation: rg finds zero code references to syncProjectRootToWorktree, syncStateToProjectRoot, syncGsdStateToWorktree, syncWorktreeStateBack, copyPlanningArtifacts, reconcilePlanCheckboxes, forceOverwriteAssessmentsWithVerdict in production code. tsc --noEmit passes. 9 sync-only test files deleted, 13 mixed-content test files cleaned. One historical comment reference remains in merge-cwd-restore.test.ts (non-functional).
 
+### R025 — mergeMilestoneToMain() is simplified from ~650 lines to ≤250 lines. Removed: stash/pop, milestone shelter, .gsd/ conflict auto-resolution. Kept: auto-commit dirty state, checkout main, squash merge, commit, worktree teardown, auto-push, code change detection, branch-ref divergence check.
+- Class: architectural
+- Status: validated
+- Description: mergeMilestoneToMain() is simplified from ~650 lines to ≤250 lines. Removed: stash/pop, milestone shelter, .gsd/ conflict auto-resolution. Kept: auto-commit dirty state, checkout main, squash merge, commit, worktree teardown, auto-push, code change detection, branch-ref divergence check.
+- Why it matters: The defensive merge code exists to handle .gsd/ file divergence between branches — a problem that tracked artifacts (R023) eliminate. The simplified function is easier to reason about, test, and maintain.
+- Source: PRD-branchless-worktree-architecture
+- Primary owning slice: M113/S03
+- Validation: mergeMilestoneToMain reduced from ~652 to 233 lines (≤250 target met). stash/pop, milestone shelter, and .gsd/ auto-resolve fully removed. tsc --noEmit passes. 22/22 integration tests pass. grep confirms zero references to stash/shelter/isSafeToAutoResolve/SAFE_AUTO_RESOLVE in production code.
+
 ## Deferred
 
 ### R011 — System validates that skill content follows BMAD four-field persona rules (role, identity, communication style, principles), module assignment, and manifest registration.
@@ -157,12 +158,12 @@ This file is the explicit capability and coverage contract for the project.
 | R022 | differentiator | out-of-scope | none | none | n/a |
 | R023 | architectural | active | M113/S01 | none | unmapped |
 | R024 | architectural | validated | M113/S02 | none | rg finds zero code references to syncProjectRootToWorktree, syncStateToProjectRoot, syncGsdStateToWorktree, syncWorktreeStateBack, copyPlanningArtifacts, reconcilePlanCheckboxes, forceOverwriteAssessmentsWithVerdict in production code. tsc --noEmit passes. 9 sync-only test files deleted, 13 mixed-content test files cleaned. One historical comment reference remains in merge-cwd-restore.test.ts (non-functional). |
-| R025 | architectural | active | M113/S03 | none | unmapped |
+| R025 | architectural | validated | M113/S03 | none | mergeMilestoneToMain reduced from ~652 to 233 lines (≤250 target met). stash/pop, milestone shelter, and .gsd/ auto-resolve fully removed. tsc --noEmit passes. 22/22 integration tests pass. grep confirms zero references to stash/shelter/isSafeToAutoResolve/SAFE_AUTO_RESOLVE in production code. |
 | R026 | operational | active | M113/S04 | none | unmapped |
 
 ## Coverage Summary
 
-- Active requirements: 3
-- Mapped to slices: 3
-- Validated: 6 (R001, R002, R003, R004, R010, R024)
+- Active requirements: 2
+- Mapped to slices: 2
+- Validated: 7 (R001, R002, R003, R004, R010, R024, R025)
 - Unmapped active requirements: 0
