@@ -28,7 +28,7 @@
   - Files: `src/resources/extensions/gsd/auto-recovery.ts`
   - Verify: npx vitest run 2>&1 | grep -aE 'Test Files.*passed' should show 20 passed; rg -c 'abortAndResetMerge' src/resources/extensions/gsd/auto-recovery.ts should return 0
 
-- [ ] **T02: Verify compilation and full test suite health** `est:30m`
+- [x] **T02: Verify compilation and full test suite health** `est:30m`
   Run tsc --noEmit and the full vitest suite to confirm all tests compile and pass. Fix any issues introduced by T01 or pre-existing failures that block R026 validation.
 
 The test suite has ~20 vitest test files (405 tests) that pass, plus ~1993 dist-test/ files that fail (pre-existing, expected — they use node:test format). The executor should confirm the vitest-only count is stable after T01 changes.
