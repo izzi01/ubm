@@ -4,14 +4,6 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Active
 
-### R023 — GSD planning artifacts (milestones/*.md, PROJECT.md, DECISIONS.md, REQUIREMENTS.md, QUEUE.md, OVERRIDES.md, KNOWLEDGE.md) are tracked in git so they travel with branches. Runtime files (gsd.db, STATE.md, runtime/, activity/, worktrees/, metrics.json, completed-units.json) remain gitignored.
-- Class: architectural
-- Status: active
-- Description: GSD planning artifacts (milestones/*.md, PROJECT.md, DECISIONS.md, REQUIREMENTS.md, QUEUE.md, OVERRIDES.md, KNOWLEDGE.md) are tracked in git so they travel with branches. Runtime files (gsd.db, STATE.md, runtime/, activity/, worktrees/, metrics.json, completed-units.json) remain gitignored.
-- Why it matters: Eliminates the worktree sync layer — the root cause of most worktree bugs. With artifacts tracked in git, `git worktree add` and `git checkout` give correct state automatically, removing ~500 lines of file-copying code.
-- Source: PRD-branchless-worktree-architecture
-- Primary owning slice: M113/S01
-
 ### R026 — Sync-specific test files are deleted. Remaining tests compile and pass. git-self-heal.ts is simplified to crash-recovery-only (no merge-specific recovery). No production or test code references deleted sync functions.
 - Class: operational
 - Status: active
@@ -76,6 +68,15 @@ This file is the explicit capability and coverage contract for the project.
 - Supporting slices: none
 - Validation: M106/S01 delivered /skill install <git-url> that clones a git repo (shallow, depth=1, 60s timeout), scans for skill directories at root and one level deep, validates each against the Skills Spec, copies valid skills to .opencode/skills/ without overwriting existing ones, and cleans up temp directory. 13 installer tests + 5 command tests cover all paths (success, clone failure, no skills, partial install, name conflict, nested repos, cleanup). 78/78 skill-related tests pass.
 - Notes: Deferred to Phase 2. Local-only install is sufficient for MVP.
+
+### R023 — GSD planning artifacts (milestones/*.md, PROJECT.md, DECISIONS.md, REQUIREMENTS.md, QUEUE.md, OVERRIDES.md, KNOWLEDGE.md) are tracked in git so they travel with branches. Runtime files (gsd.db, STATE.md, runtime/, activity/, worktrees/, metrics.json, completed-units.json) remain gitignored.
+- Class: architectural
+- Status: validated
+- Description: GSD planning artifacts (milestones/*.md, PROJECT.md, DECISIONS.md, REQUIREMENTS.md, QUEUE.md, OVERRIDES.md, KNOWLEDGE.md) are tracked in git so they travel with branches. Runtime files (gsd.db, STATE.md, runtime/, activity/, worktrees/, metrics.json, completed-units.json) remain gitignored.
+- Why it matters: Eliminates the worktree sync layer — the root cause of most worktree bugs. With artifacts tracked in git, `git worktree add` and `git checkout` give correct state automatically, removing ~500 lines of file-copying code.
+- Source: PRD-branchless-worktree-architecture
+- Primary owning slice: M113/S01
+- Validation: .gsd converted from symlink to real directory. 8 planning .md files + 355 milestone files tracked in git. Runtime files (gsd.db, STATE.md, activity/, runtime/, journal/, etc.) gitignored via 25 specific patterns. git check-ignore confirms correct behavior for all categories.
 
 ### R024 — The worktree sync layer (syncProjectRootToWorktree, syncStateToProjectRoot, syncGsdStateToWorktree, syncWorktreeStateBack, copyPlanningArtifacts) is fully removed. All production callers and dependency injection sites are cleaned up. Worktrees receive correct state via git, not filesystem copying.
 - Class: architectural
@@ -156,14 +157,14 @@ This file is the explicit capability and coverage contract for the project.
 | R020 | core-capability | out-of-scope | none | none | n/a |
 | R021 | core-capability | out-of-scope | none | none | n/a |
 | R022 | differentiator | out-of-scope | none | none | n/a |
-| R023 | architectural | active | M113/S01 | none | unmapped |
+| R023 | architectural | validated | M113/S01 | none | .gsd converted from symlink to real directory. 8 planning .md files + 355 milestone files tracked in git. Runtime files (gsd.db, STATE.md, activity/, runtime/, journal/, etc.) gitignored via 25 specific patterns. git check-ignore confirms correct behavior for all categories. |
 | R024 | architectural | validated | M113/S02 | none | rg finds zero code references to syncProjectRootToWorktree, syncStateToProjectRoot, syncGsdStateToWorktree, syncWorktreeStateBack, copyPlanningArtifacts, reconcilePlanCheckboxes, forceOverwriteAssessmentsWithVerdict in production code. tsc --noEmit passes. 9 sync-only test files deleted, 13 mixed-content test files cleaned. One historical comment reference remains in merge-cwd-restore.test.ts (non-functional). |
 | R025 | architectural | validated | M113/S03 | none | mergeMilestoneToMain reduced from ~652 to 233 lines (≤250 target met). stash/pop, milestone shelter, and .gsd/ auto-resolve fully removed. tsc --noEmit passes. 22/22 integration tests pass. grep confirms zero references to stash/shelter/isSafeToAutoResolve/SAFE_AUTO_RESOLVE in production code. |
 | R026 | operational | active | M113/S04 | none | unmapped |
 
 ## Coverage Summary
 
-- Active requirements: 2
-- Mapped to slices: 2
-- Validated: 7 (R001, R002, R003, R004, R010, R024, R025)
+- Active requirements: 1
+- Mapped to slices: 1
+- Validated: 8 (R001, R002, R003, R004, R010, R023, R024, R025)
 - Unmapped active requirements: 0

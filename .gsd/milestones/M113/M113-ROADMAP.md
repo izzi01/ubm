@@ -9,4 +9,4 @@ Eliminate the worktree sync layer by tracking planning artifacts in git, cascadi
 | S01 | .gitignore + tracking fix | low | — | ✅ | git ls-files shows planning artifacts tracked, runtime files untracked. git worktree add produces correct .gsd/milestones/ from branch. |
 | S02 | S02 | medium | — | ✅ | rg finds zero references to deleted sync functions in production code. tsc --noEmit passes. |
 | S03 | S03 | high | — | ✅ | mergeMilestoneToMain is ≤250 lines. No stash/shelter/isSafeToAutoResolve references. Function still handles dirty tree detection and branch-ref divergence. |
-| S04 | S04 | medium | — | ⬜ | Sync-specific test files deleted. Remaining tests compile and pass. abortAndReset simplified. |
+| S04 | S04 | medium | — | ✅ | Sync-specific test files deleted. Remaining tests compile and pass. abortAndReset simplified. |

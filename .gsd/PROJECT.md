@@ -41,7 +41,7 @@ A **coding agent terminal** forked from [GSD-2](https://github.com/gsd-build/gsd
 - **M110 complete**: Complete isolation mode cleanup — S01 remove 'none'/'branch' from getIsolationMode and all consumers ✅ (getIsolationMode() now constant 'worktree', ~180 lines dead code removed, 2 obsolete test files deleted)
 - **M111 complete**: Fix umb pattern test compilation — S01 fix vitest imports, .js extensions, and implicit any types ✅ (34 TS errors fixed across 11 test files, zero pattern test errors remaining)
 - **M112 complete**: Implement BMAD method — S01 install BMAD skills + _bmad/ ✅, S02 BMAD skill execution engine ✅, S03 auto-analysis pipeline ✅, S04 auto-planning pipeline ✅, S05 auto-solutioning pipeline ✅, S06 auto-implementation pipeline ✅, S07 gsd-orchestrator integration ✅ (/bmad auto umbrella command, executeAutoPipeline() shared executor, /gsd build-from-spec BMAD→GSD orchestration, 118 tests pass)
-- **M113 in progress**: Branchless worktree architecture — S01 .gitignore + tracking fix ✅ (.gsd converted from symlink to real directory, 8 planning artifacts + 355 milestone files tracked in git, runtime files gitignored)
+- **M113 complete**: Branchless worktree architecture — S01 .gitignore + tracking fix ✅, S02 sync function removal ✅, S03 mergeMilestoneToMain simplification ✅, S04 test cleanup + git-self-heal simplification ✅ (.gsd/ auto-resolve branch removed, duplicate abortAndResetMerge deleted, 20 vitest files / 405 tests pass, tsc clean)
 
 ## Architecture Notes
 
@@ -81,3 +81,4 @@ This project is now a **fork of gsd-2** (not an extension on top of it):
 - /bmad auto umbrella command: 3 modes — no args (all 4 phases), phase arg (single phase), --stop-after (partial pipeline)
 - /gsd build-from-spec: orchestrates BMAD→GSD workflow — runs all 4 phases, reads artifacts from _bmad-output/planning-artifacts/, composes context, starts GSD session with gsd_milestone_plan instruction
 - readBmadArtifacts() and composeGsdContext() helpers exported from gsd-commands.ts for testability
+- **Branchless worktree architecture (M113)**: .gsd/ is a real git-tracked directory (not symlink). 25 runtime patterns gitignored. Worktree sync layer fully removed — planning artifacts travel with branches via git. mergeMilestoneToMain simplified from 652 to 233 lines. Conflict model: dirty tree → GSDError; conflicts → abort + MergeConflictError. cleanupMergeStateFiles() helper for merge-artifact cleanup.
