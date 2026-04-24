@@ -1,0 +1,82 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_7xuqqYpa3W9jRlT9IfdsCSHz",
+    "command": "find .. -name AGENTS.md -o -path './AGENTS.md' | sed 's#^./##' | sort | grep '/umb/AGENTS.md\\|^AGENTS.md\\|projects-personal/AGENTS.md'",
+    "exitCode": 1,
+    "outputSnippet": "Command timed out after 5 seconds",
+    "timestamp": 1777010770473
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_c4kRxcYBs2ksTrUzMdkJiSqX",
+    "command": "pwd && ls -1 && if [ -f AGENTS.md ]; then echo 'HAS_ROOT_AGENTS'; fi && if [ -f ../AGENTS.md ]; then echo 'HAS_PARENT_AGENTS'; fi",
+    "exitCode": 0,
+    "outputSnippet": "/home/cid/projects-personal/umb\n_bmad\nCHANGELOG.md\nCONTRIBUTING.md\ndist\ndist-test\ndocker\nDockerfile\ndocs\ngsd-orchestrator\nLICENSE\nmintlify-docs\nnative\nnode_modules\npackage.json\npackage-lock.json\npackages\npkg\nREADME.md\nrepowise.db\nscripts\nsrc\nstudio\ntests\ntsconfig.extensions.json\ntsconfig.json\ntsconfig.resources.json\ntsconfig.test.json\nVISION.md\nvscode-extension\nweb\nHAS_PARENT_AGENTS\n",
+    "timestamp": 1777010783858
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_SJRXU4qdisnqD27nUAFSCymW",
+    "command": "rg -n \"repo-mode|fixture replay|FixtureReplayer|GSD_FIXTURE_MODE|parity-web-task|recordings\" src tests package.json",
+    "exitCode": 0,
+    "outputSnippet": "package.json:67:    \"test:fixtures:record\": \"node scripts/with-env.mjs GSD_FIXTURE_MODE=record -- node --experimental-strip-types tests/fixtures/record.ts\",\ntests/parity/artifacts/baseline-report.json:108:      \"parityScope\": \"repo-mode\",\ntests/parity/artifacts/baseline-report.json:127:      \"parityScope\": \"repo-mode\",\ntests/parity/artifacts/baseline-report.json:163:    \"fixtureId\": \"parity-web-task\",\ntests/parity/baseline-lanes.ts:8:export const PARITY_MANIFEST_PATH = \"tests/fixtures/parity-web",
+    "timestamp": 1777010792199
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_EpiO9UW3KcX1wMJgWnUdWM2n",
+    "command": "for f in tests/fixtures/recordings/repo-mode-parity-web-task.json src/tests/integration/helpers/repo-mode-parity.ts src/tests/integration/repo-mode-coding-loop.test.ts; do if [ -e \"$f\" ]; then echo EXISTS:$f; else echo MISSING:$f; fi; done",
+    "exitCode": 0,
+    "outputSnippet": "MISSING:tests/fixtures/recordings/repo-mode-parity-web-task.json\nMISSING:src/tests/integration/helpers/repo-mode-parity.ts\nMISSING:src/tests/integration/repo-mode-coding-loop.test.ts\n",
+    "timestamp": 1777010792199
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_ksaqMDewpiHdYkk92309jLKD",
+    "command": "rg -n \"FixtureRecorder|FixtureReplayer|loadFixture\\(|saveFixture\\(|recordings/|repo/dev|scripts/dev-cli|loader.js|umb entrypoint|GSD_FIXTURE_DIR|GSD_FIXTURE_MODE\" src tests scripts",
+    "exitCode": 0,
+    "outputSnippet": "scripts/parallel-monitor.mjs:280:  const repoLoader = path.resolve(import.meta.dirname, '..', 'dist', 'loader.js');\nscripts/parallel-monitor.mjs:287:      path.join(globalRoot, 'gsd-pi', 'dist', 'loader.js'),\nscripts/parallel-monitor.mjs:288:      path.join(globalRoot, '@gsd', 'pi', 'dist', 'loader.js'),\nscripts/parallel-monitor.mjs:303:      const loader = path.resolve(path.dirname(realBin), '..', 'dist', 'loader.js');\nsrc/loader.ts:114:// (e.g. auto.ts resume path) to import modules like resou",
+    "timestamp": 1777010800505
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_SrZQfzgezo8kbukAxNV7nWTh",
+    "command": "find . -maxdepth 3 -name AGENTS.md | sort",
+    "exitCode": 0,
+    "outputSnippet": "(no output)",
+    "timestamp": 1777010806569
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_RqDMCGdhzQwSeOF1KRe7YLYe",
+    "command": "rg -n \"mock model|fake model|fixture mode|FixtureRecorder|FixtureReplayer|toolUses|replay|recording|TEST_MODEL|No model selected|registerModel|provider.*test|mock provider|stub provider|createTest\" src tests packages",
+    "exitCode": 0,
+    "outputSnippet": "tests/fixtures/provider.ts:69:export function saveFixture(filePath: string, recording: FixtureRecording): void {\ntests/fixtures/provider.ts:71:  writeFileSync(filePath, JSON.stringify(recording, null, 2) + \"\\n\");\ntests/fixtures/provider.ts:75: * Creates a readable stream of responses from a fixture recording,\ntests/fixtures/provider.ts:78:export function createReplayStream(recording: FixtureRecording): Iterator<FixtureTurn> {\ntests/fixtures/provider.ts:79:  const assistantTurns = recording.turns",
+    "timestamp": 1777010817243
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_nwJ7ZBsuSOLA7LIz6jGaJaNJ",
+    "command": "rg -n \"--print|print mode|text mode|headless.*auto|context-text|new-milestone|auto-mode\" src/tests src/resources/extensions/gsd/tests packages | head -200",
+    "exitCode": 0,
+    "outputSnippet": "rg: unrecognized flag --print|print mode|text mode|headless.*auto|context-text|new-milestone|auto-mode\n",
+    "timestamp": 1777010817243
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_15GlQni5vMQq46ERAopHBnly",
+    "command": "rg -n 'test-provider|provider: \"test\"|No model selected|register.*provider|mock model|TEST_MODEL|provider registry' packages/pi-ai packages/pi-agent-core src | head -200",
+    "exitCode": 0,
+    "outputSnippet": "packages/pi-agent-core/src/agent-loop.test.ts:77:\t\t\tmodel: { ...TEST_MODEL, provider: \"claude-code\" },\npackages/pi-agent-core/src/agent-loop.test.ts:120:const TEST_MODEL: Model<\"anthropic-messages\"> = {\npackages/pi-agent-core/src/agent-loop.test.ts:236:\t\t\tmodel: TEST_MODEL,\npackages/pi-agent-core/src/agent-loop.test.ts:285:\t\t\tmodel: TEST_MODEL,\npackages/pi-agent-core/src/agent-loop.test.ts:367:\t\t\tmodel: TEST_MODEL,\npackages/pi-ai/src/models.test.ts:15:\tit(\"alibaba-coding-plan is a registered pro",
+    "timestamp": 1777010836041
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_7ttqIwRLs3hGPqvTAg7uSIy4",
+    "command": "rg -n \"registerProvider\\(|registeredProviders|custom provider|parseModels\\(|modelRegistry|--model|--extension|ExtensionAPI|registerCommand\\(\" src packages | head -250",
+    "exitCode": 1,
+    "outputSnippet": "Skipped due to queued user message.",
+    "timestamp": 1777010846182
+  }
+]

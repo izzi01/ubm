@@ -52,7 +52,7 @@ Negative Tests (Q7): assert missing task brief, missing test script, and non-run
   - Files: `tests/fixtures/parity-web-task/package.json`, `tests/fixtures/parity-web-task/index.html`, `tests/fixtures/parity-web-task/src/main.ts`, `tests/fixtures/parity-web-task/src/task.ts`, `tests/fixtures/parity-web-task/tests/task.spec.ts`, `tests/fixtures/parity-web-task/TASK.md`, `src/tests/integration/repo-mode-fixture-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/repo-mode-fixture-contract.test.ts
 
-- [ ] **T02: Prove the repo-mode coding loop against the fixture** `est:1h15m`
+- [x] **T02: Prove the repo-mode coding loop against the fixture** `est:1h15m`
   Skills to load before coding: `test`, `agent-browser`, `verify-before-complete`.
 
 Turn the fixture into a real repo-mode proof by driving the repo/dev `umb` entrypoint through the deterministic coding loop in a temp workspace. Reuse the existing fixture replay approach instead of introducing a second harness family, but make the test assert on actual side effects: file edits, fixture test execution, dev-server readiness, browser assertions, and cleanup.
