@@ -2,7 +2,7 @@
 
 This guide demonstrates the product claim in plain language: **umb can complete a small tracked software task in both repo mode and installed mode using the same deterministic parity fixture, and the release workflow can optionally attach a live-model spot-check without making the deterministic release proof flaky.**
 
-The proof surface is intentionally deterministic. Instead of asking the operator to re-stage the whole coding loop by hand, it uses the tracked fixture brief, tracked repo-mode and installed-mode recordings, and the generated parity report/diagnostics so the same claim can be inspected repeatedly.
+The proof surface is intentionally deterministic. Instead of asking the operator to re-stage the whole coding loop by hand, it uses the tracked fixture brief, tracked repo-mode and installed-mode recordings, the generated parity report/diagnostics, and the unified release-facing summary so the same claim can be inspected repeatedly.
 
 ## Preconditions
 
@@ -13,9 +13,11 @@ Confirm these tracked inputs exist before evaluating the claim:
 - `tests/fixtures/recordings/repo-mode-parity-web-task.json`
 - `tests/fixtures/recordings/installed-mode-parity-web-task.json`
 - `tests/parity/artifacts/baseline-report.json`
+- `tests/parity/artifacts/release-facing-summary.json`
 - `tests/parity/diagnostics.ts`
 - `tests/parity/run.ts`
 - `tests/parity/release-gate.ts`
+- `tests/parity/release-facing-summary.ts`
 
 ## Deterministic release commands
 
@@ -34,6 +36,19 @@ Policy:
 - The optional live spot-check is reported as `passed`, `failed`, or `skipped` without changing the required-lane release verdict.
 - A skipped live spot-check must explain whether it was skipped because `GSD_LIVE_TESTS` was not enabled or because no live provider API key was configured.
 - Live configuration reporting must stay redacted: report status/reason only, never secret values.
+
+## Unified release-facing source
+
+Read `tests/parity/artifacts/release-facing-summary.json` before writing milestone-facing release prose. It is the authoritative source for the current deterministic parity story and should supply the exact milestone-summary wording for:
+
+- `milestoneSummaryInput.authoritativeSource`
+- `milestoneSummaryInput.whatUmbProvesNow`
+- `milestoneSummaryInput.whatRemainsOptional`
+- `milestoneSummaryInput.whatRemainsOutOfScope`
+- `baselineExplanation`
+- `whyPartialIsTruthful`
+
+The tracked milestone files that should stay aligned to this source are `.gsd/milestones/M116/M116-ROADMAP.md`, `.gsd/milestones/M116/slices/S02/S02-SUMMARY.md`, `.gsd/milestones/M116/slices/S03/S03-SUMMARY.md`, and `.gsd/milestones/M116/slices/S04/S04-SUMMARY.md`, with the final milestone completion summary quoting the same unified fields instead of ad hoc prose.
 
 ## What the fixture is proving
 

@@ -1,10 +1,13 @@
-import test from "node:test"
+import { test } from "vitest"
 import assert from "node:assert/strict"
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
 
 const repoRoot = process.cwd()
 const guidePath = join(repoRoot, "tests", "parity", "human-uat.md")
+const roadmapPath = join(repoRoot, ".gsd", "milestones", "M116", "M116-ROADMAP.md")
+const releaseFacingSummaryArtifactPath = "tests/parity/artifacts/release-facing-summary.json"
+const releaseFacingSummarySourcePath = "tests/parity/release-facing-summary.ts"
 const taskBriefPath = "tests/fixtures/parity-web-task/TASK.md"
 const manifestPath = "tests/fixtures/parity-web-task-manifest.json"
 const repoRecordingPath = "tests/fixtures/recordings/repo-mode-parity-web-task.json"
@@ -17,7 +20,11 @@ function readGuide(): string {
   return readFileSync(guidePath, "utf8")
 }
 
-test("human-readable parity UAT guide stays anchored to tracked files, both modes, and the diagnostics flow", () => {
+function readRoadmap(): string {
+  return readFileSync(roadmapPath, "utf8")
+}
+
+test("human-readable parity UAT guide stays anchored to tracked files, both modes, diagnostics flow, and unified milestone-summary source", () => {
   const guide = readGuide()
 
   assert.match(guide, /^# Human-readable parity fixture UAT/m)
@@ -30,6 +37,12 @@ test("human-readable parity UAT guide stays anchored to tracked files, both mode
     repoRecordingPath,
     installedRecordingPath,
     baselineReportPath,
+    releaseFacingSummaryArtifactPath,
+    releaseFacingSummarySourcePath,
+    ".gsd/milestones/M116/M116-ROADMAP.md",
+    ".gsd/milestones/M116/slices/S02/S02-SUMMARY.md",
+    ".gsd/milestones/M116/slices/S03/S03-SUMMARY.md",
+    ".gsd/milestones/M116/slices/S04/S04-SUMMARY.md",
     "tests/parity/diagnostics.ts",
     "tests/parity/run.ts",
   ]) {
@@ -61,11 +74,18 @@ test("human-readable parity UAT guide stays anchored to tracked files, both mode
   assert.match(guide, /npm test/)
   assert.match(guide, /npm run dev/)
   assert.match(guide, /#status-message/)
-  assert.match(guide, /inspect/) 
+  assert.match(guide, /inspect/)
   assert.match(guide, /edit/)
   assert.match(guide, /test/)
   assert.match(guide, /dev-server/)
   assert.match(guide, /browser/)
+  assert.match(guide, /milestoneSummaryInput\.authoritativeSource/)
+  assert.match(guide, /milestoneSummaryInput\.whatUmbProvesNow/)
+  assert.match(guide, /milestoneSummaryInput\.whatRemainsOptional/)
+  assert.match(guide, /milestoneSummaryInput\.whatRemainsOutOfScope/)
+  assert.match(guide, /baselineExplanation/)
+  assert.match(guide, /whyPartialIsTruthful/)
+  assert.match(guide, /final milestone completion summary quoting the same unified fields/i)
   assert.match(guide, /Which mode failed\?/) 
   assert.match(guide, /Which phase failed\?/) 
   assert.match(guide, /Where is the artifact that recorded the failure\?/) 
@@ -73,6 +93,17 @@ test("human-readable parity UAT guide stays anchored to tracked files, both mode
 
   assert.match(guide, new RegExp(parityRunnerCommand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")))
   assert.match(guide, new RegExp(diagnosticsCommand.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")))
+})
+
+test("roadmap milestone-complete section names the unified release-facing summary as the source for milestone wording", () => {
+  const roadmap = readRoadmap()
+
+  assert.match(roadmap, /### S05 → milestone-complete/)
+  assert.match(roadmap, /tests\/parity\/artifacts\/release-facing-summary\.json/)
+  assert.match(roadmap, /milestoneSummaryInput\.whatUmbProvesNow/)
+  assert.match(roadmap, /whatRemainsOptional/)
+  assert.match(roadmap, /whatRemainsOutOfScope/)
+  assert.match(roadmap, /instead of ad hoc narrative reassembly/)
 })
 
 test("human-readable parity UAT guide does not drift into placeholder language or untracked operator instructions", () => {

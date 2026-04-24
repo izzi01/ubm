@@ -168,7 +168,7 @@ test("secondary diagnostics cli fails with a precise error when the secondary re
   assert.match(result.stderr, /Secondary parity release report not found at tests\/parity\/artifacts\/secondary-release-report\.missing\.json/)
 })
 
-test("human-readable secondary parity UAT guide stays anchored to tracked artifacts, commands, and truthful pass\/partial\/fail interpretation", () => {
+test("human-readable secondary parity UAT guide stays anchored to tracked artifacts, unified milestone-summary source, commands, and truthful pass/partial/fail interpretation", () => {
   const guide = readGuide()
 
   assert.match(guide, /^# Human-readable secondary-surface parity UAT/m)
@@ -177,12 +177,18 @@ test("human-readable secondary parity UAT guide stays anchored to tracked artifa
     "tests/parity/artifacts/baseline-report.json",
     "tests/parity/artifacts/secondary-release-report.json",
     "tests/parity/artifacts/secondary-surface-inventory.json",
+    "tests/parity/artifacts/release-facing-summary.json",
     "tests/parity/artifacts/mcp-parity.json",
     "tests/parity/artifacts/workflow-parity.json",
     "tests/fixtures/worktree-session-parity-manifest.json",
     "tests/parity/secondary-release-gate.ts",
     "tests/parity/diagnostics.ts",
+    "tests/parity/release-facing-summary.ts",
     "tests/parity/human-uat-secondary.md",
+    ".gsd/milestones/M116/M116-ROADMAP.md",
+    ".gsd/milestones/M116/slices/S02/S02-SUMMARY.md",
+    ".gsd/milestones/M116/slices/S03/S03-SUMMARY.md",
+    ".gsd/milestones/M116/slices/S04/S04-SUMMARY.md",
   ]) {
     assert.match(guide, new RegExp(trackedPath.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")))
   }
@@ -200,6 +206,14 @@ test("human-readable secondary parity UAT guide stays anchored to tracked artifa
   assert.match(guide, /requiredLanes/)
   assert.match(guide, /optionalLanes/)
   assert.match(guide, /optionalLive/)
+  assert.match(guide, /milestoneSummaryInput\.authoritativeSource/)
+  assert.match(guide, /milestoneSummaryInput\.whatUmbProvesNow/)
+  assert.match(guide, /milestoneSummaryInput\.whatRemainsOptional/)
+  assert.match(guide, /milestoneSummaryInput\.whatRemainsOutOfScope/)
+  assert.match(guide, /baselineExplanation/)
+  assert.match(guide, /whyPartialIsTruthful/)
+  assert.match(guide, /residualInventory/)
+  assert.match(guide, /scopedOutSurfaces/)
   assert.match(guide, /web-mode/)
   assert.match(guide, /mcp/)
   assert.match(guide, /workflow-bmad/)

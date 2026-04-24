@@ -2,7 +2,7 @@
 
 This guide explains the release-facing claim for the secondary parity band in plain language: **umb publishes one integrated secondary-surface release artifact that tells an operator which secondary lanes are proven now, which optional/provider-driven lanes remain non-blocking, and exactly where to inspect failures when one of the required surfaces breaks.**
 
-The proof is intentionally release-readable and deterministic. Instead of asking an operator to manually replay MCP, workflow, web-mode, and worktree/session checks one by one, it uses the tracked integrated release report, the shared diagnostics renderer, and the underlying tracked artifacts already emitted by the secondary parity band.
+The proof is intentionally release-readable and deterministic. Instead of asking an operator to manually replay MCP, workflow, web-mode, and worktree/session checks one by one, it uses the tracked integrated release report, the shared diagnostics renderer, the unified release-facing summary artifact, and the underlying tracked artifacts already emitted by the secondary parity band.
 
 ## Preconditions
 
@@ -11,11 +11,13 @@ Confirm these tracked inputs exist before evaluating the claim:
 - `tests/parity/artifacts/baseline-report.json`
 - `tests/parity/artifacts/secondary-release-report.json`
 - `tests/parity/artifacts/secondary-surface-inventory.json`
+- `tests/parity/artifacts/release-facing-summary.json`
 - `tests/parity/artifacts/mcp-parity.json`
 - `tests/parity/artifacts/workflow-parity.json`
 - `tests/fixtures/worktree-session-parity-manifest.json`
 - `tests/parity/secondary-release-gate.ts`
 - `tests/parity/diagnostics.ts`
+- `tests/parity/release-facing-summary.ts`
 - `tests/parity/human-uat-secondary.md`
 
 ## Deterministic release commands
@@ -35,6 +37,29 @@ Policy:
 - Optional lanes remain visible and auditable, but they do not flip the release verdict by themselves.
 - Provider/live coverage remains explicit and non-blocking.
 - Existing partial secondary parity coverage must stay truthful; the report should say what is missing rather than imply full closure.
+
+## Unified release-facing source
+
+Read `tests/parity/artifacts/release-facing-summary.json` before drafting milestone-facing prose. It is the authoritative source for the release-facing parity story and exposes the exact fields milestone completion should quote:
+
+- `milestoneSummaryInput.authoritativeSource`
+- `milestoneSummaryInput.whatUmbProvesNow`
+- `milestoneSummaryInput.whatRemainsOptional`
+- `milestoneSummaryInput.whatRemainsOutOfScope`
+- `baselineExplanation`
+- `whyPartialIsTruthful`
+- `residualInventory`
+- `scopedOutSurfaces`
+
+Tracked milestone-facing files that must stay aligned to this source are:
+
+- `.gsd/milestones/M116/M116-ROADMAP.md`
+- `.gsd/milestones/M116/slices/S02/S02-SUMMARY.md`
+- `.gsd/milestones/M116/slices/S03/S03-SUMMARY.md`
+- `.gsd/milestones/M116/slices/S04/S04-SUMMARY.md`
+- the final DB-rendered milestone completion summary for M116
+
+Do not restate release status from memory or from ad hoc sentence fragments. Quote the unified summary fields so the milestone-facing story stays consistent with the tracked parity artifacts.
 
 ## What the integrated artifact is proving
 

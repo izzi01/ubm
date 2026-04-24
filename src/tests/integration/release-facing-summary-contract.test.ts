@@ -11,6 +11,10 @@ import {
 import { loadBaselineReport, loadSecondaryReleaseReport } from "../../../tests/parity/diagnostics.ts"
 import { loadParityGapInventory } from "../../../tests/parity/parity-gap-inventory.ts"
 
+const secondaryGuidePath = "tests/parity/human-uat-secondary.md"
+const primaryGuidePath = "tests/parity/human-uat.md"
+const roadmapPath = ".gsd/milestones/M116/M116-ROADMAP.md"
+
 function loadInputs() {
   return {
     baseline: structuredClone(loadBaselineReport()),
@@ -20,7 +24,7 @@ function loadInputs() {
   }
 }
 
-test("release-facing summary unifies baseline partial, passing required secondary lanes, optional evidence, and scoped residual drift", () => {
+test("release-facing summary unifies baseline partial, passing required secondary lanes, optional evidence, scoped residual drift, and milestone-summary inputs", () => {
   const { baseline, secondary, gapInventory, surfaceInventory } = loadInputs()
   const summary = createReleaseFacingSummary(baseline, secondary, gapInventory, surfaceInventory)
   const rendered = renderReleaseFacingSummary(summary)
@@ -112,6 +116,7 @@ test("release-facing summary unifies baseline partial, passing required secondar
 
   expect(summary.milestoneSummaryInput.authoritativeSource).toBe("tests/parity/artifacts/release-facing-summary.json")
   expect(summary.milestoneSummaryInput.whatUmbProvesNow).toMatch(/repo-mode and installed-mode coding loop/i)
+  expect(summary.milestoneSummaryInput.whatUmbProvesNow).toMatch(/web-mode, mcp, workflow-bmad, worktree-session-recovery, rebrand-drift/i)
   expect(summary.milestoneSummaryInput.whatRemainsOptional).toMatch(/live-runner/)
   expect(summary.milestoneSummaryInput.whatRemainsOutOfScope).toMatch(/Residual scoped rebrand drift remains explicit at 5 tracked findings/i)
 
@@ -122,6 +127,42 @@ test("release-facing summary unifies baseline partial, passing required secondar
   expect(rendered).toMatch(/optionalLive: status=skipped required=no configured=no enabled=no/)
   expect(rendered).toMatch(/residualInventory: total=6 optional=1 scoped=4 scopedRebrand=5/)
   expect(rendered).toMatch(/scopedRebrandFindingIds: drift-package-docker-image, drift-web-subprocess-comment, drift-live-regression-install-comment, drift-docker-template-test, drift-packaged-web-test-fixtures/)
+})
+
+test("release-facing summary milestone-facing wording stays quotable from tracked docs and roadmap instead of ad hoc prose", async () => {
+  const expected = await resolveReleaseFacingSummary()
+  const [secondaryGuide, primaryGuide, roadmap] = await Promise.all([
+    readFile(secondaryGuidePath, "utf8"),
+    readFile(primaryGuidePath, "utf8"),
+    readFile(roadmapPath, "utf8"),
+  ])
+
+  expect(secondaryGuide).toContain(expected.artifactPath)
+  expect(secondaryGuide).toContain("milestoneSummaryInput.authoritativeSource")
+  expect(secondaryGuide).toContain("milestoneSummaryInput.whatUmbProvesNow")
+  expect(secondaryGuide).toContain("milestoneSummaryInput.whatRemainsOptional")
+  expect(secondaryGuide).toContain("milestoneSummaryInput.whatRemainsOutOfScope")
+  expect(secondaryGuide).toContain("baselineExplanation")
+  expect(secondaryGuide).toContain("whyPartialIsTruthful")
+  expect(secondaryGuide).toContain(".gsd/milestones/M116/M116-ROADMAP.md")
+  expect(secondaryGuide).toContain(".gsd/milestones/M116/slices/S02/S02-SUMMARY.md")
+  expect(secondaryGuide).toContain(".gsd/milestones/M116/slices/S03/S03-SUMMARY.md")
+  expect(secondaryGuide).toContain(".gsd/milestones/M116/slices/S04/S04-SUMMARY.md")
+
+  expect(primaryGuide).toContain(expected.artifactPath)
+  expect(primaryGuide).toContain("milestoneSummaryInput.authoritativeSource")
+  expect(primaryGuide).toContain("milestoneSummaryInput.whatUmbProvesNow")
+  expect(primaryGuide).toContain("milestoneSummaryInput.whatRemainsOptional")
+  expect(primaryGuide).toContain("milestoneSummaryInput.whatRemainsOutOfScope")
+  expect(primaryGuide).toContain("baselineExplanation")
+  expect(primaryGuide).toContain("whyPartialIsTruthful")
+  expect(primaryGuide).toContain("final milestone completion summary quoting the same unified fields")
+
+  expect(roadmap).toContain(expected.artifactPath)
+  expect(roadmap).toContain("milestoneSummaryInput.whatUmbProvesNow")
+  expect(roadmap).toContain("whatRemainsOptional")
+  expect(roadmap).toContain("whatRemainsOutOfScope")
+  expect(roadmap).toContain("instead of ad hoc narrative reassembly")
 })
 
 test("release-facing summary rejects contradictory upstream fields with actionable path-bearing errors", () => {

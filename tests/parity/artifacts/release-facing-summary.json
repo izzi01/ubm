@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T15:00:53.344Z",
+  "generatedAt": "2026-04-24T15:05:43.231Z",
   "artifactPath": "tests/parity/artifacts/release-facing-summary.json",
   "releaseFacingVerdict": "passed",
   "baselineVerdict": "partial",
