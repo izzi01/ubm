@@ -22,8 +22,10 @@ Even if everything else is cut, `umb` must still be usable to make software end-
 - M114 assembled the core coding-loop parity gate: deterministic repo/dev and installed-mode recorded lanes, canonical baseline report/diagnostics, human UAT, and a release-facing gate with optional live metadata
 - The strict release gate is green when the deterministic repo/dev and installed coding-loop lanes are green, even if non-required baseline lanes still show existing gaps
 - The canonical baseline remains truthfully `partial` because optional live coverage skips unless explicitly enabled/configured and broader secondary surfaces are intentionally tracked as not yet closed
-- M115/S01 is complete: the repo now has a tracked secondary-surface inventory, a secondary parity lane/fixture manifest, and canonical `secondaryParity` wiring in `tests/parity/artifacts/baseline-report.json` covering `web-mode`, `mcp`, `workflow-bmad`, and `worktree-session-recovery`
-- M115/S01 also publishes a truthful rebrand-drift audit, including remaining `gsd` / `gsd-pi` runtime, packaging, and test-fixture references that downstream slices must retire deliberately instead of treating as hidden assumptions
+- M115/S01 is complete: the repo has a tracked secondary-surface inventory, a secondary parity lane/fixture manifest, and canonical `secondaryParity` wiring in `tests/parity/artifacts/baseline-report.json` covering `web-mode`, `mcp`, `workflow-bmad`, and `worktree-session-recovery`
+- M115/S02 is complete: web-mode parity now has a tracked deterministic fixture/manifest contract plus a locking integration contract that verifies the baseline report emits a truthful web-mode secondary parity row with explicit present fixtures, planned release-readable artifact path, and actionable uncovered-gap metadata
+- Web-mode remains intentionally `partial` in the secondary parity matrix until a dedicated release-readable `secondary-parity-report` lane exists; this is now locked as an explicit contract rather than an implicit gap
+- The remaining M115 work is still ahead: MCP parity proof (S03), workflow/BMAD parity proof (S04), and the integrated secondary-surface release gate (S05)
 
 ## Architecture / Key Patterns
 
@@ -39,7 +41,7 @@ Even if everything else is cut, `umb` must still be usable to make software end-
   - `tests/live/*` for opt-in live behavior
   - `tests/live-regression/*` for post-build installed-binary regression coverage
 - M114/M115 use `tests/parity/` as the proof inventory and reporting layer:
-  - `tests/parity/baseline-lanes.ts` declares the fixed allowlisted lane matrix and now emits the canonical `secondaryParity` payload into `tests/parity/artifacts/baseline-report.json`
+  - `tests/parity/baseline-lanes.ts` declares the fixed allowlisted lane matrix and emits the canonical `secondaryParity` payload into `tests/parity/artifacts/baseline-report.json`
   - `tests/parity/run.ts` emits a machine-readable baseline report even when the verdict is partial/failing, so consumers can inspect truthful parity gaps
   - `tests/parity/diagnostics.ts` renders operator-facing summaries from the canonical baseline report rather than introducing a second parity harness
   - `tests/parity/human-uat.md` is a tracked human-readable UAT script tied to repo-local fixture, report, and diagnostics artifacts
@@ -48,6 +50,8 @@ Even if everything else is cut, `umb` must still be usable to make software end-
   - `tests/parity/secondary-lanes.ts` is the source-of-truth contract for secondary parity proof classes, lane metadata, deterministic fixtures, and uncovered-surface semantics
   - `tests/fixtures/parity-web-task-manifest.json` is the tracked source of truth for the core coding-loop acceptance contract
   - `tests/fixtures/secondary-parity-manifest.json` is the tracked source of truth for the four secondary surfaces and their required/optional proof lanes
+  - `tests/fixtures/web-mode-parity-manifest.json` is the tracked source of truth for deterministic web-mode startup, project selection/switching, and browser-visible observables
+  - `src/tests/integration/web-mode-parity-contract.test.ts` locks the current truthful web-mode parity row in the canonical baseline report so downstream release work cannot silently change fixture paths, missing required lanes, or gap semantics
   - deterministic coding-loop proof is represented as recorded-artifact lanes (`repo-mode-coding-loop` and `pack-install`) with explicit `inspect`, `edit`, `test`, `dev-server`, and `browser` phase diagnostics
   - `repoInstalledComparison` gives downstream slices and release operators a stable repo-vs-installed diff surface with artifact paths and per-phase matches/divergence
 - Current parity policy is truthfulness-first: secondary surfaces stay `partial` until dedicated release-readable proof lanes/artifacts exist, even if scattered lower-level tests already cover important behavior
@@ -75,4 +79,4 @@ See `.gsd/REQUIREMENTS.md` for the explicit capability contract, requirement sta
 - [x] M112: Implement BMAD method — add BMAD skill execution and multi-phase auto pipelines
 - [x] M113: Branchless worktree architecture — track planning artifacts in git and remove the sync layer
 - [ ] M114: AI coding app parity gate — core coding-loop proof and release-gate surfaces are assembled in code and recorded artifacts; milestone-level validation/completion remains pending
-- [ ] M115: UMB secondary-surface parity gate — secondary-surface inventory/contracts are now established in S01; proof slices for web mode, MCP, workflow/BMAD, and integrated secondary-surface release reporting remain ahead
+- [ ] M115: UMB secondary-surface parity gate — S01 inventory/contracts and S02 web-mode parity proof are complete; MCP, workflow/BMAD, and integrated secondary-surface release reporting remain ahead

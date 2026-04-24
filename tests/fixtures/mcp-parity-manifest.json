@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "fixtureId": "mcp-parity-fixture",
+  "title": "Deterministic MCP parity fixture",
+  "server": {
+    "name": "mcp-parity-fixture",
+    "transport": "stdio",
+    "command": "node",
+    "args": [
+      "tests/fixtures/mcp-parity-server/server.mjs"
+    ],
+    "readyStderr": "[fixture] mcp-parity-fixture ready v0.1.0"
+  },
+  "contract": {
+    "discovery": {
+      "expectedServerName": "mcp-parity-fixture",
+      "expectedTools": [
+        "fixture_status",
+        "sum_numbers",
+        "fixture_failure"
+      ]
+    },
+    "schemaInspection": {
+      "tool": "sum_numbers",
+      "required": [
+        "left",
+        "right"
+      ],
+      "additionalProperties": false
+    },
+    "successInvocation": {
+      "tool": "sum_numbers",
+      "args": {
+        "left": 2,
+        "right": 3
+      },
+      "expected": {
+        "ok": true,
+        "total": 5,
+        "traceId": "fixture-sum-001"
+      }
+    },
+    "failureInvocation": {
+      "tool": "fixture_failure",
+      "args": {
+        "reason": "diagnostic probe"
+      },
+      "expected": {
+        "ok": false,
+        "code": "FIXTURE_FAILURE",
+        "phase": "tool-call",
+        "attribution": "fixture_failure"
+      }
+    }
+  },
+  "observability": {
+    "stderrReadyLine": "[fixture] mcp-parity-fixture ready v0.1.0",
+    "statusTool": "fixture_status",
+    "failureTool": "fixture_failure"
+  },
+  "notes": [
+    "This fixture is fully tracked and service-free so MCP parity tests can run deterministically in CI.",
+    "The intentional failure path returns an MCP tool error with machine-readable attribution instead of relying on transport crashes or missing configuration."
+  ]
+}

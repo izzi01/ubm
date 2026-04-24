@@ -1,0 +1,92 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_M6ZxrMpsvEd1WJRndW9gQRBO",
+    "command": "printf '--- repo root ---\\n'; pwd; printf '\\n--- candidate files ---\\n'; rg -n \"mcp|MCP|parity\" src tests package.json . --glob '!node_modules' --glob '!.git' --glob '!dist' | head -n 250",
+    "exitCode": 0,
+    "outputSnippet": "/home/cid/projects-personal/umb\n\n--- candidate files ---\n/bin/bash: line 1: printf: --: invalid option\nprintf: usage: printf [-v var] format [arguments]\npackage.json:50:    \"build:mcp-server\": \"npm run build -w @gsd-build/mcp-server\",\npackage.json:51:    \"build\": \"npm run build:pi && npm run build:rpc-client && npm run build:mcp-server && tsc && npm run copy-resources && npm run copy-themes && npm run copy-export-html && node scripts/build-web-if-stale.cjs\",\npackage.json:58:    \"test:unit\": \"npm",
+    "timestamp": 1777025992944
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_hczPuPTqoBz6tQYjfZNlq35U",
+    "command": "for p in tests/fixtures/mcp-parity-server tests/fixtures/mcp-parity-manifest.json src/tests/integration/mcp-parity-fixture-contract.test.ts; do if [ -e \"$p\" ]; then echo \"EXISTS $p\"; else echo \"MISSING $p\"; fi; done",
+    "exitCode": 0,
+    "outputSnippet": "MISSING tests/fixtures/mcp-parity-server\nMISSING tests/fixtures/mcp-parity-manifest.json\nMISSING src/tests/integration/mcp-parity-fixture-contract.test.ts\n",
+    "timestamp": 1777026001840
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_OwRwn4U2fICzm2kofj6WwOLu",
+    "command": "rg -n \"StdioClientTransport|listTools\\(|callTool\\(|@modelcontextprotocol/sdk|mcpServers|\\.mcp\\.json|session_shutdown|Client\\(\" src tests scripts --glob '!node_modules' | head -n 250",
+    "exitCode": 0,
+    "outputSnippet": "src/worktree-cli.ts:12: * On session exit (via session_shutdown event), auto-commits dirty work\nsrc/tests/session-memory-leaks.test.ts:124:test(\"bg-shell removes signal handlers on session_shutdown\", () => {\nsrc/tests/session-memory-leaks.test.ts:128:    \"session_shutdown must remove SIGTERM handler to prevent accumulation\",\nsrc/tests/session-memory-leaks.test.ts:132:    \"session_shutdown must remove SIGINT handler to prevent accumulation\",\nsrc/tests/package-mcp-server-elicitation.test.ts:3:impo",
+    "timestamp": 1777026011488
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_CP4A2WmIApI5DSvIQ9PqlkNG",
+    "command": "cat package.json | sed -n '1,220p'",
+    "exitCode": 0,
+    "outputSnippet": "{\n  \"name\": \"umb-cli\",\n  \"version\": \"2.70.1\",\n  \"description\": \"UMB — Umbrella Blade coding terminal\",\n  \"license\": \"MIT\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/gsd-build/gsd-2.git\"\n  },\n  \"homepage\": \"https://github.com/gsd-build/gsd-2#readme\",\n  \"bugs\": {\n    \"url\": \"https://github.com/gsd-build/gsd-2/issues\"\n  },\n  \"type\": \"module\",\n  \"workspaces\": [\n    \"packages/*\",\n    \"studio\"\n  ],\n  \"bin\": {\n    \"umb\": \"dist/loader.js\"\n  },\n  \"files\": [\n    \"dist\",\n    \"dist",
+    "timestamp": 1777026011488
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_jVosW6D7Bawc0OxeuUNWcWQf",
+    "command": "find tests/fixtures -maxdepth 2 -type f | sort | sed -n '1,200p'",
+    "exitCode": 0,
+    "outputSnippet": "tests/fixtures/parity-web-task/index.html\ntests/fixtures/parity-web-task-manifest.json\ntests/fixtures/parity-web-task/package.json\ntests/fixtures/parity-web-task/TASK.md\ntests/fixtures/provider.ts\ntests/fixtures/recordings/agent-creates-file.json\ntests/fixtures/recordings/agent-handles-error.json\ntests/fixtures/recordings/agent-multi-turn-tools.json\ntests/fixtures/recordings/agent-reads-and-edits.json\ntests/fixtures/recordings/installed-mode-parity-web-task.json\ntests/fixtures/recordings/repo-mo",
+    "timestamp": 1777026026737
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_mYNOU1mJruclN11hJD6pAhFC",
+    "command": "find tests/fixtures -maxdepth 2 -type d | sort | sed -n '1,120p'",
+    "exitCode": 0,
+    "outputSnippet": "tests/fixtures\ntests/fixtures/parity-web-task\ntests/fixtures/parity-web-task/src\ntests/fixtures/parity-web-task/tests\ntests/fixtures/recordings\ntests/fixtures/web-mode-parity-fixture\ntests/fixtures/web-mode-parity-fixture/dev-root\n",
+    "timestamp": 1777026026737
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_UkTpl4vy6PFyJWUtE6k8QLi6",
+    "command": "rg -n \"from '@modelcontextprotocol/sdk/server|from \\\"@modelcontextprotocol/sdk/server|ListToolsRequestSchema|CallToolRequestSchema|Server\\(\" packages src --glob '!node_modules' | head -n 120",
+    "exitCode": 0,
+    "outputSnippet": "src/cli.ts:522:    await startMcpServer({\nsrc/mcp-server.ts:42:export async function startMcpServer(options: {\nsrc/mcp-server.ts:54:  const { ListToolsRequestSchema, CallToolRequestSchema } = typesMod\nsrc/mcp-server.ts:62:  const server = new Server(\nsrc/mcp-server.ts:68:  server.setRequestHandler(ListToolsRequestSchema, async () => ({\nsrc/mcp-server.ts:77:  server.setRequestHandler(CallToolRequestSchema, async (request: any) => {\nsrc/web-mode.ts:332:    const server = createServer()\nsrc/tests/p",
+    "timestamp": 1777026036981
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_1cGcCnUWtykBV4S8LSvXBilQ",
+    "command": "find packages/mcp-server -maxdepth 3 -type f | sort | sed -n '1,120p'",
+    "exitCode": 0,
+    "outputSnippet": "packages/mcp-server/dist/cli.d.ts\npackages/mcp-server/dist/cli.d.ts.map\npackages/mcp-server/dist/cli.js\npackages/mcp-server/dist/cli.js.map\npackages/mcp-server/dist/index.d.ts\npackages/mcp-server/dist/index.d.ts.map\npackages/mcp-server/dist/index.js\npackages/mcp-server/dist/index.js.map\npackages/mcp-server/dist/readers/captures.d.ts\npackages/mcp-server/dist/readers/captures.d.ts.map\npackages/mcp-server/dist/readers/captures.js\npackages/mcp-server/dist/readers/captures.js.map\npackages/mcp-server/",
+    "timestamp": 1777026036981
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_O8Xiz6uUGGKCHDzR4SQ3kRXz",
+    "path": "tests/fixtures/mcp-parity-server/server.mjs",
+    "timestamp": 1777026073022
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_WYDNXnln9pwZlQZd0LiaiHk2",
+    "path": "tests/fixtures/mcp-parity-manifest.json",
+    "timestamp": 1777026085301
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_JAOImoLS2xfpO9Qk41gsCyij",
+    "path": "src/tests/integration/mcp-parity-fixture-contract.test.ts",
+    "timestamp": 1777026118105
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_VEJyvCRV1U2u933zWvJcpVuz",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/mcp-parity-fixture-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ MCP parity fixture manifest stays aligned with the deterministic fixture contract (2.194437ms)\n✔ MCP parity fixture supports discovery, schema inspection, successful invocation, and intentional failure diagnostics (188.743297ms)\nℹ tests 2\nℹ suites 0\nℹ pass 2\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 565.426072\n",
+    "timestamp": 1777026121720
+  }
+]

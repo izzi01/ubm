@@ -16,10 +16,10 @@
 - [x] **S01: S01** `risk:medium` `depends:[]`
   > After this: After this: one truthful secondary-surface parity matrix/report says what umb already proves versus gsd2 on web mode, MCP, workflow, and worktree/session surfaces, and defines deterministic fixtures/contracts for the downstream proof slices.
 
-- [ ] **S02: S02** `risk:high` `depends:[]`
+- [x] **S02: S02** `risk:high` `depends:[]`
   > After this: After this: umb can prove a deterministic web-mode workflow with startup, project selection/switching or equivalent project-context behavior, browser-facing verification, and actionable diagnostics.
 
-- [ ] **S03: MCP parity proof** `risk:high` `depends:[S01]`
+- [ ] **S03: S03** `risk:high` `depends:[]`
   > After this: After this: umb can prove controlled MCP parity for discover → call → failure diagnostics on a repeatable fixture server rather than relying on anecdotal real-server usage.
 
 - [ ] **S04: Workflow/BMAD parity proof** `risk:high` `depends:[S01]`
