@@ -26,7 +26,7 @@ The resulting diagnostics and artifacts are consumable by the milestone's final 
   - Files: `src/web-mode.ts`, `src/cli-web-branch.ts`, `tests/fixtures/web-mode-parity-manifest.json`, `src/tests/integration/web-mode-fixture-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/web-mode-fixture-contract.test.ts
 
-- [ ] **T02: Implement web-mode parity lane and diagnostics** `est:1-1.5 days`
+- [x] **T02: Implement web-mode parity lane and diagnostics** `est:1-1.5 days`
   Implement the web-mode parity proof lane and diagnostics. Exercise web-mode startup plus the selected project-context behavior, capture machine-readable evidence/artifacts, and make failure output explain whether startup, routing/context, or browser-visible verification broke. Reuse the M114 recorded-artifact pattern where practical so the final report can compare and summarize results without opaque stderr parsing.
   - Files: `tests/parity/secondary-lanes.ts`, `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/fixtures/recordings/web-mode-parity.json`, `src/tests/integration/web-mode-parity-contract.test.ts`, `src/web-mode.ts`, `src/cli-web-branch.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/web-mode-parity-contract.test.ts && node --experimental-strip-types tests/parity/run.ts --format json
