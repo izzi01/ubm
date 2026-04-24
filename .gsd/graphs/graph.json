@@ -1,16 +1,16 @@
 {
   "nodes": [
     {
-      "id": "milestone:M114",
-      "label": "M114: AI Coding App Parity Gate",
+      "id": "milestone:M115",
+      "label": "M115: UMB Secondary-Surface Parity Gate",
       "type": "milestone",
-      "description": "Active milestone: M114",
+      "description": "Active milestone: M115",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
     },
     {
-      "id": "concept:phase:validating-milestone",
-      "label": "Phase: validating-milestone",
+      "id": "concept:phase:evaluating-gates",
+      "label": "Phase: evaluating-gates",
       "type": "concept",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
@@ -1022,6 +1022,13 @@
       "confidence": "EXTRACTED"
     },
     {
+      "id": "milestone:M114",
+      "label": "M114: AI Coding App Parity Gate",
+      "type": "milestone",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M114/M114-ROADMAP.md"
+    },
+    {
       "id": "slice:M114:S01",
       "label": "S01: Baseline parity audit and residual cleanup",
       "type": "slice",
@@ -1131,6 +1138,131 @@
     {
       "id": "task:M114:S05:T02",
       "label": "T02: Integrate the optional live spot-check and lock release workflow semantics",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M115:S01",
+      "label": "S01: Secondary parity inventory and contracts",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M115/slices/S01/S01-PLAN.md"
+    },
+    {
+      "id": "task:M115:S01:T01",
+      "label": "T01: Audit secondary surfaces and rebrand drift",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S01:T02",
+      "label": "T02: Define secondary parity matrix and fixture manifests",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S01:T03",
+      "label": "T03: Publish baseline secondary-parity report wiring",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M115:S02",
+      "label": "S02: Web-mode parity proof",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M115/slices/S02/S02-PLAN.md"
+    },
+    {
+      "id": "task:M115:S02:T01",
+      "label": "T01: Define deterministic web-mode fixture and contract",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S02:T02",
+      "label": "T02: Implement web-mode parity lane and diagnostics",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S02:T03",
+      "label": "T03: Lock web-mode diagnostic and report contract",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M115:S03",
+      "label": "S03: MCP parity proof",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M115/slices/S03/S03-PLAN.md"
+    },
+    {
+      "id": "task:M115:S03:T01",
+      "label": "T01: Create controlled MCP fixture server and contract",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S03:T02",
+      "label": "T02: Implement MCP parity lane and report artifact",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S03:T03",
+      "label": "T03: Lock MCP diagnostic contract",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M115:S04",
+      "label": "S04: Workflow/BMAD parity proof",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M115/slices/S04/S04-PLAN.md"
+    },
+    {
+      "id": "task:M115:S04:T01",
+      "label": "T01: Define representative workflow parity fixture and artifact contract",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S04:T02",
+      "label": "T02: Implement workflow parity lane and recorded evidence",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S04:T03",
+      "label": "T03: Lock workflow diagnostic contract",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M115:S05",
+      "label": "S05: Integrated secondary-surface release gate",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M115/slices/S05/S05-PLAN.md"
+    },
+    {
+      "id": "task:M115:S05:T01",
+      "label": "T01: Define worktree/session and rebrand parity contracts",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S05:T02",
+      "label": "T02: Implement integrated secondary-surface release gate",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M115:S05:T03",
+      "label": "T03: Publish secondary-surface UAT and diagnostics contract",
       "type": "task",
       "confidence": "EXTRACTED"
     }
@@ -2095,7 +2227,127 @@
       "to": "task:M114:S05:T02",
       "type": "contains",
       "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M115",
+      "to": "slice:M115:S01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S01",
+      "to": "task:M115:S01:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S01",
+      "to": "task:M115:S01:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S01",
+      "to": "task:M115:S01:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M115",
+      "to": "slice:M115:S02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S02",
+      "to": "task:M115:S02:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S02",
+      "to": "task:M115:S02:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S02",
+      "to": "task:M115:S02:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M115",
+      "to": "slice:M115:S03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S03",
+      "to": "task:M115:S03:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S03",
+      "to": "task:M115:S03:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S03",
+      "to": "task:M115:S03:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M115",
+      "to": "slice:M115:S04",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S04",
+      "to": "task:M115:S04:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S04",
+      "to": "task:M115:S04:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S04",
+      "to": "task:M115:S04:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M115",
+      "to": "slice:M115:S05",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S05",
+      "to": "task:M115:S05:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S05",
+      "to": "task:M115:S05:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M115:S05",
+      "to": "task:M115:S05:T03",
+      "type": "contains",
+      "confidence": "EXTRACTED"
     }
   ],
-  "builtAt": "2026-04-24T08:06:15.473Z"
+  "builtAt": "2026-04-24T10:01:19.657Z"
 }

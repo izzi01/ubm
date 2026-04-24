@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "fixtureId": "web-mode-parity-fixture",
+  "title": "Deterministic web-mode operator-path parity fixture",
+  "devRoot": "tests/fixtures/web-mode-parity-fixture/dev-root",
+  "startupProject": {
+    "id": "alpha-app",
+    "path": "tests/fixtures/web-mode-parity-fixture/dev-root/alpha-app",
+    "expectedScope": "M101/S01/T01"
+  },
+  "switchProject": {
+    "id": "beta-app",
+    "path": "tests/fixtures/web-mode-parity-fixture/dev-root/beta-app",
+    "expectedScope": "M202/S03/T02"
+  },
+  "browserObservables": [
+    {
+      "selector": "[data-testid=\"workspace-project-cwd\"]",
+      "purpose": "Shows the active project path in the browser shell",
+      "expectedAtStartup": "tests/fixtures/web-mode-parity-fixture/dev-root/alpha-app",
+      "expectedAfterSwitch": "tests/fixtures/web-mode-parity-fixture/dev-root/beta-app"
+    },
+    {
+      "selector": "[data-testid=\"sidebar-current-scope\"]",
+      "purpose": "Shows the active milestone/slice/task scope",
+      "expectedAtStartup": "M101/S01/T01",
+      "expectedAfterSwitch": "M202/S03/T02"
+    },
+    {
+      "selector": "[data-testid=\"status-bar-unit\"]",
+      "purpose": "Shows the current scoped unit in the status bar",
+      "expectedAtStartup": "M101/S01/T01",
+      "expectedAfterSwitch": "M202/S03/T02"
+    },
+    {
+      "selector": "[data-testid=\"projects-panel\"]",
+      "purpose": "Keeps the project-selection UI available for operator-driven retargeting",
+      "expectedAtStartup": "available",
+      "expectedAfterSwitch": "available"
+    }
+  ],
+  "expectedProjectDiscovery": [
+    {
+      "name": "alpha-app",
+      "kind": "brownfield",
+      "signals": ["hasPackageJson", "hasGsdFolder"]
+    },
+    {
+      "name": "beta-app",
+      "kind": "brownfield",
+      "signals": ["hasPackageJson", "hasGsdFolder"]
+    }
+  ],
+  "expectedStartupDiagnostics": [
+    "[gsd] Web mode startup: status=started",
+    "[gsd] Ready → http://"
+  ],
+  "notes": [
+    "This fixture is intentionally tracked-only and service-free so the parity lane can run deterministically in CI.",
+    "The operator-path contract is satisfied by scoped launch plus project retargeting through the shipped project-selection surfaces; downstream lane implementation decides whether retargeting is a full switch or equivalent scoped selection behavior."
+  ]
+}
