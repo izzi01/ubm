@@ -18,6 +18,14 @@ import {
   type SecondaryParitySurfaceContract,
 } from "./secondary-lanes.ts"
 import {
+  MCP_PARITY_ARTIFACT_PATH,
+  MCP_PARITY_RECORDING_PATH,
+  MCP_PARITY_REPORT_PATH,
+  createMcpParityReport,
+  writeMcpParityArtifacts,
+  type McpParityReport,
+} from "./mcp-parity.ts"
+import {
   createSecondarySurfaceInventory,
   validateSecondarySurfaceInventory,
   type RebrandDriftFinding,
@@ -198,6 +206,26 @@ export interface SecondaryParityReport {
   manifest: SecondaryParityManifest
 }
 
+export interface McpParitySurfaceReportRow {
+  id: "mcp"
+  title: string
+  inventoryStatus: SecondaryParitySurfaceContract["inventoryStatus"]
+  releaseReadableStatus: "partial" | "covered" | "uncovered"
+  requiredLaneNames: string[]
+  optionalLaneNames: string[]
+  existingRequiredLaneNames: string[]
+  missingRequiredLaneNames: string[]
+  presentFixturePaths: string[]
+  plannedFixturePaths: string[]
+  coverageGapIds: string[]
+  uncoveredAreas: SecondaryParitySurfaceContract["coverageGaps"]
+  reportPath: string
+  parityArtifactPath: string
+  recordingPath: string
+  parityStatus: McpParityReport["status"]
+  diagnostics: McpParityReport["diagnostics"]
+}
+
 export interface BaselineReport {
   version: typeof BASELINE_REPORT_VERSION
   generatedAt: string
@@ -209,6 +237,7 @@ export interface BaselineReport {
   uncoveredCapabilities: UncoveredCapabilityReportRow[]
   repoInstalledComparison: RepoInstalledComparison
   secondaryParity: SecondaryParityReport
+  mcpParity: McpParitySurfaceReportRow
   reconciledFoundations: readonly typeof M113_RECONCILIATION[]
 }
 
@@ -1040,6 +1069,51 @@ export function buildRepoInstalledComparison(laneResults: readonly BaselineLaneR
   }
 }
 
+async function buildMcpParitySurfaceReport(): Promise<McpParitySurfaceReportRow> {
+  const manifest = createSecondaryParityManifest()
+  const surface = manifest.surfaces.find((entry) => entry.id === "mcp")
+  if (!surface) {
+    throw new Error("Missing MCP surface contract in secondary parity manifest")
+  }
+
+  const laneDefinitions = manifest.lanes.filter((lane) => lane.surfaceId === surface.id)
+  const existingRequiredLaneNames = laneDefinitions
+    .filter((lane) => lane.requirement === "required" && lane.implementationStatus === "existing-proof")
+    .map((lane) => lane.name)
+  const missingRequiredLaneNames = laneDefinitions
+    .filter((lane) => lane.requirement === "required" && lane.implementationStatus === "planned-proof")
+    .map((lane) => lane.name)
+  const presentFixturePaths = surface.deterministicFixtures
+    .filter((fixture) => fixture.status === "present")
+    .map((fixture) => fixture.path)
+  const plannedFixturePaths = surface.deterministicFixtures
+    .filter((fixture) => fixture.status === "planned")
+    .map((fixture) => fixture.path)
+
+  const parity = await createMcpParityReport()
+  await writeMcpParityArtifacts(parity)
+
+  return {
+    id: "mcp",
+    title: surface.title,
+    inventoryStatus: surface.inventoryStatus,
+    releaseReadableStatus: parity.status === "passed" ? "covered" : "partial",
+    requiredLaneNames: [...surface.requiredLaneNames],
+    optionalLaneNames: [...surface.optionalLaneNames],
+    existingRequiredLaneNames,
+    missingRequiredLaneNames,
+    presentFixturePaths,
+    plannedFixturePaths,
+    coverageGapIds: surface.coverageGaps.map((gap) => gap.id),
+    uncoveredAreas: surface.coverageGaps.map((gap) => ({ ...gap })),
+    reportPath: MCP_PARITY_REPORT_PATH,
+    parityArtifactPath: MCP_PARITY_ARTIFACT_PATH,
+    recordingPath: MCP_PARITY_RECORDING_PATH,
+    parityStatus: parity.status,
+    diagnostics: parity.diagnostics,
+  }
+}
+
 function buildSecondaryParityReport(): SecondaryParityReport {
   const inventory = createSecondarySurfaceInventory()
   validateSecondarySurfaceInventory(inventory)
@@ -1126,6 +1200,7 @@ export async function createBaselineReport(
   const uncoveredCapabilities = buildUncoveredCapabilityRows(reconciledManifest)
   const artifactPath = options.artifactPath ?? BASELINE_REPORT_PATH
   const secondaryParity = buildSecondaryParityReport()
+  const mcpParity = await buildMcpParitySurfaceReport()
   return {
     version: BASELINE_REPORT_VERSION,
     generatedAt: new Date().toISOString(),
@@ -1137,6 +1212,7 @@ export async function createBaselineReport(
     uncoveredCapabilities,
     repoInstalledComparison: buildRepoInstalledComparison(laneResults),
     secondaryParity,
+    mcpParity,
     reconciledFoundations: [M113_RECONCILIATION],
   }
 }

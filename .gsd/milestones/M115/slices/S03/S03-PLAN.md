@@ -26,7 +26,7 @@ MCP parity evidence plugs into the shared report/release gate alongside web/work
   - Files: `tests/fixtures/mcp-parity-manifest.json`, `src/tests/integration/mcp-parity-fixture-contract.test.ts`, `src/resources/extensions/mcp-client/`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/mcp-parity-fixture-contract.test.ts
 
-- [ ] **T02: Implement MCP parity lane and report artifact** `est:1-1.5 days`
+- [x] **T02: Implement MCP parity lane and report artifact** `est:1-1.5 days`
   Implement the MCP parity proof lane in the shared parity runner/report. The lane should prove configured-server discovery, tool schema discovery, successful tool execution, and actionable failure reporting when the fixture returns an error or mismatched schema. Capture the resulting machine-readable artifact so the final release report can summarize MCP parity without rerunning the fixture interactively.
   - Files: `tests/parity/secondary-lanes.ts`, `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/fixtures/recordings/mcp-parity.json`, `src/tests/integration/mcp-parity-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/mcp-parity-contract.test.ts && node --experimental-strip-types tests/parity/run.ts --format json

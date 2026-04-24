@@ -1,17 +1,18 @@
 {
   "version": 4,
-  "generatedAt": "2026-04-24T10:17:39.096Z",
+  "generatedAt": "2026-04-24T10:29:56.463Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
-    "verdict": "partial",
+    "verdict": "failing",
     "totalLanes": 8,
-    "passed": 7,
-    "failed": 0,
+    "passed": 6,
+    "failed": 1,
     "skipped": 1,
     "timedOut": 0,
     "provesCodingLoop": true,
     "uncoveredLaneNames": [
+      "fixtures-runner",
       "live-runner"
     ],
     "proofClassCounts": {
@@ -40,7 +41,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 313,
+      "durationMs": 263,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -56,10 +57,10 @@
       "proofClass": "uncovered-coding-loop",
       "parityScope": "partial",
       "provesCodingLoop": false,
-      "status": "passed",
-      "skipReason": null,
-      "exitCode": 0,
-      "durationMs": 34,
+      "status": "failed",
+      "skipReason": "fixtures-runner exited with code 1",
+      "exitCode": 1,
+      "durationMs": 31,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -97,7 +98,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 28352,
+      "durationMs": 25815,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -116,7 +117,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 37,
+      "durationMs": 10042,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -138,7 +139,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 37,
+      "durationMs": 10346,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -160,7 +161,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 0,
+      "durationMs": 1,
       "command": [
         "artifact",
         "tests/fixtures/recordings/repo-mode-parity-web-task.json"
@@ -656,17 +657,16 @@
           "integration:mcp-session"
         ],
         "existingRequiredLaneNames": [
+          "secondary-parity-report:mcp",
           "unit:mcp"
         ],
-        "missingRequiredLaneNames": [
-          "secondary-parity-report:mcp"
-        ],
+        "missingRequiredLaneNames": [],
         "presentFixturePaths": [
           "tests/parity/artifacts/secondary-surface-inventory.json",
           "src/tests/mcp-client-schema.test.ts"
         ],
         "plannedFixturePaths": [
-          "tests/fixtures/recordings/secondary-mcp-session.json"
+          "tests/parity/artifacts/mcp-parity.json"
         ],
         "coverageGapIds": [
           "mcp-parity-lane-missing",
@@ -831,17 +831,16 @@
           "integration:mcp-session"
         ],
         "existingRequiredLaneNames": [
+          "secondary-parity-report:mcp",
           "unit:mcp"
         ],
-        "missingRequiredLaneNames": [
-          "secondary-parity-report:mcp"
-        ],
+        "missingRequiredLaneNames": [],
         "presentFixturePaths": [
           "tests/parity/artifacts/secondary-surface-inventory.json",
           "src/tests/mcp-client-schema.test.ts"
         ],
         "plannedFixturePaths": [
-          "tests/fixtures/recordings/secondary-mcp-session.json"
+          "tests/parity/artifacts/mcp-parity.json"
         ],
         "coverageGapIds": [
           "mcp-parity-lane-missing",
@@ -1452,7 +1451,7 @@
           "surfaceId": "mcp",
           "proofClass": "report-contract",
           "requirement": "required",
-          "implementationStatus": "planned-proof",
+          "implementationStatus": "existing-proof",
           "releaseReadable": true,
           "description": "Publishes the machine-readable report row that downstream release gates consume for MCP parity."
         },
@@ -1637,12 +1636,12 @@
             {
               "id": "mcp-representative-session-recording",
               "surfaceId": "mcp",
-              "title": "Future representative MCP interaction recording",
-              "kind": "recording",
+              "title": "MCP parity artifact",
+              "kind": "artifact",
               "status": "planned",
-              "path": "tests/fixtures/recordings/secondary-mcp-session.json",
+              "path": "tests/parity/artifacts/mcp-parity.json",
               "deterministic": true,
-              "purpose": "Reserved tracked recording path for a representative MCP interaction proof.",
+              "purpose": "Tracked release-readable MCP parity artifact proving discovery, schema, success, and failure diagnostics.",
               "laneName": "integration:mcp-session"
             }
           ],
@@ -1790,6 +1789,112 @@
         "partialSurfaces": 4,
         "uncoveredSurfaces": 0,
         "coveredSurfaces": 0
+      }
+    }
+  },
+  "mcpParity": {
+    "id": "mcp",
+    "title": "MCP server and client parity surface",
+    "inventoryStatus": "partial",
+    "releaseReadableStatus": "covered",
+    "requiredLaneNames": [
+      "secondary-parity-report:mcp",
+      "unit:mcp"
+    ],
+    "optionalLaneNames": [
+      "integration:mcp-session"
+    ],
+    "existingRequiredLaneNames": [
+      "secondary-parity-report:mcp",
+      "unit:mcp"
+    ],
+    "missingRequiredLaneNames": [],
+    "presentFixturePaths": [
+      "tests/parity/artifacts/secondary-surface-inventory.json",
+      "src/tests/mcp-client-schema.test.ts"
+    ],
+    "plannedFixturePaths": [
+      "tests/parity/artifacts/mcp-parity.json"
+    ],
+    "coverageGapIds": [
+      "mcp-parity-lane-missing",
+      "mcp-installed-session-proof-missing"
+    ],
+    "uncoveredAreas": [
+      {
+        "id": "mcp-parity-lane-missing",
+        "summary": "No secondary parity lane currently emits MCP-specific covered/uncovered status into a tracked parity artifact.",
+        "downstreamNeed": "Add a deterministic MCP parity contract/report lane so downstream slices stop treating MCP support as an implicit side effect of unit tests."
+      },
+      {
+        "id": "mcp-installed-session-proof-missing",
+        "summary": "Existing MCP tests do not yet demonstrate the installed packaged CLI serving a representative MCP parity interaction in the parity report surface.",
+        "downstreamNeed": "Define a representative MCP interaction and attach it to the parity matrix."
+      }
+    ],
+    "reportPath": "tests/parity/artifacts/mcp-parity.json#mcpParity",
+    "parityArtifactPath": "tests/parity/artifacts/mcp-parity.json",
+    "recordingPath": "tests/fixtures/recordings/mcp-parity.json",
+    "parityStatus": "passed",
+    "diagnostics": {
+      "configuredServer": {
+        "name": "mcp-parity-fixture",
+        "transport": "stdio",
+        "status": "passed",
+        "readyLineSeen": true
+      },
+      "discoveredTools": {
+        "expected": [
+          "fixture_status",
+          "sum_numbers",
+          "fixture_failure"
+        ],
+        "actual": [
+          "fixture_status",
+          "sum_numbers",
+          "fixture_failure"
+        ],
+        "status": "passed"
+      },
+      "schemaInspection": {
+        "tool": "sum_numbers",
+        "required": [
+          "left",
+          "right"
+        ],
+        "actualRequired": [
+          "left",
+          "right"
+        ],
+        "additionalProperties": false,
+        "status": "passed"
+      },
+      "successInvocation": {
+        "tool": "sum_numbers",
+        "status": "passed",
+        "isError": false,
+        "payload": {
+          "ok": true,
+          "operation": "sum_numbers",
+          "inputs": {
+            "left": 2,
+            "right": 3
+          },
+          "total": 5,
+          "traceId": "fixture-sum-001"
+        }
+      },
+      "failureInvocation": {
+        "tool": "fixture_failure",
+        "status": "passed",
+        "isError": true,
+        "payload": {
+          "ok": false,
+          "code": "FIXTURE_FAILURE",
+          "reason": "diagnostic probe",
+          "phase": "tool-call",
+          "attribution": "fixture_failure"
+        }
       }
     }
   },

@@ -1,0 +1,69 @@
+{
+  "version": 1,
+  "fixtureId": "mcp-parity-fixture",
+  "serverName": "mcp-parity-fixture",
+  "status": "passed",
+  "artifactPath": "tests/parity/artifacts/mcp-parity.json",
+  "recordingPath": "tests/fixtures/recordings/mcp-parity.json",
+  "diagnostics": {
+    "configuredServer": {
+      "name": "mcp-parity-fixture",
+      "transport": "stdio",
+      "status": "passed",
+      "readyLineSeen": true
+    },
+    "discoveredTools": {
+      "expected": [
+        "fixture_status",
+        "sum_numbers",
+        "fixture_failure"
+      ],
+      "actual": [
+        "fixture_status",
+        "sum_numbers",
+        "fixture_failure"
+      ],
+      "status": "passed"
+    },
+    "schemaInspection": {
+      "tool": "sum_numbers",
+      "required": [
+        "left",
+        "right"
+      ],
+      "actualRequired": [
+        "left",
+        "right"
+      ],
+      "additionalProperties": false,
+      "status": "passed"
+    },
+    "successInvocation": {
+      "tool": "sum_numbers",
+      "status": "passed",
+      "isError": false,
+      "payload": {
+        "ok": true,
+        "operation": "sum_numbers",
+        "inputs": {
+          "left": 2,
+          "right": 3
+        },
+        "total": 5,
+        "traceId": "fixture-sum-001"
+      }
+    },
+    "failureInvocation": {
+      "tool": "fixture_failure",
+      "status": "passed",
+      "isError": true,
+      "payload": {
+        "ok": false,
+        "code": "FIXTURE_FAILURE",
+        "reason": "diagnostic probe",
+        "phase": "tool-call",
+        "attribution": "fixture_failure"
+      }
+    }
+  }
+}

@@ -36,7 +36,7 @@
       "surfaceId": "web-mode",
       "proofClass": "report-contract",
       "requirement": "required",
-      "implementationStatus": "planned-proof",
+      "implementationStatus": "existing-proof",
       "releaseReadable": true,
       "description": "Publishes the machine-readable report row that downstream release gates consume for web-mode parity."
     },
@@ -76,7 +76,7 @@
       "surfaceId": "mcp",
       "proofClass": "report-contract",
       "requirement": "required",
-      "implementationStatus": "planned-proof",
+      "implementationStatus": "existing-proof",
       "releaseReadable": true,
       "description": "Publishes the machine-readable report row that downstream release gates consume for MCP parity."
     },
@@ -261,12 +261,12 @@
         {
           "id": "mcp-representative-session-recording",
           "surfaceId": "mcp",
-          "title": "Future representative MCP interaction recording",
-          "kind": "recording",
+          "title": "MCP parity artifact",
+          "kind": "artifact",
           "status": "planned",
-          "path": "tests/fixtures/recordings/secondary-mcp-session.json",
+          "path": "tests/parity/artifacts/mcp-parity.json",
           "deterministic": true,
-          "purpose": "Reserved tracked recording path for a representative MCP interaction proof.",
+          "purpose": "Tracked release-readable MCP parity artifact proving discovery, schema, success, and failure diagnostics.",
           "laneName": "integration:mcp-session"
         }
       ],
@@ -409,8 +409,8 @@
     "totalLanes": 13,
     "requiredLanes": 8,
     "optionalLanes": 5,
-    "presentFixtures": 8,
-    "plannedFixtures": 4,
+    "presentFixtures": 9,
+    "plannedFixtures": 3,
     "partialSurfaces": 4,
     "uncoveredSurfaces": 0,
     "coveredSurfaces": 0
