@@ -31,7 +31,7 @@ Consume the tracked repo-mode and installed-mode artifacts plus `repoInstalledCo
   - Files: `tests/parity/baseline-lanes.ts`, `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `src/tests/integration/parity-diagnostics-contract.test.ts`, `tests/parity/artifacts/baseline-report.json`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-diagnostics-contract.test.ts
 
-- [ ] **T02: Publish the human-readable parity fixture UAT path** `est:1h`
+- [x] **T02: Publish the human-readable parity fixture UAT path** `est:1h`
   Write a tracked human-readable UAT guide that proves the product claim in plain language using the deterministic parity fixture and the diagnostics surface from T01. The document should cover preconditions, repo-mode steps, installed-mode steps, expected outcomes, and how to inspect actionable failure evidence when parity is red. Add a contract test that verifies the guide references tracked files/commands and includes both modes so R030 cannot silently drift into a placeholder.
   - Files: `tests/parity/human-uat.md`, `tests/parity/diagnostics.ts`, `tests/fixtures/parity-web-task/TASK.md`, `tests/fixtures/parity-web-task-manifest.json`, `src/tests/integration/parity-human-uat-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-human-uat-contract.test.ts src/tests/integration/parity-diagnostics-contract.test.ts && node --experimental-strip-types tests/parity/run.ts --format json
