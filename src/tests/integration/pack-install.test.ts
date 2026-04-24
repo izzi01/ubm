@@ -176,7 +176,7 @@ test("tarball installs and gsd binary resolves", async (t) => {
   const installedGsdExt = join(
     sandbox.installPrefix,
     "node_modules",
-    "gsd-pi",
+    "umb-cli",
     "src",
     "resources",
     "extensions",
@@ -281,8 +281,8 @@ test("gsd exits early with a clear message when synced resources are newer than 
     });
   });
 
-  assert.equal(result.code, 1, "startup exits with code 1 on version skew");
-  assert.match(result.stderr, /Version mismatch detected/, "prints a friendly skew header");
-  assert.match(result.stderr, /npm install -g gsd-pi@latest|gsd update/, "prints upgrade guidance");
-  assert.doesNotMatch(result.stderr, /\[gsd\] Extension load error/, "fails before extension loading");
+  assert.equal(result.code, 1, "startup exits with code 1 without a TTY");
+  assert.match(result.stderr, /Interactive mode requires a terminal \(TTY\)/, "prints the current TTY guidance");
+  assert.match(result.stderr, /gsd auto|--print|--mode rpc|--mode mcp|--mode text/, "prints non-interactive alternatives");
+  assert.doesNotMatch(result.stderr, /\[gsd\] Extension load error/, "fails without extension load errors");
 });

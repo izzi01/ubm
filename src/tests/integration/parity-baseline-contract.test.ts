@@ -92,13 +92,9 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
     assert.match(byName.get("smoke-runner").skipReason, /exited with code 1/i)
     assert.equal(byName.get("fixtures-runner").proofClass, "uncovered-coding-loop")
     assert.equal(byName.get("pack-install").proofClass, "installed-binary")
-    assert.ok(["passed", "failed", "timed_out"].includes(byName.get("pack-install").status))
-    if (byName.get("pack-install").status === "failed") {
-      assert.match(byName.get("pack-install").skipReason, /exited with code 1/i)
-    }
-    if (byName.get("pack-install").status === "timed_out") {
-      assert.match(byName.get("pack-install").skipReason, /exceeded timeout/i)
-    }
+    assert.equal(byName.get("pack-install").status, "passed")
+    assert.equal(byName.get("pack-install").artifactPath, "tests/fixtures/recordings/installed-mode-parity-web-task.json")
+    assert.deepEqual(byName.get("pack-install").phaseResults.map((phase: any) => phase.phase), ["inspect", "edit", "test", "dev-server", "browser"])
     assert.equal(byName.get("live-runner").status, "skipped")
     assert.match(byName.get("live-runner").skipReason, /GSD_LIVE_TESTS/i)
     assert.equal(byName.get("live-regression-runner").status, "passed")
@@ -199,4 +195,6 @@ test("baseline helpers classify invalid metadata, missing targets, skip semantic
   )
   assert.equal(spawnFailure.status, "failed")
   assert.match(spawnFailure.skipReason, /spawn-missing-cwd spawn failed/i)
+})
+atch(spawnFailure.skipReason, /spawn-missing-cwd spawn failed/i)
 })

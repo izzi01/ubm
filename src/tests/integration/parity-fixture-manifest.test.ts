@@ -50,7 +50,7 @@ test("baseline report surfaces uncovered coding-loop capability rows instead of 
     "manage-dev-server-lifecycle",
     "verify-browser-behavior",
   ])
-  assert.equal(report.summary.provesCodingLoop, false)
+  assert.equal(report.summary.provesCodingLoop, true)
   assert.equal(report.summary.verdict, "failing")
 
   const browserVerification = report.uncoveredCapabilities.find(
@@ -58,10 +58,10 @@ test("baseline report surfaces uncovered coding-loop capability rows instead of 
   )
   assert.ok(browserVerification)
   assert.equal(browserVerification.uncovered, true)
-  assert.deepEqual(browserVerification.coveringLaneNames, [])
+  assert.ok(browserVerification.coveringLaneNames.includes("pack-install"))
   assert.ok(browserVerification.uncoveredLaneNames.includes("fixtures-runner"))
-  assert.ok(browserVerification.uncoveredLaneNames.includes("pack-install"))
-  assert.match(browserVerification.currentGap, /none of those lanes yet prove browser-assisted verification/i)
+  assert.ok(browserVerification.uncoveredLaneNames.includes("live-regression-runner"))
+  assert.match(browserVerification.currentGap, /remaining parity gaps stay in/i)
 })
 
 test("manifest validation fails fast for missing required capability mappings", async () => {
@@ -172,4 +172,6 @@ test("report generation rejects a manifest that claims covered while still marki
     () => parity.buildUncoveredCapabilityRows(manifest),
     /marked covered but still has not-covered lanes/i,
   )
+})
+)
 })

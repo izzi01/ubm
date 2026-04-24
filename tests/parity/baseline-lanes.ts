@@ -2,6 +2,7 @@ import { existsSync, readFileSync } from "node:fs"
 import { mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { spawn } from "node:child_process"
+import { deriveInstalledModeLaneCoverage, loadInstalledModeProofArtifact, resolveInstalledModeArtifactPath } from "../../src/tests/integration/helpers/installed-mode-parity.ts"
 
 export const BASELINE_REPORT_VERSION = 3 as const
 export const BASELINE_REPORT_PATH = "tests/parity/artifacts/baseline-report.json" as const
@@ -815,19 +816,23 @@ export function reconcileParityManifestWithLaneResults(
   laneResults: readonly BaselineLaneResult[],
 ): ParityManifest {
   const repoModeLane = laneResults.find((lane) => lane.name === REPO_MODE_LANE_NAME)
+  const installedModeLane = laneResults.find((lane) => lane.name === "pack-install")
 
   const capabilities = manifest.capabilities.map((capability) => {
-    const derived = deriveRepoLaneCoverage(repoModeLane, capability.name)
+    const repoDerived = deriveRepoLaneCoverage(repoModeLane, capability.name)
+    const installedDerived = deriveInstalledModeLaneCoverage(installedModeLane, capability.name)
     const laneCoverage = {
       ...capability.laneCoverage,
-      [REPO_MODE_LANE_NAME]: derived.coverage,
+      [REPO_MODE_LANE_NAME]: repoDerived.coverage,
+      ["pack-install"]: installedDerived.coverage,
     }
 
     const hasUncovered = Object.values(laneCoverage).includes("not-covered")
     const hasPartial = Object.values(laneCoverage).includes("partial")
     const proof: ManifestProofStatus = hasUncovered || hasPartial ? "uncovered" : "covered"
 
-    const remainingGap = derived.currentGap
+    const remainingGap = repoDerived.currentGap
+      ?? installedDerived.currentGap
       ?? (() => {
           const remainingLaneNames = Object.entries(laneCoverage)
             .filter(([, status]) => status !== "covered")
@@ -835,7 +840,7 @@ export function reconcileParityManifestWithLaneResults(
           if (remainingLaneNames.length === 0) {
             return "Covered by all current parity lanes."
           }
-          return `Repo-mode proof covers this capability, but remaining parity gaps stay in ${remainingLaneNames.join(", ")}.`
+          return `Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in ${remainingLaneNames.join(", ")}.`
         })()
 
     return {

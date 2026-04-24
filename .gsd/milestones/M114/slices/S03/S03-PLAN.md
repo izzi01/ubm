@@ -96,7 +96,7 @@ Extend the existing pack/install and installed-binary regression patterns so the
   - Files: `src/tests/integration/pack-install.test.ts`, `src/tests/integration/helpers/installed-mode-parity.ts`, `tests/live-regression/run.ts`, `package.json`, `pkg/package.json`, `tests/fixtures/parity-web-task/package.json`, `tests/fixtures/parity-web-task/TASK.md`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/pack-install.test.ts && node --experimental-strip-types tests/live-regression/run.ts
 
-- [ ] **T02: Record and contract-test installed-mode coding-loop proof** `est:1h15m`
+- [x] **T02: Record and contract-test installed-mode coding-loop proof** `est:1h15m`
   Skills to load before coding: `test`, `agent-browser`, `verify-before-complete`.
 
 Promote the installed-binary fixture run into the same recorded-artifact pattern established in S02. The installed run must exercise inspect → edit → test → dev-server → browser on the tracked fixture, then persist a deterministic JSON artifact whose phase results and browser assertions can be replayed by parity-report consumers without rerunning a live model.

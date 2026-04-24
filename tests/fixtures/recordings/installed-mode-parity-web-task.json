@@ -1,0 +1,132 @@
+{
+  "name": "installed-mode-parity-web-task",
+  "description": "Deterministic installed packaged umb coding-loop proof artifact for the parity web-task fixture.",
+  "turns": [
+    {
+      "role": "user",
+      "content": "Complete the tracked parity web-task fixture by inspecting the task brief, editing application code through the installed umb binary workflow, running the targeted test, starting the dev server, verifying the page in the browser, and cleaning up."
+    },
+    {
+      "role": "assistant",
+      "content": "I inspected the tracked fixture files inside the packaged install sandbox, updated src/task.ts so the app renders the completed build state, ran npm test, started the local dev server, verified the page shows the completed status, and stopped the server cleanly.",
+      "toolUses": [
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "tests/fixtures/parity-web-task/TASK.md"
+          },
+          "output": "Goal: make the app show Build status: Complete using tracked application source."
+        },
+        {
+          "name": "Read",
+          "input": {
+            "file_path": "tests/fixtures/parity-web-task/src/task.ts"
+          },
+          "output": "export function getStatusMessage(): string { return \"Build status: In progress\"; }"
+        },
+        {
+          "name": "Edit",
+          "input": {
+            "file_path": "tests/fixtures/parity-web-task/src/task.ts",
+            "old_string": "Build status: In progress",
+            "new_string": "Build status: Complete"
+          },
+          "output": "Updated src/task.ts"
+        },
+        {
+          "name": "Bash",
+          "input": {
+            "command": "npm test"
+          },
+          "output": "1 passing"
+        },
+        {
+          "name": "Bash",
+          "input": {
+            "command": "npm run dev"
+          },
+          "output": "READY http://127.0.0.1:4173"
+        },
+        {
+          "name": "BrowserAssert",
+          "input": {
+            "url": "http://127.0.0.1:4173",
+            "selector": "#status-message",
+            "expectedText": "Build status: Complete"
+          },
+          "output": "Assertion passed"
+        },
+        {
+          "name": "Signal",
+          "input": {
+            "signal": "SIGTERM",
+            "target": "fixture-dev-server"
+          },
+          "output": "Process terminated cleanly"
+        }
+      ]
+    }
+  ],
+  "version": 1,
+  "fixtureId": "parity-web-task",
+  "laneName": "pack-install",
+  "artifactPath": "tests/fixtures/recordings/installed-mode-parity-web-task.json",
+  "status": "passed",
+  "phaseResults": [
+    {
+      "phase": "inspect",
+      "status": "passed",
+      "summary": "Inspected TASK.md, src/task.ts, src/main.ts, and tests/task.spec.ts inside the installed-mode fixture before editing.",
+      "command": {
+        "command": "read tests/fixtures/parity-web-task/TASK.md && read tests/fixtures/parity-web-task/src/task.ts && read tests/fixtures/parity-web-task/src/main.ts && read tests/fixtures/parity-web-task/tests/task.spec.ts",
+        "exitCode": 0,
+        "stdoutSnippet": "Identified src/task.ts as the change target and tests/task.spec.ts as the copy contract."
+      }
+    },
+    {
+      "phase": "edit",
+      "status": "passed",
+      "summary": "Edited src/task.ts through the packaged umb workflow so getStatusMessage() returns the completed UI copy.",
+      "command": {
+        "command": "edit tests/fixtures/parity-web-task/src/task.ts",
+        "exitCode": 0,
+        "stdoutSnippet": "Replaced Build status: In progress with Build status: Complete."
+      }
+    },
+    {
+      "phase": "test",
+      "status": "passed",
+      "summary": "Ran the fixture task test from the installed-mode sandbox and observed a passing result.",
+      "command": {
+        "command": "npm test",
+        "exitCode": 0,
+        "stdoutSnippet": "tests/task.spec.ts: getStatusMessage returns the completed UI copy required by TASK.md"
+      }
+    },
+    {
+      "phase": "dev-server",
+      "status": "passed",
+      "summary": "Started the fixture dev server from the packaged install and waited for the READY URL on port 4173.",
+      "command": {
+        "command": "npm run dev",
+        "exitCode": 0,
+        "stdoutSnippet": "READY http://127.0.0.1:4173"
+      }
+    },
+    {
+      "phase": "browser",
+      "status": "passed",
+      "summary": "Verified the browser-visible status message with an explicit assertion, then stopped the installed-mode fixture dev server.",
+      "command": {
+        "command": "browser_assert text_visible #status-message",
+        "exitCode": 0,
+        "stdoutSnippet": "#status-message text matched expected completed copy"
+      },
+      "browser": {
+        "assertion": "#status-message text",
+        "expected": "Build status: Complete",
+        "actual": "Build status: Complete"
+      }
+    }
+  ]
+}
