@@ -9,6 +9,7 @@ import { showDiscuss, showHeadlessMilestoneCreation, showQueue } from "../../gui
 import { handleStart, handleTemplates } from "../../commands-workflow-templates.js";
 import { gsdRoot } from "../../paths.js";
 import { deriveState } from "../../state.js";
+import { rebuildState } from "../../doctor.js";
 import { isParked, parkMilestone, unparkMilestone } from "../../milestone-actions.js";
 import { loadEffectiveGSDPreferences } from "../../preferences.js";
 import { nextMilestoneId } from "../../milestone-ids.js";
@@ -239,6 +240,9 @@ export async function handleWorkflowCommand(trimmed: string, ctx: ExtensionComma
     const reasonParts = arg.replace(targetId, "").trim().replace(/^["']|["']$/g, "");
     const reason = reasonParts || "Parked via /gsd park";
     const success = parkMilestone(basePath, targetId, reason);
+    if (success) {
+      await rebuildState(basePath);
+    }
     ctx.ui.notify(
       success ? `Parked ${targetId}. Run /gsd unpark ${targetId} to reactivate.` : `Could not park ${targetId} — milestone not found.`,
       success ? "info" : "warning",
@@ -264,6 +268,9 @@ export async function handleWorkflowCommand(trimmed: string, ctx: ExtensionComma
       }
     }
     const success = unparkMilestone(basePath, targetId);
+    if (success) {
+      await rebuildState(basePath);
+    }
     ctx.ui.notify(
       success ? `Unparked ${targetId}. It will resume its normal position in the queue.` : `Could not unpark ${targetId} — milestone not found or not parked.`,
       success ? "info" : "warning",

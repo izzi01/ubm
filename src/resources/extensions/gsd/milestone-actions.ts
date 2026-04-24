@@ -17,11 +17,25 @@ import {
   resolveMilestonePath,
   resolveMilestoneFile,
   buildMilestoneFileName,
+  gsdRoot,
 } from "./paths.js";
 import { invalidateAllCaches } from "./cache.js";
 import { loadQueueOrder, saveQueueOrder } from "./queue-order.js";
-import { isDbAvailable, updateMilestoneStatus } from "./gsd-db.js";
+import { isDbAvailable, openDatabase, updateMilestoneStatus } from "./gsd-db.js";
 import { logWarning } from "./workflow-logger.js";
+
+function ensureMilestoneDbOpen(basePath: string, milestoneId: string): void {
+  if (isDbAvailable()) return;
+
+  const dbPath = join(gsdRoot(basePath), "gsd.db");
+  if (!existsSync(dbPath)) return;
+
+  try {
+    openDatabase(dbPath);
+  } catch (err) {
+    logWarning("engine", `milestone DB open failed for ${milestoneId}: ${(err as Error).message}`);
+  }
+}
 
 // ─── Park ──────────────────────────────────────────────────────────────────
 
@@ -55,6 +69,7 @@ export function parkMilestone(basePath: string, milestoneId: string, reason: str
 
   writeFileSync(parkedPath, content, "utf-8");
   // Sync DB status so deriveStateFromDb also skips this milestone (#2694)
+  ensureMilestoneDbOpen(basePath, milestoneId);
   if (isDbAvailable()) {
     try {
       updateMilestoneStatus(milestoneId, "parked");
@@ -81,6 +96,7 @@ export function unparkMilestone(basePath: string, milestoneId: string): boolean 
 
   unlinkSync(parkedPath);
   // Sync DB status so deriveStateFromDb picks up the unparked milestone (#2694)
+  ensureMilestoneDbOpen(basePath, milestoneId);
   if (isDbAvailable()) {
     try {
       updateMilestoneStatus(milestoneId, "active");

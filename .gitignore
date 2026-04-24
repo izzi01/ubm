@@ -71,17 +71,14 @@ docs/coherence-audit/
 .plans/
 
 # ── GSD runtime files (planning artifacts are tracked) ──
-.gsd/gsd.db
-.gsd/gsd.db-shm
-.gsd/gsd.db-wal
+.gsd/gsd.db*
 .gsd/STATE.md
 .gsd/activity/
 .gsd/runtime/
 .gsd/journal/
 .gsd/auto.lock
 .gsd/metrics.json
-.gsd/completed-units.json
-.gsd/completed-units-M104.json
+.gsd/completed-units*.json
 .gsd/doctor-history.jsonl
 .gsd/event-log.jsonl
 .gsd/notifications.jsonl
@@ -105,3 +102,6 @@ bun.lock
 
 # ── GSD baseline (auto-generated) ──
 .gsd-id
+
+# ── GSD baseline (auto-generated) ──
+.mcp.json

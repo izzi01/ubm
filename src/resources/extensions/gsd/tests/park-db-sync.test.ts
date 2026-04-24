@@ -69,6 +69,30 @@ test("unparkMilestone updates DB status to 'active' (#2694)", () => {
   }
 });
 
+test("unparkMilestone opens project DB and syncs status when no handle is open", () => {
+  const base = createBase();
+  const dbPath = join(base, ".gsd", "gsd.db");
+  try {
+    openDatabase(dbPath);
+    insertMilestone({ id: "M001", title: "Test", status: "active" });
+    closeDatabase();
+
+    parkMilestone(base, "M001", "deprioritized");
+    openDatabase(dbPath);
+    assert.equal(getMilestone("M001")!.status, "parked", "parkMilestone should sync file-backed DB even after reopen");
+    closeDatabase();
+
+    unparkMilestone(base, "M001");
+    openDatabase(dbPath);
+    assert.equal(getMilestone("M001")!.status, "active", "unparkMilestone should sync file-backed DB even when no handle is open");
+
+    closeDatabase();
+  } finally {
+    closeDatabase();
+    rmSync(base, { recursive: true, force: true });
+  }
+});
+
 test("park/unpark are safe when DB is not available (#2694 guard)", () => {
   const base = createBase();
   try {

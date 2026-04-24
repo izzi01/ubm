@@ -1,0 +1,99 @@
+{
+  "phase": "planning",
+  "activeMilestone": {
+    "id": "M114",
+    "title": "AI Coding App Parity Gate"
+  },
+  "activeSlice": {
+    "id": "S01",
+    "title": "Baseline parity audit and residual cleanup"
+  },
+  "nextAction": "Plan slice S01 (Baseline parity audit and residual cleanup).",
+  "registry": [
+    {
+      "id": "M001",
+      "title": "Extension Scaffold + GSD State Machine + Approval Gates",
+      "status": "complete"
+    },
+    {
+      "id": "M002",
+      "title": "Auto-Mode Execution Loop",
+      "status": "complete"
+    },
+    {
+      "id": "M100",
+      "title": "M100: Integration Test Milestone",
+      "status": "complete"
+    },
+    {
+      "id": "M101",
+      "title": "Model Config + BMAD Discovery + PRD Import",
+      "status": "complete"
+    },
+    {
+      "id": "M102",
+      "title": "M102: Skill Execution Framework",
+      "status": "complete"
+    },
+    {
+      "id": "M103",
+      "title": "Fork gsd-2 and rebrand to umb",
+      "status": "complete"
+    },
+    {
+      "id": "M104",
+      "title": "Port iz-to-mo-vu extension into the umb fork",
+      "status": "complete"
+    },
+    {
+      "id": "M105",
+      "title": "Global install and final polish",
+      "status": "complete"
+    },
+    {
+      "id": "M106",
+      "title": "Git-based skill install",
+      "status": "complete"
+    },
+    {
+      "id": "M107",
+      "title": "Merge upstream v2.70.1",
+      "status": "complete"
+    },
+    {
+      "id": "M108",
+      "title": "Remove GSD update check mechanism",
+      "status": "complete"
+    },
+    {
+      "id": "M109",
+      "title": "M109: Remove legacy slice branch artifacts and dead isolation preferences",
+      "status": "complete"
+    },
+    {
+      "id": "M110",
+      "title": "Complete isolation mode cleanup — remove 'none'/'branch' from getIsolationMode and all consumers",
+      "status": "complete"
+    },
+    {
+      "id": "M111",
+      "title": "Fix umb pattern test compilation — add vitest, fix imports and types",
+      "status": "complete"
+    },
+    {
+      "id": "M112",
+      "title": "Implement BMAD method — /bmad auto with 4-phase pipeline and gsd-orchestrator integration",
+      "status": "complete"
+    },
+    {
+      "id": "M113",
+      "title": "Branchless Worktree Architecture",
+      "status": "complete"
+    },
+    {
+      "id": "M114",
+      "title": "AI Coding App Parity Gate",
+      "status": "active"
+    }
+  ]
+}

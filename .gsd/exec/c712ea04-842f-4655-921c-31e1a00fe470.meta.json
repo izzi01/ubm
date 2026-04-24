@@ -1,0 +1,18 @@
+{
+  "id": "c712ea04-842f-4655-921c-31e1a00fe470",
+  "runtime": "node",
+  "purpose": "check derived GSD state after M114 planning and stale M100 presence",
+  "script_chars": 443,
+  "started_at": "2026-04-23T02:22:22.465Z",
+  "finished_at": "2026-04-23T02:22:22.487Z",
+  "exit_code": 1,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 22,
+  "stdout_bytes": 0,
+  "stderr_bytes": 1113,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "/home/cid/projects-personal/umb/.gsd/exec/c712ea04-842f-4655-921c-31e1a00fe470.stdout",
+  "stderr_path": "/home/cid/projects-personal/umb/.gsd/exec/c712ea04-842f-4655-921c-31e1a00fe470.stderr"
+}

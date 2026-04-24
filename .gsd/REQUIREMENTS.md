@@ -4,13 +4,71 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Active
 
-### R026 — Sync-specific test files are deleted. Remaining tests compile and pass. git-self-heal.ts is simplified to crash-recovery-only (no merge-specific recovery). No production or test code references deleted sync functions.
-- Class: operational
+### R027 — umb can complete the core coding loop in repo/dev mode on a purpose-built small web-task fixture: inspect code, edit files, run tests, start and manage a dev process, verify behavior in the browser, and finish the task end-to-end.
+- Class: primary-user-loop
 - Status: active
-- Description: Sync-specific test files are deleted. Remaining tests compile and pass. git-self-heal.ts is simplified to crash-recovery-only (no merge-specific recovery). No production or test code references deleted sync functions.
-- Why it matters: Test cleanup ensures the codebase stays maintainable. Dead tests referencing removed functions create false confidence and compilation noise. Simplified git-self-heal reduces cognitive load for future agents debugging crash recovery.
-- Source: PRD-branchless-worktree-architecture
-- Primary owning slice: M113/S04
+- Description: umb can complete the core coding loop in repo/dev mode on a purpose-built small web-task fixture: inspect code, edit files, run tests, start and manage a dev process, verify behavior in the browser, and finish the task end-to-end.
+- Why it matters: This is the direct proof that umb is indeed usable to make software in the way the user expects from an AI coding app.
+- Source: user
+- Primary owning slice: M114/S02
+- Supporting slices: M114/S01, M114/S04, M114/S05
+- Validation: mapped
+- Notes: This requirement encodes the user's bar: 'that it indeed can be used to make an software. it it a ai coding app'.
+
+### R028 — The same core coding-loop proof passes against the installed and packaged `umb` binary, not only against the repository/dev entrypoint.
+- Class: launchability
+- Status: active
+- Description: The same core coding-loop proof passes against the installed and packaged `umb` binary, not only against the repository/dev entrypoint.
+- Why it matters: A coding app that only works from the source tree is not trustworthy as shipped software.
+- Source: user
+- Primary owning slice: M114/S03
+- Supporting slices: M114/S04, M114/S05
+- Validation: mapped
+- Notes: Packaged parity is a blocker, not a follow-up.
+
+### R029 — A deterministic parity fixture under `tests/fixtures/` provides a stable release gate for the core coding loop, including edit, test, dev-server, and browser-verification behavior.
+- Class: integration
+- Status: active
+- Description: A deterministic parity fixture under `tests/fixtures/` provides a stable release gate for the core coding loop, including edit, test, dev-server, and browser-verification behavior.
+- Why it matters: The main parity proof needs to be stable enough for repeatable verification and release gating.
+- Source: inferred
+- Primary owning slice: M114/S02
+- Supporting slices: M114/S03, M114/S05
+- Validation: mapped
+- Notes: Main proof is deterministic; live-model checks are secondary.
+
+### R030 — The project includes a human-readable UAT script that demonstrates 'umb can be used to make software' on the parity fixture.
+- Class: launchability
+- Status: active
+- Description: The project includes a human-readable UAT script that demonstrates 'umb can be used to make software' on the parity fixture.
+- Why it matters: Automated tests catch regressions, but a human-readable acceptance path provides product-level confidence before release.
+- Source: user
+- Primary owning slice: M114/S04
+- Supporting slices: M114/S05
+- Validation: mapped
+- Notes: The UAT should mirror the product promise in plain language, not just restate test names.
+
+### R031 — Parity failures preserve actionable diagnostics that show what failed, in which mode (repo/dev or installed binary), and with enough evidence to debug quickly.
+- Class: failure-visibility
+- Status: active
+- Description: Parity failures preserve actionable diagnostics that show what failed, in which mode (repo/dev or installed binary), and with enough evidence to debug quickly.
+- Why it matters: A strict parity gate is only useful if failures are debuggable instead of noisy or ambiguous.
+- Source: inferred
+- Primary owning slice: M114/S04
+- Supporting slices: M114/S05
+- Validation: mapped
+- Notes: Diagnostics should cover dev-process, browser, and packaged-parity failures.
+
+### R032 — A live-model spot-check exists to confirm real agenting still works, but it is non-blocking and must either pass or skip cleanly when secrets or model configuration are absent.
+- Class: quality-attribute
+- Status: active
+- Description: A live-model spot-check exists to confirm real agenting still works, but it is non-blocking and must either pass or skip cleanly when secrets or model configuration are absent.
+- Why it matters: The milestone should keep one reality check for live agent behavior without sacrificing deterministic release confidence.
+- Source: user
+- Primary owning slice: M114/S05
+- Supporting slices: M114/S04
+- Validation: mapped
+- Notes: Optional live checks must not make the main release gate flaky.
 
 ## Validated
 
@@ -96,6 +154,16 @@ This file is the explicit capability and coverage contract for the project.
 - Primary owning slice: M113/S03
 - Validation: mergeMilestoneToMain reduced from ~652 to 233 lines (≤250 target met). stash/pop, milestone shelter, and .gsd/ auto-resolve fully removed. tsc --noEmit passes. 22/22 integration tests pass. grep confirms zero references to stash/shelter/isSafeToAutoResolve/SAFE_AUTO_RESOLVE in production code.
 
+### R026 — Sync-specific test files are deleted. Remaining tests compile and pass. git-self-heal.ts is simplified to crash-recovery-only (no merge-specific recovery). No production or test code references deleted sync functions.
+- Class: operational
+- Status: validated
+- Description: Sync-specific test files are deleted. Remaining tests compile and pass. git-self-heal.ts is simplified to crash-recovery-only (no merge-specific recovery). No production or test code references deleted sync functions.
+- Why it matters: Test cleanup ensures the codebase stays maintainable. Dead tests referencing removed functions create false confidence and compilation noise. Simplified git-self-heal reduces cognitive load for future agents debugging crash recovery.
+- Source: PRD-branchless-worktree-architecture
+- Primary owning slice: M113/S04
+- Validation: Validated by M113/S04. Sync-specific test files were deleted, remaining tests compile and pass, git-self-heal/auto-recovery was simplified to crash-recovery-only behavior, and no production or test code references the deleted sync functions. Evidence captured in .gsd/milestones/M113/M113-SUMMARY.md.
+- Notes: REQUIREMENTS.md had drifted behind the completed milestone summary; this update reconciles the contract with delivered evidence.
+
 ## Deferred
 
 ### R011 — System validates that skill content follows BMAD four-field persona rules (role, identity, communication style, principles), module assignment, and manifest registration.
@@ -108,6 +176,24 @@ This file is the explicit capability and coverage contract for the project.
 - Supporting slices: none
 - Validation: unmapped
 - Notes: Deferred — Skills Spec validation (R004) covers the machine-readable contract. BMAD persona validation is a separate concern.
+
+### R033 — Broader parity with secondary gsd2 feature surfaces beyond the core coding loop remains planned work, but not part of M114.
+- Class: constraint
+- Status: deferred
+- Description: Broader parity with secondary gsd2 feature surfaces beyond the core coding loop remains planned work, but not part of M114.
+- Why it matters: Keeping M114 focused on the core coding loop prevents the parity milestone from turning into a diffuse audit with weak proof.
+- Source: inferred
+- Validation: unmapped
+- Notes: Examples include wider BMAD, MCP, web-mode, and other secondary-surface parity audits.
+
+### R034 — Full parity across BMAD flows, MCP integrations, web mode, and every secondary surface is deferred until after the core-loop parity gate exists.
+- Class: constraint
+- Status: deferred
+- Description: Full parity across BMAD flows, MCP integrations, web mode, and every secondary surface is deferred until after the core-loop parity gate exists.
+- Why it matters: The user asked for proof that umb works as an AI coding app; establishing that core proof comes before an all-surface parity audit.
+- Source: inferred
+- Validation: unmapped
+- Notes: This is a sequencing decision, not a rejection of those surfaces.
 
 ## Out of Scope
 
@@ -144,6 +230,24 @@ This file is the explicit capability and coverage contract for the project.
 - Validation: n/a
 - Notes: FR14, FR16 from PRD. Phase 2 scope.
 
+### R035 — M114 does not attempt perfect one-milestone parity with every gsd2 capability.
+- Class: anti-feature
+- Status: out-of-scope
+- Description: M114 does not attempt perfect one-milestone parity with every gsd2 capability.
+- Why it matters: Trying to prove every surface at once would dilute the core claim that umb can be used to make software.
+- Source: inferred
+- Validation: n/a
+- Notes: This prevents scope confusion and keeps the milestone centered on usability proof.
+
+### R036 — Optional live-model checks do not block milestone completion without a deterministic parity failure.
+- Class: anti-feature
+- Status: out-of-scope
+- Description: Optional live-model checks do not block milestone completion without a deterministic parity failure.
+- Why it matters: Making optional live checks mandatory would create a flaky release bar and weaken the main proof signal.
+- Source: inferred
+- Validation: n/a
+- Notes: Live checks should strengthen confidence, not replace the deterministic gate.
+
 ## Traceability
 
 | ID | Class | Status | Primary owner | Supporting | Proof |
@@ -160,11 +264,21 @@ This file is the explicit capability and coverage contract for the project.
 | R023 | architectural | validated | M113/S01 | none | .gsd converted from symlink to real directory. 8 planning .md files + 355 milestone files tracked in git. Runtime files (gsd.db, STATE.md, activity/, runtime/, journal/, etc.) gitignored via 25 specific patterns. git check-ignore confirms correct behavior for all categories. |
 | R024 | architectural | validated | M113/S02 | none | rg finds zero code references to syncProjectRootToWorktree, syncStateToProjectRoot, syncGsdStateToWorktree, syncWorktreeStateBack, copyPlanningArtifacts, reconcilePlanCheckboxes, forceOverwriteAssessmentsWithVerdict in production code. tsc --noEmit passes. 9 sync-only test files deleted, 13 mixed-content test files cleaned. One historical comment reference remains in merge-cwd-restore.test.ts (non-functional). |
 | R025 | architectural | validated | M113/S03 | none | mergeMilestoneToMain reduced from ~652 to 233 lines (≤250 target met). stash/pop, milestone shelter, and .gsd/ auto-resolve fully removed. tsc --noEmit passes. 22/22 integration tests pass. grep confirms zero references to stash/shelter/isSafeToAutoResolve/SAFE_AUTO_RESOLVE in production code. |
-| R026 | operational | active | M113/S04 | none | unmapped |
+| R026 | operational | validated | M113/S04 | none | Validated by M113/S04. Sync-specific test files were deleted, remaining tests compile and pass, git-self-heal/auto-recovery was simplified to crash-recovery-only behavior, and no production or test code references the deleted sync functions. Evidence captured in .gsd/milestones/M113/M113-SUMMARY.md. |
+| R027 | primary-user-loop | active | M114/S02 | M114/S01, M114/S04, M114/S05 | mapped |
+| R028 | launchability | active | M114/S03 | M114/S04, M114/S05 | mapped |
+| R029 | integration | active | M114/S02 | M114/S03, M114/S05 | mapped |
+| R030 | launchability | active | M114/S04 | M114/S05 | mapped |
+| R031 | failure-visibility | active | M114/S04 | M114/S05 | mapped |
+| R032 | quality-attribute | active | M114/S05 | M114/S04 | mapped |
+| R033 | constraint | deferred | none | none | unmapped |
+| R034 | constraint | deferred | none | none | unmapped |
+| R035 | anti-feature | out-of-scope | none | none | n/a |
+| R036 | anti-feature | out-of-scope | none | none | n/a |
 
 ## Coverage Summary
 
-- Active requirements: 1
-- Mapped to slices: 1
-- Validated: 8 (R001, R002, R003, R004, R010, R023, R024, R025)
+- Active requirements: 6
+- Mapped to slices: 6
+- Validated: 9 (R001, R002, R003, R004, R010, R023, R024, R025, R026)
 - Unmapped active requirements: 0

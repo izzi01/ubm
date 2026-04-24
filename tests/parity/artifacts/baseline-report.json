@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-24T04:45:52.395Z",
+  "cwd": "/home/cid/projects-personal/umb",
+  "artifactPath": "tests/parity/artifacts/baseline-report.json",
+  "summary": {
+    "verdict": "failing",
+    "totalLanes": 7,
+    "passed": 4,
+    "failed": 1,
+    "skipped": 1,
+    "timedOut": 1,
+    "provesCodingLoop": false,
+    "uncoveredLaneNames": [
+      "smoke-runner",
+      "fixtures-runner",
+      "live-runner",
+      "live-regression-runner",
+      "e2e-smoke",
+      "e2e-headless",
+      "pack-install"
+    ],
+    "proofClassCounts": {
+      "smoke": 1,
+      "repo-infra": 2,
+      "installed-binary": 2,
+      "live-spot-check": 1,
+      "uncovered-coding-loop": 1
+    }
+  },
+  "lanes": [
+    {
+      "name": "smoke-runner",
+      "target": "tests/smoke/run.ts",
+      "runner": "node-script",
+      "proofClass": "smoke",
+      "parityScope": "partial",
+      "provesCodingLoop": false,
+      "status": "failed",
+      "skipReason": "smoke-runner exited with code 1",
+      "exitCode": 1,
+      "durationMs": 8211,
+      "command": [
+        "--experimental-strip-types",
+        "tests/smoke/run.ts"
+      ]
+    },
+    {
+      "name": "fixtures-runner",
+      "target": "tests/fixtures/run.ts",
+      "runner": "node-script",
+      "proofClass": "uncovered-coding-loop",
+      "parityScope": "partial",
+      "provesCodingLoop": false,
+      "status": "passed",
+      "skipReason": null,
+      "exitCode": 0,
+      "durationMs": 29,
+      "command": [
+        "--experimental-strip-types",
+        "tests/fixtures/run.ts"
+      ]
+    },
+    {
+      "name": "live-runner",
+      "target": "tests/live/run.ts",
+      "runner": "node-script",
+      "proofClass": "live-spot-check",
+      "parityScope": "live-only",
+      "provesCodingLoop": false,
+      "status": "skipped",
+      "skipReason": "live lane skipped because GSD_LIVE_TESTS is not enabled",
+      "exitCode": null,
+      "durationMs": 0,
+      "command": [
+        "--experimental-strip-types",
+        "tests/live/run.ts"
+      ]
+    },
+    {
+      "name": "live-regression-runner",
+      "target": "tests/live-regression/run.ts",
+      "runner": "node-script",
+      "proofClass": "installed-binary",
+      "parityScope": "installed-mode",
+      "provesCodingLoop": false,
+      "status": "passed",
+      "skipReason": null,
+      "exitCode": 0,
+      "durationMs": 23567,
+      "command": [
+        "--experimental-strip-types",
+        "tests/live-regression/run.ts"
+      ]
+    },
+    {
+      "name": "e2e-smoke",
+      "target": "src/tests/integration/e2e-smoke.test.ts",
+      "runner": "node-test",
+      "proofClass": "repo-infra",
+      "parityScope": "repo-mode",
+      "provesCodingLoop": false,
+      "status": "passed",
+      "skipReason": null,
+      "exitCode": 0,
+      "durationMs": 9860,
+      "command": [
+        "--import",
+        "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
+        "--experimental-strip-types",
+        "--test",
+        "src/tests/integration/e2e-smoke.test.ts"
+      ]
+    },
+    {
+      "name": "e2e-headless",
+      "target": "src/tests/integration/e2e-headless.test.ts",
+      "runner": "node-test",
+      "proofClass": "repo-infra",
+      "parityScope": "repo-mode",
+      "provesCodingLoop": false,
+      "status": "passed",
+      "skipReason": null,
+      "exitCode": 0,
+      "durationMs": 10635,
+      "command": [
+        "--import",
+        "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
+        "--experimental-strip-types",
+        "--test",
+        "src/tests/integration/e2e-headless.test.ts"
+      ]
+    },
+    {
+      "name": "pack-install",
+      "target": "src/tests/integration/pack-install.test.ts",
+      "runner": "node-test",
+      "proofClass": "installed-binary",
+      "parityScope": "installed-mode",
+      "provesCodingLoop": false,
+      "status": "timed_out",
+      "skipReason": "pack-install exceeded timeout of 120000ms",
+      "exitCode": 1,
+      "durationMs": 167300,
+      "command": [
+        "--import",
+        "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
+        "--experimental-strip-types",
+        "--test",
+        "src/tests/integration/pack-install.test.ts"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "id": "686cc0ba-4e43-4262-80b8-e86101e25b71",
+  "runtime": "bash",
+  "purpose": "derive live GSD state using project runtime path",
+  "script_chars": 543,
+  "started_at": "2026-04-23T02:22:35.359Z",
+  "finished_at": "2026-04-23T02:22:35.499Z",
+  "exit_code": 1,
+  "signal": null,
+  "timed_out": false,
+  "duration_ms": 140,
+  "stdout_bytes": 0,
+  "stderr_bytes": 686,
+  "stdout_truncated": false,
+  "stderr_truncated": false,
+  "stdout_path": "/home/cid/projects-personal/umb/.gsd/exec/686cc0ba-4e43-4262-80b8-e86101e25b71.stdout",
+  "stderr_path": "/home/cid/projects-personal/umb/.gsd/exec/686cc0ba-4e43-4262-80b8-e86101e25b71.stderr"
+}
