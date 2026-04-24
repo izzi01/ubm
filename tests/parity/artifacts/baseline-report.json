@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "generatedAt": "2026-04-24T07:32:37.117Z",
+  "generatedAt": "2026-04-24T07:49:25.628Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
@@ -41,7 +41,7 @@
       "status": "failed",
       "skipReason": "smoke-runner exited with code 1",
       "exitCode": 1,
-      "durationMs": 5949,
+      "durationMs": 5700,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -60,7 +60,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 27,
+      "durationMs": 20,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -98,7 +98,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 18107,
+      "durationMs": 20308,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -117,7 +117,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 6709,
+      "durationMs": 7430,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -139,7 +139,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 8591,
+      "durationMs": 9335,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -236,7 +236,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 0,
+      "durationMs": 1,
       "command": [
         "artifact",
         "tests/fixtures/recordings/installed-mode-parity-web-task.json"

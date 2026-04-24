@@ -21,10 +21,10 @@
 - [x] **S03: S03** `risk:high` `depends:[]`
   > After this: After this: the installed packaged `umb` binary can pass the same small web-task parity proof, so packaged behavior is no longer assumed to match the repo build.
 
-- [ ] **S04: S04** `risk:medium` `depends:[]`
+- [x] **S04: S04** `risk:medium` `depends:[]`
   > After this: After this: parity failures tell you what broke and where, and there is a human-readable UAT script that demonstrates the claim that umb can be used to make software on the parity fixture.
 
-- [ ] **S05: Release gate and live spot-check** `risk:medium` `depends:[S03,S04]`
+- [ ] **S05: S05** `risk:medium` `depends:[]`
   > After this: After this: one strict parity command/report can be run before release to prove umb behaves like a usable AI coding app for the agreed core loop in repo/dev and installed modes, with an optional live-model spot-check.
 
 ## Boundary Map

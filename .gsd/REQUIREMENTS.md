@@ -4,28 +4,6 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Active
 
-### R030 — The project includes a human-readable UAT script that demonstrates 'umb can be used to make software' on the parity fixture.
-- Class: launchability
-- Status: active
-- Description: The project includes a human-readable UAT script that demonstrates 'umb can be used to make software' on the parity fixture.
-- Why it matters: Automated tests catch regressions, but a human-readable acceptance path provides product-level confidence before release.
-- Source: user
-- Primary owning slice: M114/S04
-- Supporting slices: M114/S05
-- Validation: mapped
-- Notes: The UAT should mirror the product promise in plain language, not just restate test names.
-
-### R031 — Parity failures preserve actionable diagnostics that show what failed, in which mode (repo/dev or installed binary), and with enough evidence to debug quickly.
-- Class: failure-visibility
-- Status: active
-- Description: Parity failures preserve actionable diagnostics that show what failed, in which mode (repo/dev or installed binary), and with enough evidence to debug quickly.
-- Why it matters: A strict parity gate is only useful if failures are debuggable instead of noisy or ambiguous.
-- Source: inferred
-- Primary owning slice: M114/S04
-- Supporting slices: M114/S05
-- Validation: mapped
-- Notes: Diagnostics should cover dev-process, browser, and packaged-parity failures.
-
 ### R032 — A live-model spot-check exists to confirm real agenting still works, but it is non-blocking and must either pass or skip cleanly when secrets or model configuration are absent.
 - Class: quality-attribute
 - Status: active
@@ -164,6 +142,28 @@ This file is the explicit capability and coverage contract for the project.
 - Validation: The deterministic fixture under `tests/fixtures/parity-web-task/` is tracked in the manifest and backed by `tests/fixtures/recordings/repo-mode-parity-web-task.json`; repo-mode fixture/parity contract tests pass and the parity JSON report includes artifact-path and failedPhase diagnostics for the recorded lane.
 - Notes: Main proof is deterministic; live-model checks are secondary.
 
+### R030 — The project includes a human-readable UAT script that demonstrates 'umb can be used to make software' on the parity fixture.
+- Class: launchability
+- Status: validated
+- Description: The project includes a human-readable UAT script that demonstrates 'umb can be used to make software' on the parity fixture.
+- Why it matters: Automated tests catch regressions, but a human-readable acceptance path provides product-level confidence before release.
+- Source: user
+- Primary owning slice: M114/S04
+- Supporting slices: M114/S05
+- Validation: Validated by `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-human-uat-contract.test.ts src/tests/integration/parity-diagnostics-contract.test.ts` passing on 2026-04-24 and by the tracked guide `tests/parity/human-uat.md`, which covers preconditions, repo-mode steps, installed-mode steps, expected outcomes, and failure-inspection flow against the parity fixture.
+- Notes: The UAT should mirror the product promise in plain language, not just restate test names.
+
+### R031 — Parity failures preserve actionable diagnostics that show what failed, in which mode (repo/dev or installed binary), and with enough evidence to debug quickly.
+- Class: failure-visibility
+- Status: validated
+- Description: Parity failures preserve actionable diagnostics that show what failed, in which mode (repo/dev or installed binary), and with enough evidence to debug quickly.
+- Why it matters: A strict parity gate is only useful if failures are debuggable instead of noisy or ambiguous.
+- Source: inferred
+- Primary owning slice: M114/S04
+- Supporting slices: M114/S05
+- Validation: Validated by `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-diagnostics-contract.test.ts` and `node --experimental-strip-types tests/parity/diagnostics.ts --report tests/parity/artifacts/baseline-report.json`, which render mode-aware lane, phase, artifact path, command/browser evidence, and repo-vs-installed comparison surfaces from the canonical baseline report.
+- Notes: Diagnostics should cover dev-process, browser, and packaged-parity failures.
+
 ## Deferred
 
 ### R011 — System validates that skill content follows BMAD four-field persona rules (role, identity, communication style, principles), module assignment, and manifest registration.
@@ -268,8 +268,8 @@ This file is the explicit capability and coverage contract for the project.
 | R027 | primary-user-loop | validated | M114/S02 | M114/S01, M114/S04, M114/S05 | Repo-mode fixture contract and repo-mode parity contract now pass, and `node --experimental-strip-types tests/parity/run.ts --format json` reports `provesCodingLoop: true` with explicit inspect/edit/test/dev-server/browser phase diagnostics for the `repo-mode-coding-loop` lane. |
 | R028 | launchability | validated | M114/S03 | M114/S04, M114/S05 | Validated by passing `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/pack-install.test.ts`, `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/installed-mode-parity-contract.test.ts src/tests/integration/repo-mode-parity-contract.test.ts`, `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-fixture-manifest.test.ts`, `node --experimental-strip-types tests/live-regression/run.ts`, and `node --experimental-strip-types tests/parity/run.ts --format json`, which show both `repo-mode-coding-loop` and `pack-install` passing with deterministic artifactPath/failedPhase surfaces and a comparableWithoutRerun repoInstalledComparison. |
 | R029 | integration | validated | M114/S02 | M114/S03, M114/S05 | The deterministic fixture under `tests/fixtures/parity-web-task/` is tracked in the manifest and backed by `tests/fixtures/recordings/repo-mode-parity-web-task.json`; repo-mode fixture/parity contract tests pass and the parity JSON report includes artifact-path and failedPhase diagnostics for the recorded lane. |
-| R030 | launchability | active | M114/S04 | M114/S05 | mapped |
-| R031 | failure-visibility | active | M114/S04 | M114/S05 | mapped |
+| R030 | launchability | validated | M114/S04 | M114/S05 | Validated by `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-human-uat-contract.test.ts src/tests/integration/parity-diagnostics-contract.test.ts` passing on 2026-04-24 and by the tracked guide `tests/parity/human-uat.md`, which covers preconditions, repo-mode steps, installed-mode steps, expected outcomes, and failure-inspection flow against the parity fixture. |
+| R031 | failure-visibility | validated | M114/S04 | M114/S05 | Validated by `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-diagnostics-contract.test.ts` and `node --experimental-strip-types tests/parity/diagnostics.ts --report tests/parity/artifacts/baseline-report.json`, which render mode-aware lane, phase, artifact path, command/browser evidence, and repo-vs-installed comparison surfaces from the canonical baseline report. |
 | R032 | quality-attribute | active | M114/S05 | M114/S04 | mapped |
 | R033 | constraint | deferred | none | none | unmapped |
 | R034 | constraint | deferred | none | none | unmapped |
@@ -278,7 +278,7 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Coverage Summary
 
-- Active requirements: 3
-- Mapped to slices: 3
-- Validated: 12 (R001, R002, R003, R004, R010, R023, R024, R025, R026, R027, R028, R029)
+- Active requirements: 1
+- Mapped to slices: 1
+- Validated: 14 (R001, R002, R003, R004, R010, R023, R024, R025, R026, R027, R028, R029, R030, R031)
 - Unmapped active requirements: 0

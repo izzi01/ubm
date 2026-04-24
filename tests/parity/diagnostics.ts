@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs"
-import { join } from "node:path"
+import { isAbsolute, join } from "node:path"
 import {
   BASELINE_REPORT_PATH,
   type BaselineLaneResult,
@@ -202,7 +202,7 @@ export function renderParityDiagnostics(report: BaselineReport): string {
 }
 
 export function loadBaselineReport(reportPath: string = BASELINE_REPORT_PATH, cwd: string = process.cwd()): BaselineReport {
-  const absolutePath = join(cwd, reportPath)
+  const absolutePath = isAbsolute(reportPath) ? reportPath : join(cwd, reportPath)
   if (!existsSync(absolutePath)) {
     throw new Error(`Baseline parity report not found at ${reportPath}`)
   }

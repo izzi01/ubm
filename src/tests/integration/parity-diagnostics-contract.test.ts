@@ -43,12 +43,45 @@ function createSyntheticReport(): any {
 
 test("diagnostics renderer turns the tracked baseline report into a mode-aware actionable summary", async () => {
   const diagnostics = await importDiagnosticsModule()
-  const report = diagnostics.loadBaselineReport("tests/parity/artifacts/baseline-report.json", repoRoot)
+  const report = createSyntheticReport()
+  const lane = report.lanes.find((entry: { name: string }) => entry.name === "repo-mode-coding-loop")
+  assert.ok(lane)
+
+  lane.status = "failed"
+  lane.failedPhase = "browser"
+  lane.artifactPath = ".tmp-repo-mode-parity-contract-synthetic/repo-mode-parity-web-task.failed.json"
+  lane.phaseResults = lane.phaseResults.map((phase: any) =>
+    phase.phase === "browser"
+      ? {
+          ...phase,
+          status: "failed",
+          summary: "Browser assertion observed stale in-progress copy in repo mode.",
+          command: {
+            command: "browser_assert text_visible #status-message",
+            exitCode: 1,
+            stdoutSnippet: "Expected completed status copy",
+          },
+          browser: {
+            assertion: "#status-message text",
+            expected: "Build status: Complete",
+            actual: "Build status: In progress",
+          },
+        }
+      : phase,
+  )
+  report.repoInstalledComparison.divergencePhases = ["browser"]
+  report.repoInstalledComparison.repoArtifactPath = lane.artifactPath
+  report.repoInstalledComparison.phaseComparisons = report.repoInstalledComparison.phaseComparisons.map((phase: any) =>
+    phase.phase === "browser"
+      ? { ...phase, repoStatus: "failed", installedStatus: "passed", matches: false }
+      : phase,
+  )
+
   const rendered = diagnostics.renderParityDiagnostics(report)
 
   assert.match(rendered, /Parity diagnostics: verdict=failing/)
   assert.match(rendered, /repo-mode-coding-loop \[mode=repo-mode\] status=failed failedPhase=browser/)
-  assert.match(rendered, /artifactPath: \.tmp-repo-mode-parity-contract-[^\n]+repo-mode-parity-web-task\.failed\.json/)
+  assert.match(rendered, /artifactPath: \.tmp-repo-mode-parity-contract-synthetic\/repo-mode-parity-web-task\.failed\.json/)
   assert.match(rendered, /evidence: #status-message text expected "Build status: Complete" but saw "Build status: In progress"/)
   assert.match(rendered, /snippet: Expected completed status copy/)
   assert.match(rendered, /pack-install \[mode=installed-mode\] status=passed/)

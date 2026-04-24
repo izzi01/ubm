@@ -21,8 +21,10 @@ Even if everything else is cut, `umb` must still be usable to make software end-
 - Existing smoke, integration, packaging, live, and live-regression harnesses already exist
 - M114/S01 is complete: the repo has a tracked baseline parity lane matrix, one machine-readable parity report command, M113 cleanup reconciliation recorded as closed foundation metadata, and a fixture acceptance manifest that explicitly marked the core coding-loop capabilities still uncovered before repo-mode proof landed
 - M114/S02 is complete: the repo has a deterministic parity web-task fixture, a recorded repo-mode coding-loop artifact, repo-mode fixture/parity contract tests, and parity-report wiring that surfaces inspect/edit/test/dev-server/browser diagnostics plus artifact paths for the repo-mode lane
-- M114/S03 is now complete: the installed packaged `umb` path is represented as a first-class recorded parity lane backed by `tests/fixtures/recordings/installed-mode-parity-web-task.json`, the parity manifest truthfully marks both repo and installed coding-loop coverage, repo-vs-installed comparison data is emitted without reruns, and pack-install coverage has been repaired to assert `umb` / `.umb` branding instead of stale `gsd` assumptions
-- The remaining milestone work is S04/S05: richer human-facing diagnostics, a concrete UAT script, and the strict integrated release gate plus optional live spot-check
+- M114/S03 is complete: the installed packaged `umb` path is represented as a first-class recorded parity lane backed by `tests/fixtures/recordings/installed-mode-parity-web-task.json`, the parity manifest truthfully marks both repo and installed coding-loop coverage, repo-vs-installed comparison data is emitted without reruns, and pack-install coverage asserts `umb` / `.umb` branding instead of stale `gsd` assumptions
+- M114/S04 is complete: `tests/parity/diagnostics.ts` renders operator-facing parity diagnostics from the canonical baseline report, `tests/parity/human-uat.md` provides the tracked repo/installed human UAT path, and contract tests validate both surfaces against tracked files and commands
+- The deterministic coding-loop proof is green in both repo and installed modes, but the full parity baseline remains truthfully red because `node --experimental-strip-types tests/parity/run.ts --format json` still reports `smoke-runner` failed and `live-runner` skipped without `GSD_LIVE_TESTS=1`
+- The remaining milestone work is S05: assemble the strict integrated release gate around the existing parity report, diagnostics renderer, UAT path, and optional live spot-check policy
 
 ## Architecture / Key Patterns
 
@@ -40,6 +42,8 @@ Even if everything else is cut, `umb` must still be usable to make software end-
 - M114 uses `tests/parity/` as the baseline proof inventory layer:
   - `tests/parity/baseline-lanes.ts` declares the fixed allowlisted lane matrix, report schema, reconciliation metadata, and manifest loading/validation
   - `tests/parity/run.ts` emits a machine-readable baseline report even when the verdict is failing, so consumers can inspect truthful parity gaps
+  - `tests/parity/diagnostics.ts` renders operator-facing summaries from the baseline report rather than introducing a second parity harness
+  - `tests/parity/human-uat.md` is a tracked human-readable UAT script tied to repo-local fixture, report, and diagnostics artifacts
   - `tests/fixtures/parity-web-task-manifest.json` is the tracked source of truth for the downstream coding-loop acceptance contract
   - deterministic coding-loop proof is represented as recorded-artifact lanes (`repo-mode-coding-loop` and `pack-install`) with explicit `inspect`, `edit`, `test`, `dev-server`, and `browser` phase diagnostics
   - `repoInstalledComparison` gives downstream slices a stable repo-vs-installed diff surface with artifact paths and per-phase matches/divergence
