@@ -26,7 +26,7 @@ Workflow parity evidence can be summarized in the milestone report without reint
   - Files: `tests/fixtures/workflow-parity-manifest.json`, `src/resources/extensions/umb/bmad-pipeline/`, `src/tests/integration/workflow-parity-fixture-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-fixture-contract.test.ts
 
-- [ ] **T02: Implement workflow parity lane and recorded evidence** `est:1-1.5 days`
+- [x] **T02: Implement workflow parity lane and recorded evidence** `est:1-1.5 days`
   Implement the representative workflow parity proof. Exercise the scoped planning-to-execution path, capture the produced artifacts and state transitions, and serialize a machine-readable artifact/report that can be consumed by the final parity gate. The proof should clearly show what was planned, what transitioned, and where the operator-facing outputs live when something breaks.
   - Files: `tests/parity/secondary-lanes.ts`, `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/fixtures/recordings/workflow-parity.json`, `src/tests/integration/workflow-parity-contract.test.ts`, `src/resources/extensions/umb/bmad-pipeline/`, `src/resources/extensions/gsd/`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-contract.test.ts && node --experimental-strip-types tests/parity/run.ts --format json

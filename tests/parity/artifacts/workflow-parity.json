@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "fixtureId": "workflow-parity-fixture",
+  "representativePathId": "gsd-planning-to-execution",
+  "status": "failed",
+  "artifactPath": "tests/parity/artifacts/workflow-parity.json",
+  "recordingPath": "tests/fixtures/recordings/workflow-parity.json",
+  "ids": {
+    "milestoneId": "M901",
+    "sliceId": "S01",
+    "taskId": "T01"
+  },
+  "diagnostics": {
+    "stateManifestPath": ".gsd/state-manifest.json",
+    "taskSummaryPath": ".gsd/milestones/M901/slices/S01/tasks/T01-SUMMARY.md",
+    "artifactChecks": [
+      {
+        "id": "roadmap",
+        "producerPhase": "plan-milestone",
+        "path": ".gsd/milestones/M901/M901-ROADMAP.md",
+        "exists": true,
+        "missingMarkers": []
+      },
+      {
+        "id": "slice-plan",
+        "producerPhase": "plan-slice",
+        "path": ".gsd/milestones/M901/slices/S01/S01-PLAN.md",
+        "exists": true,
+        "missingMarkers": [
+          "## Goal"
+        ]
+      },
+      {
+        "id": "task-plan",
+        "producerPhase": "plan-slice",
+        "path": ".gsd/milestones/M901/slices/S01/tasks/T01-PLAN.md",
+        "exists": true,
+        "missingMarkers": []
+      },
+      {
+        "id": "task-summary",
+        "producerPhase": "complete-task",
+        "path": ".gsd/milestones/M901/slices/S01/tasks/T01-SUMMARY.md",
+        "exists": true,
+        "missingMarkers": []
+      }
+    ],
+    "stateTransitions": [
+      {
+        "phase": "plan-milestone",
+        "entity": "milestone",
+        "field": "status",
+        "expected": "active",
+        "observed": "active",
+        "status": "passed"
+      },
+      {
+        "phase": "plan-milestone",
+        "entity": "slice",
+        "field": "status",
+        "expected": "pending",
+        "observed": "pending",
+        "status": "passed"
+      },
+      {
+        "phase": "plan-slice",
+        "entity": "task",
+        "field": "status",
+        "expected": "pending",
+        "observed": "pending",
+        "status": "passed"
+      },
+      {
+        "phase": "complete-task",
+        "entity": "task",
+        "field": "status",
+        "expected": "complete",
+        "observed": "complete",
+        "status": "passed"
+      },
+      {
+        "phase": "complete-task",
+        "entity": "task",
+        "field": "verification_result",
+        "expected": "passed",
+        "observed": "node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts",
+        "status": "failed"
+      }
+    ],
+    "verificationEvidence": {
+      "rowCount": 1,
+      "commands": [
+        "node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts"
+      ],
+      "status": "passed"
+    },
+    "failureDiagnostics": [
+      "malformed artifact: .gsd/milestones/M901/slices/S01/S01-PLAN.md missing markers ## Goal (phase plan-slice)",
+      "invalid transition: complete-task expected task.verification_result=passed but saw node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts"
+    ]
+  }
+}

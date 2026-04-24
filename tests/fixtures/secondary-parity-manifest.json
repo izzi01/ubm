@@ -106,7 +106,7 @@
       "surfaceId": "workflow-bmad",
       "proofClass": "report-contract",
       "requirement": "required",
-      "implementationStatus": "planned-proof",
+      "implementationStatus": "existing-proof",
       "releaseReadable": true,
       "description": "Publishes the machine-readable report row that downstream release gates consume for representative workflow/BMAD parity."
     },
@@ -321,12 +321,12 @@
         {
           "id": "workflow-representative-fixture",
           "surfaceId": "workflow-bmad",
-          "title": "Future representative workflow/BMAD fixture",
+          "title": "Representative workflow parity fixture manifest",
           "kind": "manifest",
           "status": "planned",
-          "path": "tests/fixtures/secondary-workflow-bmad-manifest.json",
+          "path": "tests/fixtures/workflow-parity-manifest.json",
           "deterministic": true,
-          "purpose": "Reserved tracked manifest path for one representative workflow/BMAD parity loop.",
+          "purpose": "Tracked representative workflow/BMAD manifest path for the deterministic planning-to-execution parity loop.",
           "laneName": "repo-recording:workflow-bmad"
         }
       ],
@@ -409,8 +409,8 @@
     "totalLanes": 13,
     "requiredLanes": 8,
     "optionalLanes": 5,
-    "presentFixtures": 9,
-    "plannedFixtures": 3,
+    "presentFixtures": 10,
+    "plannedFixtures": 2,
     "partialSurfaces": 4,
     "uncoveredSurfaces": 0,
     "coveredSurfaces": 0

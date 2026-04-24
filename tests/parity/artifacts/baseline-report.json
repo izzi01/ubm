@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "generatedAt": "2026-04-24T10:36:35.398Z",
+  "generatedAt": "2026-04-24T10:53:16.885Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
@@ -41,7 +41,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 186,
+      "durationMs": 180,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -60,7 +60,7 @@
       "status": "failed",
       "skipReason": "fixtures-runner exited with code 1",
       "exitCode": 1,
-      "durationMs": 21,
+      "durationMs": 23,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -98,7 +98,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 17883,
+      "durationMs": 17719,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -117,7 +117,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 6621,
+      "durationMs": 6548,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -139,7 +139,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 8382,
+      "durationMs": 8620,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -614,11 +614,10 @@
           "installed-recording:web-mode"
         ],
         "existingRequiredLaneNames": [
+          "secondary-parity-report",
           "integration:web-mode"
         ],
-        "missingRequiredLaneNames": [
-          "secondary-parity-report"
-        ],
+        "missingRequiredLaneNames": [],
         "presentFixturePaths": [
           "tests/parity/artifacts/secondary-surface-inventory.json",
           "src/tests/integration/web-mode-cli.test.ts"
@@ -699,17 +698,16 @@
           "repo-recording:workflow-bmad"
         ],
         "existingRequiredLaneNames": [
+          "secondary-parity-report:workflow-bmad",
           "integration:workflow-contracts"
         ],
-        "missingRequiredLaneNames": [
-          "secondary-parity-report:workflow-bmad"
-        ],
+        "missingRequiredLaneNames": [],
         "presentFixturePaths": [
           "tests/parity/artifacts/secondary-surface-inventory.json",
           "src/tests/integration/web-workflow-action-execution.test.ts"
         ],
         "plannedFixturePaths": [
-          "tests/fixtures/secondary-workflow-bmad-manifest.json"
+          "tests/fixtures/workflow-parity-manifest.json"
         ],
         "coverageGapIds": [
           "workflow-fixture-missing",
@@ -788,11 +786,10 @@
           "installed-recording:web-mode"
         ],
         "existingRequiredLaneNames": [
+          "secondary-parity-report",
           "integration:web-mode"
         ],
-        "missingRequiredLaneNames": [
-          "secondary-parity-report"
-        ],
+        "missingRequiredLaneNames": [],
         "presentFixturePaths": [
           "tests/parity/artifacts/secondary-surface-inventory.json",
           "src/tests/integration/web-mode-cli.test.ts"
@@ -873,17 +870,16 @@
           "repo-recording:workflow-bmad"
         ],
         "existingRequiredLaneNames": [
+          "secondary-parity-report:workflow-bmad",
           "integration:workflow-contracts"
         ],
-        "missingRequiredLaneNames": [
-          "secondary-parity-report:workflow-bmad"
-        ],
+        "missingRequiredLaneNames": [],
         "presentFixturePaths": [
           "tests/parity/artifacts/secondary-surface-inventory.json",
           "src/tests/integration/web-workflow-action-execution.test.ts"
         ],
         "plannedFixturePaths": [
-          "tests/fixtures/secondary-workflow-bmad-manifest.json"
+          "tests/fixtures/workflow-parity-manifest.json"
         ],
         "coverageGapIds": [
           "workflow-fixture-missing",
@@ -1411,7 +1407,7 @@
           "surfaceId": "web-mode",
           "proofClass": "report-contract",
           "requirement": "required",
-          "implementationStatus": "planned-proof",
+          "implementationStatus": "existing-proof",
           "releaseReadable": true,
           "description": "Publishes the machine-readable report row that downstream release gates consume for web-mode parity."
         },
@@ -1481,7 +1477,7 @@
           "surfaceId": "workflow-bmad",
           "proofClass": "report-contract",
           "requirement": "required",
-          "implementationStatus": "planned-proof",
+          "implementationStatus": "existing-proof",
           "releaseReadable": true,
           "description": "Publishes the machine-readable report row that downstream release gates consume for representative workflow/BMAD parity."
         },
@@ -1696,12 +1692,12 @@
             {
               "id": "workflow-representative-fixture",
               "surfaceId": "workflow-bmad",
-              "title": "Future representative workflow/BMAD fixture",
+              "title": "Representative workflow parity fixture manifest",
               "kind": "manifest",
               "status": "planned",
-              "path": "tests/fixtures/secondary-workflow-bmad-manifest.json",
+              "path": "tests/fixtures/workflow-parity-manifest.json",
               "deterministic": true,
-              "purpose": "Reserved tracked manifest path for one representative workflow/BMAD parity loop.",
+              "purpose": "Tracked representative workflow/BMAD manifest path for the deterministic planning-to-execution parity loop.",
               "laneName": "repo-recording:workflow-bmad"
             }
           ],
@@ -1896,6 +1892,140 @@
           "attribution": "fixture_failure"
         }
       }
+    }
+  },
+  "workflowParity": {
+    "id": "workflow-bmad",
+    "title": "Workflow / BMAD representative parity surface",
+    "inventoryStatus": "partial",
+    "releaseReadableStatus": "partial",
+    "requiredLaneNames": [
+      "secondary-parity-report:workflow-bmad",
+      "integration:workflow-contracts"
+    ],
+    "optionalLaneNames": [
+      "repo-recording:workflow-bmad"
+    ],
+    "existingRequiredLaneNames": [
+      "secondary-parity-report:workflow-bmad",
+      "integration:workflow-contracts"
+    ],
+    "missingRequiredLaneNames": [],
+    "presentFixturePaths": [
+      "tests/parity/artifacts/secondary-surface-inventory.json",
+      "src/tests/integration/web-workflow-action-execution.test.ts"
+    ],
+    "plannedFixturePaths": [
+      "tests/fixtures/workflow-parity-manifest.json"
+    ],
+    "coverageGapIds": [
+      "workflow-fixture-missing",
+      "bmad-scope-not-explicit"
+    ],
+    "uncoveredAreas": [
+      {
+        "id": "workflow-fixture-missing",
+        "summary": "No tracked parity fixture yet exercises one representative workflow/BMAD path as a release-readable contract.",
+        "downstreamNeed": "Define a deterministic workflow fixture or manifest entry so the parity report can state exactly what workflow parity means."
+      },
+      {
+        "id": "bmad-scope-not-explicit",
+        "summary": "BMAD-relevant workflow coverage exists only indirectly through command/action contracts and shipped workflow assets.",
+        "downstreamNeed": "Publish explicit scope semantics describing which workflow/BMAD experiences are in or out of parity scope."
+      }
+    ],
+    "reportPath": "tests/parity/artifacts/workflow-parity.json#workflowParity",
+    "parityArtifactPath": "tests/parity/artifacts/workflow-parity.json",
+    "recordingPath": "tests/fixtures/recordings/workflow-parity.json",
+    "parityStatus": "failed",
+    "diagnostics": {
+      "stateManifestPath": ".gsd/state-manifest.json",
+      "taskSummaryPath": ".gsd/milestones/M901/slices/S01/tasks/T01-SUMMARY.md",
+      "artifactChecks": [
+        {
+          "id": "roadmap",
+          "producerPhase": "plan-milestone",
+          "path": ".gsd/milestones/M901/M901-ROADMAP.md",
+          "exists": true,
+          "missingMarkers": []
+        },
+        {
+          "id": "slice-plan",
+          "producerPhase": "plan-slice",
+          "path": ".gsd/milestones/M901/slices/S01/S01-PLAN.md",
+          "exists": true,
+          "missingMarkers": [
+            "## Goal"
+          ]
+        },
+        {
+          "id": "task-plan",
+          "producerPhase": "plan-slice",
+          "path": ".gsd/milestones/M901/slices/S01/tasks/T01-PLAN.md",
+          "exists": true,
+          "missingMarkers": []
+        },
+        {
+          "id": "task-summary",
+          "producerPhase": "complete-task",
+          "path": ".gsd/milestones/M901/slices/S01/tasks/T01-SUMMARY.md",
+          "exists": true,
+          "missingMarkers": []
+        }
+      ],
+      "stateTransitions": [
+        {
+          "phase": "plan-milestone",
+          "entity": "milestone",
+          "field": "status",
+          "expected": "active",
+          "observed": "active",
+          "status": "passed"
+        },
+        {
+          "phase": "plan-milestone",
+          "entity": "slice",
+          "field": "status",
+          "expected": "pending",
+          "observed": "pending",
+          "status": "passed"
+        },
+        {
+          "phase": "plan-slice",
+          "entity": "task",
+          "field": "status",
+          "expected": "pending",
+          "observed": "pending",
+          "status": "passed"
+        },
+        {
+          "phase": "complete-task",
+          "entity": "task",
+          "field": "status",
+          "expected": "complete",
+          "observed": "complete",
+          "status": "passed"
+        },
+        {
+          "phase": "complete-task",
+          "entity": "task",
+          "field": "verification_result",
+          "expected": "passed",
+          "observed": "node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts",
+          "status": "failed"
+        }
+      ],
+      "verificationEvidence": {
+        "rowCount": 1,
+        "commands": [
+          "node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts"
+        ],
+        "status": "passed"
+      },
+      "failureDiagnostics": [
+        "malformed artifact: .gsd/milestones/M901/slices/S01/S01-PLAN.md missing markers ## Goal (phase plan-slice)",
+        "invalid transition: complete-task expected task.verification_result=passed but saw node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts"
+      ]
     }
   },
   "reconciledFoundations": [
