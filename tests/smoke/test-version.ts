@@ -1,9 +1,8 @@
 import { execFileSync } from "child_process";
 
-const binary = process.env.GSD_SMOKE_BINARY || "npx";
-const args = process.env.GSD_SMOKE_BINARY
-  ? ["--version"]
-  : ["gsd-pi", "--version"];
+const overrideBinary = process.env.GSD_SMOKE_BINARY?.trim();
+const binary = overrideBinary ? overrideBinary : process.execPath;
+const args = overrideBinary ? ["--version"] : ["dist/loader.js", "--version"];
 
 const output = execFileSync(binary, args, {
   encoding: "utf8",

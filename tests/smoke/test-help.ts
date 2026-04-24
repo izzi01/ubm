@@ -1,9 +1,8 @@
 import { execFileSync } from "child_process";
 
-const binary = process.env.GSD_SMOKE_BINARY || "npx";
-const args = process.env.GSD_SMOKE_BINARY
-  ? ["--help"]
-  : ["gsd-pi", "--help"];
+const overrideBinary = process.env.GSD_SMOKE_BINARY?.trim();
+const binary = overrideBinary ? overrideBinary : process.execPath;
+const args = overrideBinary ? ["--help"] : ["dist/loader.js", "--help"];
 
 const output = execFileSync(binary, args, {
   encoding: "utf8",
@@ -12,8 +11,8 @@ const output = execFileSync(binary, args, {
 
 const lower = output.toLowerCase();
 
-if (!lower.includes("gsd")) {
-  console.error(`Help output does not contain "gsd": "${output}"`);
+if (!lower.includes("umb")) {
+  console.error(`Help output does not contain "umb": "${output}"`);
   process.exit(1);
 }
 

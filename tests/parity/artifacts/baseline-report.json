@@ -1,18 +1,17 @@
 {
   "version": 4,
-  "generatedAt": "2026-04-24T08:03:50.621Z",
+  "generatedAt": "2026-04-24T09:40:46.331Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
-    "verdict": "failing",
+    "verdict": "partial",
     "totalLanes": 8,
-    "passed": 6,
-    "failed": 1,
+    "passed": 7,
+    "failed": 0,
     "skipped": 1,
     "timedOut": 0,
     "provesCodingLoop": true,
     "uncoveredLaneNames": [
-      "smoke-runner",
       "live-runner"
     ],
     "proofClassCounts": {
@@ -38,10 +37,10 @@
       "proofClass": "smoke",
       "parityScope": "partial",
       "provesCodingLoop": false,
-      "status": "failed",
-      "skipReason": "smoke-runner exited with code 1",
-      "exitCode": 1,
-      "durationMs": 7678,
+      "status": "passed",
+      "skipReason": null,
+      "exitCode": 0,
+      "durationMs": 194,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -60,7 +59,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 26,
+      "durationMs": 24,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -98,7 +97,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 21450,
+      "durationMs": 18129,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -117,7 +116,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 7613,
+      "durationMs": 6855,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -139,7 +138,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 9156,
+      "durationMs": 8447,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
