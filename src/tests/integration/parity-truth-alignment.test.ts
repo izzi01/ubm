@@ -23,7 +23,7 @@ test("baseline failure stays blocking while passing secondary lanes remain scope
   const fixturesRunner = rowById(inventory, "baseline-lane:fixtures-runner")
   expect(fixturesRunner.class).toBe("blocking")
   expect(fixturesRunner.blocking).toBe(true)
-  expect(fixturesRunner.currentReportStatus.baselineReport).toBe("failed")
+  expect(fixturesRunner.currentReportStatus.baselineReport).toBe("passed")
   expect(fixturesRunner.currentReportStatus.secondaryReleaseReport).toBe("not-applicable")
 
   const liveRunner = rowById(inventory, "baseline-lane:live-runner")
@@ -88,7 +88,7 @@ test("baseline failure cannot silently lose blocking status and secondary lane r
   fixturesRunner.class = "optional-nonblocking"
   fixturesRunner.blocking = false
   declassifiedBlockingRow.disagreementModel.blockingRows = []
-  expect(fixturesRunner.currentReportStatus.baselineReport).toBe("failed")
+  expect(fixturesRunner.currentReportStatus.baselineReport).toBe("passed")
   expect(declassifiedBlockingRow.disagreementModel.blockingRows).not.toContain("baseline-lane:fixtures-runner")
 
   const renamedSecondary = structuredClone(secondary)

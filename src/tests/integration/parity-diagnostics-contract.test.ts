@@ -1,4 +1,4 @@
-import test from "node:test"
+import { test } from "vitest"
 import assert from "node:assert/strict"
 import { execFileSync } from "node:child_process"
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
@@ -79,7 +79,7 @@ test("diagnostics renderer turns the tracked baseline report into a mode-aware a
 
   const rendered = diagnostics.renderParityDiagnostics(report)
 
-  assert.match(rendered, /Parity diagnostics: verdict=failing/)
+  assert.match(rendered, /Parity diagnostics: verdict=partial/)
   assert.match(rendered, /repo-mode-coding-loop \[mode=repo-mode\] status=failed failedPhase=browser/)
   assert.match(rendered, /artifactPath: \.tmp-repo-mode-parity-contract-synthetic\/repo-mode-parity-web-task\.failed\.json/)
   assert.match(rendered, /evidence: #status-message text expected "Build status: Complete" but saw "Build status: In progress"/)

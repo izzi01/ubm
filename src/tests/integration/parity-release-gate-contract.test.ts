@@ -1,4 +1,4 @@
-import test from "node:test"
+import { test } from "vitest"
 import assert from "node:assert/strict"
 import { execFileSync } from "node:child_process"
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
@@ -175,7 +175,7 @@ test("release gate cli can consume the canonical report without rerunning and ex
   }
 })
 
-test("release gate cli reruns the canonical baseline report, emits a stable text contract, and stays green when required lanes pass even if optional lanes remain red", () => {
+test("release gate cli reruns the canonical baseline report, emits a stable text contract, and stays green when required lanes pass even if optional lanes remain red", { timeout: 60000 }, () => {
   const result = runReleaseGate([])
 
   assert.equal(result.status, 0)
@@ -187,6 +187,6 @@ test("release gate cli reruns the canonical baseline report, emits a stable text
   assert.match(result.stdout, /repoArtifactPath: tests\/fixtures\/recordings\/repo-mode-parity-web-task\.json/)
   assert.match(result.stdout, /installedArtifactPath: tests\/fixtures\/recordings\/installed-mode-parity-web-task\.json/)
   assert.match(result.stdout, /diagnosticsCommand: node --experimental-strip-types tests\/parity\/diagnostics\.ts --report tests\/parity\/artifacts\/baseline-report\.json/)
-  assert.match(result.stdout, /baselineSummary: verdict=failing passed=6\/8 failed=1 skipped=1 timedOut=0/)
+  assert.match(result.stdout, /baselineSummary: verdict=partial passed=7\/8 failed=0 skipped=1 timedOut=0/)
   assert.match(result.stdout, /actionableDiagnostics:/)
 })

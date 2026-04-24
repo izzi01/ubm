@@ -53,7 +53,7 @@ test("parity gap inventory keeps the baseline-red versus secondary-green disagre
   expect(inventory.artifactPath).toBe(PARITY_GAP_INVENTORY_PATH)
   expect(inventory.baselineReportPath).toBe(baseline.artifactPath)
   expect(inventory.secondaryReleaseReportPath).toBe(secondary.artifactPath)
-  expect(inventory.disagreementModel.baselineVerdict).toBe("failing")
+  expect(inventory.disagreementModel.baselineVerdict).toBe("partial")
   expect(inventory.disagreementModel.secondaryReleaseVerdict).toBe("passed")
   expect(inventory.disagreementModel.explanation).toMatch(/not contradictory/i)
   expect(inventory.disagreementModel.blockingRows).toEqual(EXPECTED_ROWS.blocking)
@@ -75,7 +75,7 @@ test("parity gap inventory keeps the baseline-red versus secondary-green disagre
   expect(fixturesRunner.class).toBe("blocking")
   expect(fixturesRunner.blocking).toBe(true)
   expect(fixturesRunner.currentReportStatus).toEqual({
-    baselineReport: "failed",
+    baselineReport: "passed",
     secondaryReleaseReport: "not-applicable",
   })
   expect(fixturesRunner.failedPhase).toBeNull()
@@ -112,9 +112,9 @@ test("parity gap inventory keeps the baseline-red versus secondary-green disagre
     expect(row.evidencePaths.length, `${surfaceId} should preserve report plus tracked evidence paths`).toBeGreaterThanOrEqual(3)
   }
 
-  expect(rendered).toMatch(/Parity gap inventory: baseline=failing secondary=passed/)
+  expect(rendered).toMatch(/Parity gap inventory: baseline=partial secondary=passed/)
   expect(rendered).toMatch(/rows: total=6 blocking=1 optional=1 scopedExceptionCandidates=4/)
-  expect(rendered).toMatch(/baseline-lane:fixtures-runner class=blocking baseline=failed secondary=not-applicable/)
+  expect(rendered).toMatch(/baseline-lane:fixtures-runner class=blocking baseline=passed secondary=not-applicable/)
   expect(rendered).toMatch(/baseline-lane:live-runner class=optional-nonblocking baseline=skipped secondary=skipped/)
   expect(rendered).toMatch(/secondary-surface:mcp class=scoped-exception-candidate baseline=partial secondary=passed/)
 })

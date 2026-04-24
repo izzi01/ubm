@@ -1,11 +1,11 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T13:14:42.540Z",
+  "generatedAt": "2026-04-24T13:37:10.707Z",
   "artifactPath": "tests/parity/artifacts/parity-gap-inventory.json",
   "baselineReportPath": "tests/parity/artifacts/baseline-report.json",
   "secondaryReleaseReportPath": "tests/parity/artifacts/secondary-release-report.json",
   "disagreementModel": {
-    "baselineVerdict": "failing",
+    "baselineVerdict": "partial",
     "secondaryReleaseVerdict": "passed",
     "explanation": "The reports are not contradictory. The baseline report measures baseline lanes and is currently red because fixtures-runner fails, while secondary-release-report measures a narrower secondary-surface contract set and explicitly treats live/provider proof plus several planned repo/install recordings as non-blocking or future closure work.",
     "blockingRows": [
@@ -56,7 +56,7 @@
       "class": "blocking",
       "blocking": true,
       "currentReportStatus": {
-        "baselineReport": "failed",
+        "baselineReport": "passed",
         "secondaryReleaseReport": "not-applicable"
       },
       "failedPhase": null,

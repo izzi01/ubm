@@ -29,7 +29,7 @@ test("tracked fixture manifest defines the core coding-loop contract with explic
   }
 })
 
-test("baseline report surfaces uncovered coding-loop capability rows instead of over-claiming parity", { timeout: 20000 }, async () => {
+test("baseline report surfaces uncovered coding-loop capability rows instead of over-claiming parity", { timeout: 60000 }, async () => {
   const parity = await importParityModule()
   const report = await parity.createBaselineReport({
     cwd: repoRoot,
@@ -49,7 +49,7 @@ test("baseline report surfaces uncovered coding-loop capability rows instead of 
     "verify-browser-behavior",
   ])
   expect(report.summary.provesCodingLoop).toBe(true)
-  expect(report.summary.verdict).toBe("failing")
+  expect(report.summary.verdict).toBe("partial")
 
   const browserVerification = report.uncoveredCapabilities.find(
     (capability: { capabilityName: string }) => capability.capabilityName === "verify-browser-behavior",

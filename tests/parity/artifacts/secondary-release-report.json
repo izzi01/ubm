@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T11:23:33.236Z",
+  "generatedAt": "2026-04-24T13:37:10.837Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/secondary-release-report.json",
   "verdict": "passed",
@@ -34,15 +34,14 @@
     "worktreeSessionManifest": "tests/fixtures/worktree-session-parity-manifest.json"
   },
   "baselineSummary": {
-    "verdict": "failing",
+    "verdict": "partial",
     "totalLanes": 8,
-    "passed": 6,
-    "failed": 1,
+    "passed": 7,
+    "failed": 0,
     "skipped": 1,
     "timedOut": 0,
     "provesCodingLoop": true,
     "uncoveredLaneNames": [
-      "fixtures-runner",
       "live-runner"
     ],
     "proofClassCounts": {

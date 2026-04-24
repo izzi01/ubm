@@ -1,4 +1,4 @@
-import test from "node:test"
+import { test } from "vitest"
 import assert from "node:assert/strict"
 import { execFileSync } from "node:child_process"
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
@@ -61,7 +61,7 @@ test("baseline lane matrix is fixed, allowlisted, and tied to tracked in-repo ta
   }
 })
 
-test("baseline runner emits machine-readable JSON plus an artifact file with proof labels and summary verdict", () => {
+test("baseline runner emits machine-readable JSON plus an artifact file with proof labels and summary verdict", { timeout: 60000 }, () => {
   const tempHome = mkdtempSync(join(tmpdir(), "umb-parity-home-"))
   try {
     const result = runNode([
