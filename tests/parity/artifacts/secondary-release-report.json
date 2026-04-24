@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T14:39:43.888Z",
+  "generatedAt": "2026-04-24T15:00:53.098Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/secondary-release-report.json",
   "verdict": "passed",
-  "baselineReportPath": "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json",
+  "baselineReportPath": "tests/parity/artifacts/baseline-report.json",
   "requiredLaneNames": [
     "web-mode",
     "mcp",
@@ -21,12 +21,12 @@
     "--experimental-strip-types",
     "tests/parity/secondary-release-gate.ts",
     "--report",
-    "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json",
+    "tests/parity/artifacts/baseline-report.json",
     "--format",
     "text"
   ],
   "artifactPaths": {
-    "baselineReport": "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json",
+    "baselineReport": "tests/parity/artifacts/baseline-report.json",
     "secondaryReleaseReport": "tests/parity/artifacts/secondary-release-report.json",
     "secondarySurfaceInventory": "tests/parity/artifacts/secondary-surface-inventory.json",
     "mcpParity": "tests/parity/artifacts/mcp-parity.json",
@@ -77,7 +77,7 @@
       "surfaceId": "web-mode",
       "reportPath": "tests/parity/artifacts/secondary-parity-report.json#rows.web-mode",
       "artifactPaths": [
-        "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json",
+        "tests/parity/artifacts/baseline-report.json",
         "tests/parity/artifacts/secondary-surface-inventory.json"
       ],
       "failedPhases": [],
@@ -151,10 +151,10 @@
       "name": "worktree-session-recovery",
       "title": "Worktree, session, and recovery parity surface",
       "surfaceId": "worktree-session-recovery",
-      "reportPath": "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.worktree-session-recovery",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.worktree-session-recovery",
       "artifactPaths": [
         "tests/fixtures/worktree-session-parity-manifest.json",
-        "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json"
+        "tests/parity/artifacts/baseline-report.json"
       ],
       "failedPhases": [],
       "failedSurfaces": [],
@@ -175,10 +175,10 @@
       "name": "rebrand-drift",
       "title": "Scoped rebrand drift contract",
       "surfaceId": "rebrand-drift",
-      "reportPath": "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json#secondaryParity.driftFindings",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.driftFindings",
       "artifactPaths": [
         "tests/fixtures/worktree-session-parity-manifest.json",
-        "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json"
+        "tests/parity/artifacts/baseline-report.json"
       ],
       "failedPhases": [],
       "failedSurfaces": [],
@@ -274,7 +274,7 @@
       "required": false,
       "blocking": false,
       "status": "planned",
-      "reportPath": "/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.worktree-session-recovery",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.worktree-session-recovery",
       "artifactPaths": [
         "tests/fixtures/recordings/secondary-worktree-session-recovery.json"
       ],
