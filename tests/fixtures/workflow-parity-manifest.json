@@ -1,0 +1,176 @@
+{
+  "version": 1,
+  "fixtureId": "workflow-parity-fixture",
+  "title": "Representative workflow/BMAD planning-to-execution parity fixture",
+  "surfaceId": "workflow-bmad",
+  "generatedFrom": "M115/S04/T01 workflow parity fixture contract",
+  "representativePath": {
+    "id": "gsd-planning-to-execution",
+    "summary": "One deterministic milestone/slice/task planning-to-execution loop that moves from plan creation through task completion and emits tracked artifacts plus persisted state transitions.",
+    "whyThisPathMatters": "It is the narrowest representative workflow path that proves umb can structure work, advance it through concrete execution state, and surface operator-visible artifacts without ambient human input.",
+    "bmadRelevance": "The contract scopes workflow/BMAD parity to structured planning and implementation-phase progression rather than claiming full coverage of every BMAD pipeline.",
+    "inputs": [
+      "Milestone planning payload",
+      "Slice planning payload",
+      "Task completion payload with verification evidence"
+    ]
+  },
+  "contract": {
+    "phases": [
+      {
+        "id": "plan-milestone",
+        "tool": "gsd_plan_milestone",
+        "expectedStatus": "milestone and slice rows persist as pending planning state",
+        "artifacts": [
+          ".gsd/milestones/<milestoneId>/<milestoneId>-ROADMAP.md"
+        ],
+        "stateTransitions": [
+          {
+            "entity": "milestone",
+            "field": "status",
+            "from": "missing",
+            "to": "active"
+          },
+          {
+            "entity": "slice",
+            "field": "status",
+            "from": "missing",
+            "to": "pending"
+          }
+        ]
+      },
+      {
+        "id": "plan-slice",
+        "tool": "gsd_plan_slice",
+        "expectedStatus": "slice goal and task rows persist and render deterministic plan artifacts",
+        "artifacts": [
+          ".gsd/milestones/<milestoneId>/slices/<sliceId>/<sliceId>-PLAN.md",
+          ".gsd/milestones/<milestoneId>/slices/<sliceId>/tasks/<taskId>-PLAN.md"
+        ],
+        "stateTransitions": [
+          {
+            "entity": "task",
+            "field": "status",
+            "from": "missing",
+            "to": "pending"
+          }
+        ]
+      },
+      {
+        "id": "complete-task",
+        "tool": "gsd_complete_task",
+        "expectedStatus": "task completion persists verification evidence, toggles the task plan checkbox, and renders the task summary artifact",
+        "artifacts": [
+          ".gsd/milestones/<milestoneId>/slices/<sliceId>/tasks/<taskId>-SUMMARY.md",
+          ".gsd/milestones/<milestoneId>/slices/<sliceId>/<sliceId>-PLAN.md"
+        ],
+        "stateTransitions": [
+          {
+            "entity": "task",
+            "field": "status",
+            "from": "pending",
+            "to": "complete"
+          },
+          {
+            "entity": "task",
+            "field": "verification_result",
+            "from": "missing",
+            "to": "passed"
+          }
+        ]
+      }
+    ],
+    "requiredArtifacts": [
+      {
+        "id": "roadmap",
+        "pathTemplate": ".gsd/milestones/<milestoneId>/<milestoneId>-ROADMAP.md",
+        "kind": "roadmap",
+        "producerPhase": "plan-milestone",
+        "mustContain": [
+          "# <milestoneId>:",
+          "## Vision",
+          "## Slice Overview"
+        ]
+      },
+      {
+        "id": "slice-plan",
+        "pathTemplate": ".gsd/milestones/<milestoneId>/slices/<sliceId>/<sliceId>-PLAN.md",
+        "kind": "slice-plan",
+        "producerPhase": "plan-slice",
+        "mustContain": [
+          "# <sliceId>:",
+          "## Goal",
+          "## Tasks"
+        ]
+      },
+      {
+        "id": "task-plan",
+        "pathTemplate": ".gsd/milestones/<milestoneId>/slices/<sliceId>/tasks/<taskId>-PLAN.md",
+        "kind": "task-plan",
+        "producerPhase": "plan-slice",
+        "mustContain": [
+          "estimated_steps:",
+          "skills_used:",
+          "# <taskId>:"
+        ]
+      },
+      {
+        "id": "task-summary",
+        "pathTemplate": ".gsd/milestones/<milestoneId>/slices/<sliceId>/tasks/<taskId>-SUMMARY.md",
+        "kind": "task-summary",
+        "producerPhase": "complete-task",
+        "mustContain": [
+          "verification_result:",
+          "## Verification",
+          "## Verification Evidence"
+        ]
+      }
+    ],
+    "requiredStateAssertions": [
+      {
+        "phase": "plan-milestone",
+        "query": "milestone row exists with title, vision, and status"
+      },
+      {
+        "phase": "plan-slice",
+        "query": "slice row exists with goal and task rows are present"
+      },
+      {
+        "phase": "complete-task",
+        "query": "task row stores oneLiner, narrative, verification_result, blocker_discovered, and verification evidence"
+      }
+    ],
+    "failureDiagnostics": [
+      {
+        "id": "missing-artifact",
+        "summary": "The parity lane must identify which expected artifact path was missing or malformed.",
+        "operatorSurface": "artifact path plus producing phase"
+      },
+      {
+        "id": "invalid-transition",
+        "summary": "The parity lane must identify which entity field failed to transition to the expected persisted value.",
+        "operatorSurface": "entity, field, expected value, observed value"
+      },
+      {
+        "id": "verification-evidence-missing",
+        "summary": "The parity lane must identify when task completion omitted the verification evidence rows needed for truthful closeout.",
+        "operatorSurface": "taskId plus missing evidence contract"
+      }
+    ]
+  },
+  "observability": {
+    "artifactContract": "The fixture is truthful only when artifact paths and persisted state assertions agree on the same representative loop.",
+    "stateSurfaces": [
+      "milestone.status",
+      "slice.status",
+      "task.status",
+      "task.verification_result",
+      "verification_evidence rows"
+    ],
+    "diagnosticExpectation": "Downstream workflow parity reporting must name the missing artifact, invalid transition, or absent verification evidence directly."
+  },
+  "notes": [
+    "This fixture intentionally scopes workflow parity to one representative planning-to-execution path instead of over-claiming coverage for every workflow template or BMAD pipeline.",
+    "Later tasks may implement the replay/recording in repo or installed mode, but they must preserve this artifact and state-transition contract."
+  ]
+}

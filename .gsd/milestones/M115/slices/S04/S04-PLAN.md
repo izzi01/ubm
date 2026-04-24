@@ -21,7 +21,7 @@ Workflow parity evidence can be summarized in the milestone report without reint
 
 ## Tasks
 
-- [ ] **T01: Define representative workflow parity fixture and artifact contract** `est:1 day`
+- [x] **T01: Define representative workflow parity fixture and artifact contract** `est:1 day`
   Select a representative workflow/BMAD path that matters for parity and define a deterministic fixture/replay boundary for it. The chosen path should cover structured planning/execution behavior and produce observable artifacts or state transitions that can be validated without relying on ambient human input. Publish the expected artifact/state contract so later tasks can implement proof cleanly.
   - Files: `tests/fixtures/workflow-parity-manifest.json`, `src/resources/extensions/umb/bmad-pipeline/`, `src/tests/integration/workflow-parity-fixture-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-fixture-contract.test.ts

@@ -19,10 +19,10 @@
 - [x] **S02: S02** `risk:high` `depends:[]`
   > After this: After this: umb can prove a deterministic web-mode workflow with startup, project selection/switching or equivalent project-context behavior, browser-facing verification, and actionable diagnostics.
 
-- [ ] **S03: S03** `risk:high` `depends:[]`
+- [x] **S03: S03** `risk:high` `depends:[]`
   > After this: After this: umb can prove controlled MCP parity for discover → call → failure diagnostics on a repeatable fixture server rather than relying on anecdotal real-server usage.
 
-- [ ] **S04: Workflow/BMAD parity proof** `risk:high` `depends:[S01]`
+- [ ] **S04: S04** `risk:high` `depends:[]`
   > After this: After this: umb can prove a representative planning-to-execution workflow with the expected artifacts and state transitions, supporting a stronger parity claim than the core coding-loop fixture alone.
 
 - [ ] **S05: Integrated secondary-surface release gate** `risk:medium` `depends:[S01,S02,S03]`

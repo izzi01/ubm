@@ -1,0 +1,68 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_TcaZUm4SiBUTaDgVVXPpoqxO",
+    "command": "printf '--- tests ---\\n'; find tests -maxdepth 3 -type f | sort | sed 's#^#/#' | grep -E 'fixture|workflow|parity|smoke|report' || true; printf '\\n--- src tests ---\\n'; find src/tests -maxdepth 4 -type f | sort | sed 's#^#/#' | grep -E 'fixture|workflow|parity|smoke|report|contract' || true; printf '\\n--- likely code ---\\n'; find src -maxdepth 5 -type f | sort | sed 's#^#/#' | grep -E 'workflow|BMAD|bmad|parity|artifact|milestone|slice|task|gsd' | head -200 || true",
+    "exitCode": 0,
+    "outputSnippet": "/bin/bash: line 1: printf: --: invalid option\nprintf: usage: printf [-v var] format [arguments]\n/tests/fixtures/mcp-parity-manifest.json\n/tests/fixtures/mcp-parity-server/server.mjs\n/tests/fixtures/parity-web-task/index.html\n/tests/fixtures/parity-web-task-manifest.json\n/tests/fixtures/parity-web-task/package.json\n/tests/fixtures/parity-web-task/TASK.md\n/tests/fixtures/provider.ts\n/tests/fixtures/recordings/agent-creates-file.json\n/tests/fixtures/recordings/agent-handles-error.json\n/tests/fixtur",
+    "timestamp": 1777027120194
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_ZrWDmmvpFZ2OzIDSsrlsfotr",
+    "command": "find src/resources/extensions/umb -maxdepth 4 -type f | sort | sed 's#^#/#' | grep -E 'bmad|workflow|plan|milestone|slice|task' || true",
+    "exitCode": 0,
+    "outputSnippet": "/src/resources/extensions/umb/bmad-executor/index.ts\n/src/resources/extensions/umb/bmad-executor/loader.ts\n/src/resources/extensions/umb/bmad-executor/types.ts\n/src/resources/extensions/umb/bmad-pipeline/executor.ts\n/src/resources/extensions/umb/bmad-pipeline/index.ts\n/src/resources/extensions/umb/bmad-pipeline/pipelines.ts\n/src/resources/extensions/umb/bmad-pipeline/types.ts\n/src/resources/extensions/umb/commands/bmad-commands.ts\n/src/resources/extensions/umb/tests/bmad-commands.test.ts\n/src/re",
+    "timestamp": 1777027134086
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_s2SZjaaUL8sFIS5oOD9E2Saf",
+    "command": "find src/resources/extensions/gsd -maxdepth 3 -type f | sort | sed 's#^#/#' | grep -E 'workflow|guided-flow|milestone|slice|task|complete-task|plan-slice|plan-milestone|plan-task' | head -200 || true",
+    "exitCode": 0,
+    "outputSnippet": "/src/resources/extensions/gsd/bootstrap/sanitize-complete-milestone.ts\n/src/resources/extensions/gsd/commands/handlers/workflow.ts\n/src/resources/extensions/gsd/commands-workflow-templates.ts\n/src/resources/extensions/gsd/custom-workflow-engine.ts\n/src/resources/extensions/gsd/dev-workflow-engine.ts\n/src/resources/extensions/gsd/guided-flow-queue.ts\n/src/resources/extensions/gsd/guided-flow.ts\n/src/resources/extensions/gsd/milestone-actions.ts\n/src/resources/extensions/gsd/milestone-ids.ts\n/src/",
+    "timestamp": 1777027134086
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_zYQ0I3wg55NNgo8mXKZuXG1L",
+    "command": "grep -R \"workflow-parity\" -n . || true",
+    "exitCode": 0,
+    "outputSnippet": "grep: ./.gsd/gsd.db: binary file matches\n./.gsd/milestones/M115/slices/S04/S04-PLAN.md:26:  - Files: `tests/fixtures/workflow-parity-manifest.json`, `src/resources/extensions/umb/bmad-pipeline/`, `src/tests/integration/workflow-parity-fixture-contract.test.ts`\n./.gsd/milestones/M115/slices/S04/S04-PLAN.md:27:  - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-fixture-contract.test.ts\n./.gsd/mileston",
+    "timestamp": 1777027156764
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_LnohYqvBVE0Fbw0MoGXuDL6H",
+    "command": "test -f tests/fixtures/workflow-parity-manifest.json && echo exists || echo missing; test -f src/tests/integration/workflow-parity-fixture-contract.test.ts && echo exists || echo missing; test -f tests/fixtures/secondary-parity-manifest.json && echo secondary_exists || echo secondary_missing",
+    "exitCode": 0,
+    "outputSnippet": "missing\nmissing\nsecondary_exists\n",
+    "timestamp": 1777027184876
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_Bu1obY3tpOicvdTdXd6etpgf",
+    "path": "tests/parity/secondary-lanes.ts",
+    "timestamp": 1777027207548
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_8jZyQ1qpET1kQAyypVaeRNfv",
+    "path": "tests/fixtures/workflow-parity-manifest.json",
+    "timestamp": 1777027241175
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_p5j63kKSB7dsrGd2zCww4W85",
+    "path": "src/tests/integration/workflow-parity-fixture-contract.test.ts",
+    "timestamp": 1777027284369
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_VCZ8jfY71MZTWx8eU1Rw9StS",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-fixture-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ workflow parity manifest selects a scoped representative planning-to-execution path (0.970168ms)\n✔ workflow parity manifest locks the expected phase sequence, tools, and persisted transitions (0.232551ms)\n✔ workflow parity manifest requires deterministic artifacts and explicit diagnostic surfaces (0.246076ms)\n✔ workflow parity manifest stays aligned with tracked workflow parity reservations and repo fixtures (8.851419ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0",
+    "timestamp": 1777027288970
+  }
+]
