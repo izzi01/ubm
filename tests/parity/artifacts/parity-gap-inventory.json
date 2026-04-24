@@ -1,0 +1,270 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-24T13:09:27.543Z",
+  "artifactPath": "tests/parity/artifacts/parity-gap-inventory.json",
+  "baselineReportPath": "tests/parity/artifacts/baseline-report.json",
+  "secondaryReleaseReportPath": "tests/parity/artifacts/secondary-release-report.json",
+  "disagreementModel": {
+    "baselineVerdict": "failing",
+    "secondaryReleaseVerdict": "passed",
+    "explanation": "The reports are not contradictory. The baseline report measures baseline lanes and is currently red because fixtures-runner fails, while secondary-release-report measures a narrower secondary-surface contract set and explicitly treats live/provider proof plus several planned repo/install recordings as non-blocking or future closure work.",
+    "blockingRows": [
+      "baseline-lane:fixtures-runner"
+    ],
+    "optionalRows": [
+      "baseline-lane:live-runner"
+    ],
+    "scopedExceptionCandidateRows": [
+      "secondary-surface:web-mode",
+      "secondary-surface:mcp",
+      "secondary-surface:workflow-bmad",
+      "secondary-surface:worktree-session-recovery"
+    ]
+  },
+  "downstreamClosurePlan": [
+    {
+      "sliceId": "S02",
+      "expectation": "Retire or truthfully replace the blocking fixtures-runner baseline gap so baseline and release reporting no longer disagree on the representative deterministic lane."
+    },
+    {
+      "sliceId": "S03",
+      "expectation": "Codify whether optional live evidence remains permanently non-blocking or gains a stronger policy requirement, without silently changing release semantics."
+    },
+    {
+      "sliceId": "S04",
+      "expectation": "Resolve web-mode and worktree/session partial surfaces into either stronger release-readable proof rows or documented scoped exceptions."
+    },
+    {
+      "sliceId": "S05",
+      "expectation": "Resolve MCP and workflow/BMAD partial surfaces into final parity closure targets so the secondary matrix can move from partial to fully intentional coverage."
+    }
+  ],
+  "summary": {
+    "totalRows": 6,
+    "blocking": 1,
+    "optionalNonblocking": 1,
+    "scopedExceptionCandidates": 4
+  },
+  "rows": [
+    {
+      "id": "baseline-lane:fixtures-runner",
+      "kind": "baseline-lane",
+      "subjectId": "fixtures-runner",
+      "laneName": "fixtures-runner",
+      "surfaceId": null,
+      "title": "Deterministic fixture replay lane remains the blocking baseline gap",
+      "class": "blocking",
+      "blocking": true,
+      "currentReportStatus": {
+        "baselineReport": "failed",
+        "secondaryReleaseReport": "not-applicable"
+      },
+      "failedPhase": null,
+      "artifactPath": null,
+      "reportPath": "tests/parity/artifacts/baseline-report.json#lanes.fixtures-runner",
+      "rationale": "The canonical baseline report is red because this deterministic fixture lane exits non-zero. That is not contradicted by the green secondary release gate because the secondary gate does not consume the baseline fixture-replay lane as a required surface.",
+      "remediationSummary": "Restore truthful fixture-replay pass/fail evidence for tests/fixtures/run.ts, or replace this lane with a more precise deterministic baseline lane that still explains the same planning-to-execution path.",
+      "closureExpectation": "Closure requires the baseline report to stop failing on the representative deterministic lane rather than merely documenting the failure.",
+      "evidencePaths": [
+        {
+          "path": "tests/parity/artifacts/baseline-report.json",
+          "reason": "Canonical baseline report showing fixtures-runner failed."
+        },
+        {
+          "path": "tests/fixtures/run.ts",
+          "reason": "Failing deterministic fixture-replay lane implementation."
+        },
+        {
+          "path": "tests/fixtures/parity-web-task-manifest.json",
+          "reason": "Tracked representative planning-to-execution manifest the baseline report already uses."
+        }
+      ]
+    },
+    {
+      "id": "baseline-lane:live-runner",
+      "kind": "baseline-lane",
+      "subjectId": "live-runner",
+      "laneName": "live-runner",
+      "surfaceId": null,
+      "title": "Provider-driven live lane stays explicit but non-blocking",
+      "class": "optional-nonblocking",
+      "blocking": false,
+      "currentReportStatus": {
+        "baselineReport": "skipped",
+        "secondaryReleaseReport": "skipped"
+      },
+      "failedPhase": null,
+      "artifactPath": null,
+      "reportPath": "tests/parity/artifacts/secondary-release-report.json#optionalLive",
+      "rationale": "The live lane is intentionally opt-in and the secondary release gate records it as optional. A skipped live spot-check therefore preserves observability without blocking release-readable closure for deterministic surfaces.",
+      "remediationSummary": "Keep the skip reason truthful, or run the lane only when live-provider configuration is intentionally enabled. Do not promote this lane to a release blocker unless downstream policy changes.",
+      "closureExpectation": "Closure means the optional policy and skip reason stay explicit; a passing live run is useful evidence but is not required for the canonical release gate to pass.",
+      "evidencePaths": [
+        {
+          "path": "tests/parity/artifacts/baseline-report.json",
+          "reason": "Canonical baseline report showing the live lane is skipped."
+        },
+        {
+          "path": "tests/parity/artifacts/secondary-release-report.json",
+          "reason": "Secondary release gate records live-runner as non-blocking optional evidence."
+        },
+        {
+          "path": "tests/live/run.ts",
+          "reason": "Opt-in live parity lane implementation."
+        }
+      ]
+    },
+    {
+      "id": "secondary-surface:web-mode",
+      "kind": "secondary-surface",
+      "subjectId": "web-mode",
+      "laneName": null,
+      "surfaceId": "web-mode",
+      "title": "Browser-only web mode parity surface remains partially closed and needs an explicit closure decision",
+      "class": "scoped-exception-candidate",
+      "blocking": false,
+      "currentReportStatus": {
+        "baselineReport": "partial",
+        "secondaryReleaseReport": "passed"
+      },
+      "failedPhase": null,
+      "artifactPath": "tests/parity/artifacts/baseline-report.json",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
+      "rationale": "Baseline parity still records web-mode as partial because release-readable scope gaps remain, while the secondary release gate passes because the currently required secondary lane for this surface is already satisfied. That is a scoped-closure question, not a present release blocker.",
+      "remediationSummary": "No dedicated secondary-surface parity artifact reports web-mode coverage in the parity release workflow. Current web-mode evidence is integration-heavy but not framed as installed-mode parity proof alongside repo-mode parity.",
+      "closureExpectation": "Publish a machine-readable lane/report entry so release-gate consumers can read web-mode parity without re-inferring it from individual tests. Define whether web mode needs repo/install dual proof or an explicit scoped exception in the parity matrix.",
+      "evidencePaths": [
+        {
+          "path": "tests/parity/artifacts/secondary-surface-inventory.json",
+          "reason": "Tracked existing evidence for web-mode."
+        },
+        {
+          "path": "src/tests/integration/web-mode-cli.test.ts",
+          "reason": "Tracked existing evidence for web-mode."
+        },
+        {
+          "path": "tests/parity/artifacts/baseline-report.json",
+          "reason": "Canonical baseline report row for web-mode."
+        },
+        {
+          "path": "tests/parity/artifacts/secondary-release-report.json",
+          "reason": "Secondary release gate row for web-mode."
+        }
+      ]
+    },
+    {
+      "id": "secondary-surface:mcp",
+      "kind": "secondary-surface",
+      "subjectId": "mcp",
+      "laneName": null,
+      "surfaceId": "mcp",
+      "title": "MCP server and client parity surface remains partially closed and needs an explicit closure decision",
+      "class": "scoped-exception-candidate",
+      "blocking": false,
+      "currentReportStatus": {
+        "baselineReport": "partial",
+        "secondaryReleaseReport": "passed"
+      },
+      "failedPhase": null,
+      "artifactPath": "tests/parity/artifacts/mcp-parity.json",
+      "reportPath": "tests/parity/artifacts/mcp-parity.json#mcpParity",
+      "rationale": "Baseline parity still records mcp as partial because release-readable scope gaps remain, while the secondary release gate passes because the currently required secondary lane for this surface is already satisfied. That is a scoped-closure question, not a present release blocker.",
+      "remediationSummary": "No secondary parity lane currently emits MCP-specific covered/uncovered status into a tracked parity artifact. Existing MCP tests do not yet demonstrate the installed packaged CLI serving a representative MCP parity interaction in the parity report surface.",
+      "closureExpectation": "Add a deterministic MCP parity contract/report lane so downstream slices stop treating MCP support as an implicit side effect of unit tests. Define a representative MCP interaction and attach it to the parity matrix.",
+      "evidencePaths": [
+        {
+          "path": "tests/parity/artifacts/secondary-surface-inventory.json",
+          "reason": "Tracked existing evidence for mcp."
+        },
+        {
+          "path": "src/tests/mcp-client-schema.test.ts",
+          "reason": "Tracked existing evidence for mcp."
+        },
+        {
+          "path": "tests/parity/artifacts/baseline-report.json",
+          "reason": "Canonical baseline report row for mcp."
+        },
+        {
+          "path": "tests/parity/artifacts/secondary-release-report.json",
+          "reason": "Secondary release gate row for mcp."
+        }
+      ]
+    },
+    {
+      "id": "secondary-surface:workflow-bmad",
+      "kind": "secondary-surface",
+      "subjectId": "workflow-bmad",
+      "laneName": null,
+      "surfaceId": "workflow-bmad",
+      "title": "Workflow / BMAD representative parity surface remains partially closed and needs an explicit closure decision",
+      "class": "scoped-exception-candidate",
+      "blocking": false,
+      "currentReportStatus": {
+        "baselineReport": "partial",
+        "secondaryReleaseReport": "passed"
+      },
+      "failedPhase": null,
+      "artifactPath": "tests/parity/artifacts/workflow-parity.json",
+      "reportPath": "tests/parity/artifacts/workflow-parity.json#workflowParity",
+      "rationale": "Baseline parity still records workflow-bmad as partial because release-readable scope gaps remain, while the secondary release gate passes because the currently required secondary lane for this surface is already satisfied. That is a scoped-closure question, not a present release blocker.",
+      "remediationSummary": "No tracked parity fixture yet exercises one representative workflow/BMAD path as a release-readable contract. BMAD-relevant workflow coverage exists only indirectly through command/action contracts and shipped workflow assets.",
+      "closureExpectation": "Define a deterministic workflow fixture or manifest entry so the parity report can state exactly what workflow parity means. Publish explicit scope semantics describing which workflow/BMAD experiences are in or out of parity scope.",
+      "evidencePaths": [
+        {
+          "path": "tests/parity/artifacts/secondary-surface-inventory.json",
+          "reason": "Tracked existing evidence for workflow-bmad."
+        },
+        {
+          "path": "src/tests/integration/web-workflow-action-execution.test.ts",
+          "reason": "Tracked existing evidence for workflow-bmad."
+        },
+        {
+          "path": "tests/parity/artifacts/baseline-report.json",
+          "reason": "Canonical baseline report row for workflow-bmad."
+        },
+        {
+          "path": "tests/parity/artifacts/secondary-release-report.json",
+          "reason": "Secondary release gate row for workflow-bmad."
+        }
+      ]
+    },
+    {
+      "id": "secondary-surface:worktree-session-recovery",
+      "kind": "secondary-surface",
+      "subjectId": "worktree-session-recovery",
+      "laneName": null,
+      "surfaceId": "worktree-session-recovery",
+      "title": "Worktree, session, and recovery parity surface remains partially closed and needs an explicit closure decision",
+      "class": "scoped-exception-candidate",
+      "blocking": false,
+      "currentReportStatus": {
+        "baselineReport": "partial",
+        "secondaryReleaseReport": "passed"
+      },
+      "failedPhase": null,
+      "artifactPath": "tests/fixtures/worktree-session-parity-manifest.json",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.worktree-session-recovery",
+      "rationale": "Baseline parity still records worktree-session-recovery as partial because release-readable scope gaps remain, while the secondary release gate passes because the currently required secondary lane for this surface is already satisfied. That is a scoped-closure question, not a present release blocker.",
+      "remediationSummary": "Worktree/session/recovery evidence is scattered across CLI and web tests but not summarized in a parity artifact. There is no deterministic installed-mode parity fixture demonstrating representative worktree/session recovery behavior beyond individual contract tests.",
+      "closureExpectation": "Publish one machine-readable matrix row that downstream slices and release gates can consume directly. Decide whether a worktree/session fixture is required or whether scoped contract coverage is sufficient for parity closure.",
+      "evidencePaths": [
+        {
+          "path": "tests/parity/artifacts/secondary-surface-inventory.json",
+          "reason": "Tracked existing evidence for worktree-session-recovery."
+        },
+        {
+          "path": "src/tests/integration/web-session-parity-contract.test.ts",
+          "reason": "Tracked existing evidence for worktree-session-recovery."
+        },
+        {
+          "path": "tests/parity/artifacts/baseline-report.json",
+          "reason": "Canonical baseline report row for worktree-session-recovery."
+        },
+        {
+          "path": "tests/parity/artifacts/secondary-release-report.json",
+          "reason": "Secondary release gate row for worktree-session-recovery."
+        }
+      ]
+    }
+  ]
+}
