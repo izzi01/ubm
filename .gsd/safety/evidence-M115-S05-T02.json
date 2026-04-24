@@ -1,0 +1,122 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_PlVYwTJk1OB98CjSqB6kgDuH",
+    "command": "test -f tests/parity/artifacts/secondary-release-report.json && echo EXISTS || echo MISSING",
+    "exitCode": 0,
+    "outputSnippet": "MISSING\n",
+    "timestamp": 1777028916070
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_NDgOcn59gXRJhi43WC95igrU",
+    "command": "printf 'PARITY FILES\\n'; find tests/parity -maxdepth 2 -type f | sort; printf '\\nINTEGRATION TESTS\\n'; find src/tests/integration -maxdepth 1 -type f | sort | sed 's#^#- #' | tail -n 80",
+    "exitCode": 0,
+    "outputSnippet": "PARITY FILES\ntests/parity/artifacts/baseline-report.json\ntests/parity/artifacts/mcp-parity.json\ntests/parity/artifacts/secondary-surface-inventory.json\ntests/parity/artifacts/workflow-parity.json\ntests/parity/baseline-lanes.ts\ntests/parity/diagnostics.ts\ntests/parity/human-uat.md\ntests/parity/mcp-parity.ts\ntests/parity/release-gate.ts\ntests/parity/run.ts\ntests/parity/secondary-lanes.ts\ntests/parity/secondary-surface-inventory.ts\ntests/parity/workflow-parity.ts\ntests/parity/workflow-parity-worker",
+    "timestamp": 1777028923049
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_b4SVwNbhlOjKOX8TYfokhIWI",
+    "command": "node --experimental-strip-types tests/parity/release-gate.ts --format text",
+    "exitCode": 1,
+    "outputSnippet": "Command timed out after 30 seconds",
+    "timestamp": 1777028930547
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_EOzN4IGOKDjPvdY9wBBSvrf2",
+    "command": "rg -n \"secondaryParity|mcpParity|workflowParity|rebrand|worktree|createBaselineReport|writeBaselineReport|createSecondarySurfaceReport|releaseReadableStatus\" tests/parity/baseline-lanes.ts src/tests/integration -g '!**/*.json'",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/baseline-lanes.ts:183:  releaseReadableStatus: \"partial\" | \"covered\" | \"uncovered\"\ntests/parity/baseline-lanes.ts:221:  releaseReadableStatus: \"partial\" | \"covered\" | \"uncovered\"\ntests/parity/baseline-lanes.ts:241:  releaseReadableStatus: \"partial\" | \"covered\" | \"uncovered\"\ntests/parity/baseline-lanes.ts:267:  secondaryParity: SecondaryParityReport\ntests/parity/baseline-lanes.ts:268:  mcpParity: McpParitySurfaceReportRow\ntests/parity/baseline-lanes.ts:269:  workflowParity: WorkflowP",
+    "timestamp": 1777028968930
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_EHe8vz5q0xLcJs6lNpRhQeuY",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-release-gate-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ release gate report marks repo/dev plus installed coding-loop lanes as the strict requirement while live stays optional (105.974538ms)\n✔ release gate fails only when a required lane fails and preserves failed phase, artifact path, and comparison evidence (1.108714ms)\n✔ release gate cli can consume the canonical report without rerunning and exits non-zero when required lanes are red (112.362255ms)\n✔ release gate cli reruns the canonical baseline report, emits a stable text contract, and stays g",
+    "timestamp": 1777028975337
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_rcaPaCppptTV2RJekF7eFQ5I",
+    "command": "node -e \"const fs=require('fs');const p='tests/parity/artifacts/secondary-release-report.json';console.log(fs.existsSync(p)?'EXISTS':'MISSING')\"",
+    "exitCode": 0,
+    "outputSnippet": "MISSING\n",
+    "timestamp": 1777029013132
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_MAhmY1Syiw10HKupcNtTp76d",
+    "command": "node -e \"const fs=require('fs');const p='tests/fixtures/worktree-session-parity-manifest.json';const j=JSON.parse(fs.readFileSync(p,'utf8')); console.log(JSON.stringify({worktreeCount:j.requiredContracts.worktreeSession.length, helpCount:j.requiredContracts.operatorHelp.length, driftCount:j.rebrandDrift.length},null,2))\"",
+    "exitCode": 0,
+    "outputSnippet": "{\n  \"worktreeCount\": 6,\n  \"helpCount\": 3,\n  \"driftCount\": 5\n}\n",
+    "timestamp": 1777029013132
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_IQe7fxpzWU9Xkc1nAq7tPrkT",
+    "command": "node -e \"const fs=require('fs');const p='tests/parity/artifacts/baseline-report.json';const j=JSON.parse(fs.readFileSync(p,'utf8')); console.log(JSON.stringify({secondary:j.secondaryParity.summary,mcp:j.mcpParity.parityStatus,workflow:j.workflowParity.parityStatus},null,2))\"",
+    "exitCode": 0,
+    "outputSnippet": "{\n  \"secondary\": {\n    \"totalSurfaces\": 4,\n    \"partialSurfaces\": 4,\n    \"coveredSurfaces\": 0,\n    \"uncoveredSurfaces\": 0,\n    \"totalDriftFindings\": 12,\n    \"surfacesMissingReleaseReadableCoverage\": [\n      \"web-mode\",\n      \"mcp\",\n      \"workflow-bmad\",\n      \"worktree-session-recovery\"\n    ]\n  },\n  \"mcp\": \"passed\",\n  \"workflow\": \"passed\"\n}\n",
+    "timestamp": 1777029013132
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_IM6o7roxMDEyQvpojK5U93kY",
+    "path": "tests/parity/secondary-release-gate.ts",
+    "timestamp": 1777029229364
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_8WVIbMpBlYNhoiZKP9alf5Mf",
+    "path": "src/tests/integration/secondary-release-gate-contract.test.ts",
+    "timestamp": 1777029284298
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_sLYYC7fqCRBiXSn47pLf2OG7",
+    "command": "node --experimental-strip-types tests/parity/secondary-release-gate.ts --format text && node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-release-gate-contract.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "file:///home/cid/projects-personal/umb/tests/parity/secondary-release-gate.ts:9\n  loadBaselineReport,\n  ^^^^^^^^^^^^^^^^^^\nSyntaxError: The requested module './baseline-lanes.ts' does not provide an export named 'loadBaselineReport'\n    at #asyncInstantiate (node:internal/modules/esm/module_job:319:21)\n    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)\n    at async ModuleJob.run (node:internal/modules/esm/module_job:422:5)\n    at async onImport.tracePromise.__prot",
+    "timestamp": 1777029288931
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_SWTXEk2DEmo85S27XtTd8YrN",
+    "path": "tests/parity/secondary-release-gate.ts",
+    "timestamp": 1777029301222
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_RDxSzn8wLcUpS58OvwPqgg7U",
+    "command": "node --experimental-strip-types tests/parity/secondary-release-gate.ts --format text && node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-release-gate-contract.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "Secondary parity release gate: verdict=passed\nrequiredLanesPassed: yes\nrequiredLaneNames: web-mode, mcp, workflow-bmad, worktree-session-recovery, rebrand-drift\nbaselineReportPath: tests/parity/artifacts/baseline-report.json\nsecondaryReleaseReportPath: tests/parity/artifacts/secondary-release-report.json\nsecondarySurfaceInventoryPath: tests/parity/artifacts/secondary-surface-inventory.json\nworktreeSessionManifestPath: tests/fixtures/worktree-session-parity-manifest.json\nmcpParityArtifactPath: te",
+    "timestamp": 1777029304446
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_stUCLQbj0waKIdjIKBN7vLZ6",
+    "path": "tests/parity/secondary-release-gate.ts",
+    "timestamp": 1777029350601
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_GKYadLVD3k9nFKfeMSLX2QMb",
+    "command": "node --experimental-strip-types tests/parity/secondary-release-gate.ts --format text && node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-release-gate-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "Secondary parity release gate: verdict=passed\nrequiredLanesPassed: yes\nrequiredLaneNames: web-mode, mcp, workflow-bmad, worktree-session-recovery, rebrand-drift\nbaselineReportPath: tests/parity/artifacts/baseline-report.json\nsecondaryReleaseReportPath: tests/parity/artifacts/secondary-release-report.json\nsecondarySurfaceInventoryPath: tests/parity/artifacts/secondary-surface-inventory.json\nworktreeSessionManifestPath: tests/fixtures/worktree-session-parity-manifest.json\nmcpParityArtifactPath: te",
+    "timestamp": 1777029354220
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_BR0o0mSHbBFHVp1HWFxQCN4N",
+    "command": "printf 'CHANGED FILES\\n'; ls tests/parity/secondary-release-gate.ts src/tests/integration/secondary-release-gate-contract.test.ts tests/parity/artifacts/secondary-release-report.json && printf '\\nVERIFY AGAIN\\n'; node --experimental-strip-types tests/parity/secondary-release-gate.ts --format text >/tmp/secondary-release.txt; echo \"gate_exit=$?\"; wc -c tests/parity/artifacts/secondary-release-report.json",
+    "exitCode": 0,
+    "outputSnippet": "CHANGED FILES\nsrc/tests/integration/secondary-release-gate-contract.test.ts\ntests/parity/artifacts/secondary-release-report.json\ntests/parity/secondary-release-gate.ts\n\nVERIFY AGAIN\ngate_exit=0\n11722 tests/parity/artifacts/secondary-release-report.json\n",
+    "timestamp": 1777029398238
+  }
+]

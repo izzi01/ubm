@@ -1,0 +1,319 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-24T11:17:13.581Z",
+  "cwd": "/home/cid/projects-personal/umb",
+  "artifactPath": "tests/parity/artifacts/secondary-release-report.json",
+  "verdict": "passed",
+  "baselineReportPath": "tests/parity/artifacts/baseline-report.json",
+  "requiredLaneNames": [
+    "web-mode",
+    "mcp",
+    "workflow-bmad",
+    "worktree-session-recovery",
+    "rebrand-drift"
+  ],
+  "requiredLanesPassed": true,
+  "failedRequiredLanes": [],
+  "failedSurfaces": [],
+  "failedPhases": [],
+  "diagnosticsCommand": [
+    "node",
+    "--experimental-strip-types",
+    "tests/parity/secondary-release-gate.ts",
+    "--report",
+    "tests/parity/artifacts/baseline-report.json",
+    "--format",
+    "text"
+  ],
+  "artifactPaths": {
+    "baselineReport": "tests/parity/artifacts/baseline-report.json",
+    "secondaryReleaseReport": "tests/parity/artifacts/secondary-release-report.json",
+    "secondarySurfaceInventory": "tests/parity/artifacts/secondary-surface-inventory.json",
+    "mcpParity": "tests/parity/artifacts/mcp-parity.json",
+    "workflowParity": "tests/parity/artifacts/workflow-parity.json",
+    "worktreeSessionManifest": "tests/fixtures/worktree-session-parity-manifest.json"
+  },
+  "baselineSummary": {
+    "verdict": "failing",
+    "totalLanes": 8,
+    "passed": 6,
+    "failed": 1,
+    "skipped": 1,
+    "timedOut": 0,
+    "provesCodingLoop": true,
+    "uncoveredLaneNames": [
+      "fixtures-runner",
+      "live-runner"
+    ],
+    "proofClassCounts": {
+      "smoke": 1,
+      "repo-infra": 3,
+      "installed-binary": 2,
+      "live-spot-check": 1,
+      "uncovered-coding-loop": 1
+    },
+    "uncoveredCapabilityNames": [
+      "inspect-repository-context",
+      "edit-application-code",
+      "run-targeted-tests",
+      "manage-dev-server-lifecycle",
+      "verify-browser-behavior"
+    ]
+  },
+  "secondaryParitySummary": {
+    "totalSurfaces": 4,
+    "partialSurfaces": 4,
+    "coveredSurfaces": 0,
+    "uncoveredSurfaces": 0,
+    "totalDriftFindings": 12,
+    "surfacesMissingReleaseReadableCoverage": [
+      "web-mode",
+      "mcp",
+      "workflow-bmad",
+      "worktree-session-recovery"
+    ]
+  },
+  "requiredLanes": [
+    {
+      "name": "web-mode",
+      "title": "Browser-only web mode parity surface",
+      "surfaceId": "web-mode",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
+      "artifactPaths": [
+        "tests/parity/artifacts/baseline-report.json",
+        "tests/parity/artifacts/secondary-surface-inventory.json"
+      ],
+      "failedPhases": [],
+      "failedSurfaces": [],
+      "summary": "Web-mode required coverage is present in the canonical secondary-surface report; remaining web-mode gaps stay explicit and non-blocking.",
+      "diagnostics": [
+        "inventoryStatus: partial",
+        "releaseReadableStatus: partial",
+        "requiredLaneNames: secondary-parity-report, integration:web-mode",
+        "missingRequiredLaneNames: none",
+        "optionalLaneNames: repo-recording:web-mode, installed-recording:web-mode",
+        "coverageGapIds: web-parity-artifact-missing, web-installed-mode-proof-missing"
+      ],
+      "required": true,
+      "blocking": true,
+      "status": "passed"
+    },
+    {
+      "name": "mcp",
+      "title": "MCP server and client parity surface",
+      "surfaceId": "mcp",
+      "reportPath": "tests/parity/artifacts/mcp-parity.json#mcpParity",
+      "artifactPaths": [
+        "tests/parity/artifacts/mcp-parity.json",
+        "tests/fixtures/recordings/mcp-parity.json"
+      ],
+      "failedPhases": [],
+      "failedSurfaces": [],
+      "summary": "MCP parity artifact passes and remains release-readable in the integrated secondary gate.",
+      "diagnostics": [
+        "releaseReadableStatus: covered",
+        "parityStatus: passed",
+        "requiredLaneNames: secondary-parity-report:mcp, unit:mcp",
+        "optionalLaneNames: integration:mcp-session",
+        "configuredServer: passed",
+        "toolDiscovery: passed",
+        "schemaInspection: passed",
+        "successInvocation: passed",
+        "failureInvocation: passed"
+      ],
+      "required": true,
+      "blocking": true,
+      "status": "passed"
+    },
+    {
+      "name": "workflow-bmad",
+      "title": "Workflow / BMAD representative parity surface",
+      "surfaceId": "workflow-bmad",
+      "reportPath": "tests/parity/artifacts/workflow-parity.json#workflowParity",
+      "artifactPaths": [
+        "tests/parity/artifacts/workflow-parity.json",
+        "tests/fixtures/recordings/workflow-parity.json"
+      ],
+      "failedPhases": [],
+      "failedSurfaces": [],
+      "summary": "Representative workflow parity stays green in the integrated secondary gate.",
+      "diagnostics": [
+        "releaseReadableStatus: covered",
+        "parityStatus: passed",
+        "requiredLaneNames: secondary-parity-report:workflow-bmad, integration:workflow-contracts",
+        "optionalLaneNames: repo-recording:workflow-bmad",
+        "artifactChecksMissing: 0",
+        "stateTransitionFailures: 0",
+        "verificationEvidenceStatus: passed"
+      ],
+      "required": true,
+      "blocking": true,
+      "status": "passed"
+    },
+    {
+      "name": "worktree-session-recovery",
+      "title": "Worktree, session, and recovery parity surface",
+      "surfaceId": "worktree-session-recovery",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.worktree-session-recovery",
+      "artifactPaths": [
+        "tests/fixtures/worktree-session-parity-manifest.json",
+        "tests/parity/artifacts/baseline-report.json"
+      ],
+      "failedPhases": [],
+      "failedSurfaces": [],
+      "summary": "Worktree/session/recovery parity remains locked by the tracked manifest and operator help contract.",
+      "diagnostics": [
+        "manifestVersion: 1",
+        "surfaceId: worktree-session-recovery",
+        "goal: Release-readable deterministic contract for branchless worktree/session/recovery parity and remaining operator-visible rebrand drift.",
+        "worktreeContractCount: 6",
+        "operatorHelpCount: 3",
+        "all tracked worktree/session contracts matched"
+      ],
+      "required": true,
+      "blocking": true,
+      "status": "passed"
+    },
+    {
+      "name": "rebrand-drift",
+      "title": "Scoped rebrand drift contract",
+      "surfaceId": "rebrand-drift",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.driftFindings",
+      "artifactPaths": [
+        "tests/fixtures/worktree-session-parity-manifest.json",
+        "tests/parity/artifacts/baseline-report.json"
+      ],
+      "failedPhases": [],
+      "failedSurfaces": [],
+      "summary": "Remaining old-brand secondary-surface strings are still explicit, scoped, and non-blocking in the integrated gate.",
+      "diagnostics": [
+        "trackedExpectedDriftCount: 5",
+        "inventoryMatchedDriftCount: 5",
+        "trackedExpectedDriftIds: drift-cli-warning-prefix, drift-cli-noninteractive-guidance, drift-cli-web-guidance, drift-worktree-usage-merge, drift-worktree-usage-remove",
+        "all tracked expected-drift findings stayed explicit and line-stable"
+      ],
+      "required": true,
+      "blocking": true,
+      "status": "passed"
+    }
+  ],
+  "optionalLanes": [
+    {
+      "name": "repo-recording:web-mode",
+      "title": "Representative repo-mode web recording",
+      "surfaceId": "web-mode",
+      "required": false,
+      "blocking": false,
+      "status": "planned",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
+      "artifactPaths": [],
+      "summary": "Optional parity lane remains planned-proof and is explicitly non-blocking for web-mode.",
+      "diagnostics": [
+        "proofClass: repo-recording",
+        "releaseReadable: yes",
+        "implementationStatus: planned-proof",
+        "fixturePaths: none"
+      ]
+    },
+    {
+      "name": "installed-recording:web-mode",
+      "title": "Representative installed-mode web recording",
+      "surfaceId": "web-mode",
+      "required": false,
+      "blocking": false,
+      "status": "planned",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
+      "artifactPaths": [],
+      "summary": "Optional parity lane remains planned-proof and is explicitly non-blocking for web-mode.",
+      "diagnostics": [
+        "proofClass: installed-recording",
+        "releaseReadable: yes",
+        "implementationStatus: planned-proof",
+        "fixturePaths: none"
+      ]
+    },
+    {
+      "name": "integration:mcp-session",
+      "title": "Representative MCP interaction lane",
+      "surfaceId": "mcp",
+      "required": false,
+      "blocking": false,
+      "status": "planned",
+      "reportPath": "tests/parity/artifacts/mcp-parity.json#mcpParity",
+      "artifactPaths": [
+        "tests/parity/artifacts/mcp-parity.json"
+      ],
+      "summary": "Optional parity lane remains planned-proof and is explicitly non-blocking for mcp.",
+      "diagnostics": [
+        "proofClass: installed-recording",
+        "releaseReadable: yes",
+        "implementationStatus: planned-proof",
+        "fixturePaths: tests/parity/artifacts/mcp-parity.json"
+      ]
+    },
+    {
+      "name": "repo-recording:workflow-bmad",
+      "title": "Representative workflow fixture lane",
+      "surfaceId": "workflow-bmad",
+      "required": false,
+      "blocking": false,
+      "status": "planned",
+      "reportPath": "tests/parity/artifacts/workflow-parity.json#workflowParity",
+      "artifactPaths": [
+        "tests/fixtures/workflow-parity-manifest.json"
+      ],
+      "summary": "Optional parity lane remains planned-proof and is explicitly non-blocking for workflow-bmad.",
+      "diagnostics": [
+        "proofClass: repo-recording",
+        "releaseReadable: yes",
+        "implementationStatus: planned-proof",
+        "fixturePaths: tests/fixtures/workflow-parity-manifest.json"
+      ]
+    },
+    {
+      "name": "installed-recording:worktree-session-recovery",
+      "title": "Representative installed worktree/session recording",
+      "surfaceId": "worktree-session-recovery",
+      "required": false,
+      "blocking": false,
+      "status": "planned",
+      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.worktree-session-recovery",
+      "artifactPaths": [
+        "tests/fixtures/recordings/secondary-worktree-session-recovery.json"
+      ],
+      "summary": "Optional parity lane remains planned-proof and is explicitly non-blocking for worktree-session-recovery.",
+      "diagnostics": [
+        "proofClass: installed-recording",
+        "releaseReadable: yes",
+        "implementationStatus: planned-proof",
+        "fixturePaths: tests/fixtures/recordings/secondary-worktree-session-recovery.json"
+      ]
+    },
+    {
+      "name": "live-runner",
+      "title": "Provider-driven live spot check",
+      "surfaceId": "provider-live",
+      "required": false,
+      "blocking": false,
+      "status": "skipped",
+      "reportPath": null,
+      "artifactPaths": [],
+      "summary": "Live/provider-driven validation stays explicit and non-blocking in the secondary release gate.",
+      "diagnostics": [
+        "laneStatus: skipped",
+        "skipReason: live lane skipped because GSD_LIVE_TESTS is not enabled",
+        "command: --experimental-strip-types tests/live/run.ts"
+      ]
+    }
+  ],
+  "optionalLive": {
+    "laneName": "live-runner",
+    "status": "skipped",
+    "configured": false,
+    "enabled": false,
+    "required": false,
+    "includeLiveRequested": false,
+    "skipReason": "not-enabled",
+    "reason": "live lane skipped because GSD_LIVE_TESTS is not enabled"
+  }
+}

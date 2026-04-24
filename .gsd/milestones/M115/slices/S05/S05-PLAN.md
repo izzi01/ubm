@@ -26,7 +26,7 @@ Release consumers can rely on a single report/gate for the secondary parity band
   - Files: `src/resources/extensions/gsd/auto-worktree.ts`, `src/resources/extensions/gsd/auto-recovery.ts`, `src/help-text.ts`, `src/cli.ts`, `src/worktree-cli.ts`, `tests/fixtures/worktree-session-parity-manifest.json`, `src/tests/integration/worktree-session-parity-contract.test.ts`, `src/tests/integration/rebrand-surface-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/worktree-session-parity-contract.test.ts src/tests/integration/rebrand-surface-contract.test.ts
 
-- [ ] **T02: Implement integrated secondary-surface release gate** `est:1-1.5 days`
+- [x] **T02: Implement integrated secondary-surface release gate** `est:1-1.5 days`
   Extend the parity runner and release-gate plumbing so the M115 report composes web, MCP, workflow, worktree/session, and rebrand lanes into one secondary-surface verdict. Required lanes must drive the verdict; optional/live/provider-driven lanes must remain explicit but non-blocking. Preserve artifact paths, failed surfaces/phases, and operator-facing diagnostics in both text and JSON output.
   - Files: `tests/parity/secondary-lanes.ts`, `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/parity/secondary-release-gate.ts`, `src/tests/integration/secondary-release-gate-contract.test.ts`
   - Verify: node --experimental-strip-types tests/parity/secondary-release-gate.ts --format text && node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-release-gate-contract.test.ts
