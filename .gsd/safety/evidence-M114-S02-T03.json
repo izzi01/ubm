@@ -1,0 +1,68 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_hyajkFOVqVvOaa295L0esHpE",
+    "command": "ls src/tests/integration && printf '\\n---\\n' && find tests/fixtures -maxdepth 3 -type f | sort | grep 'parity-web-task\\|repo-mode-parity-web-task'",
+    "exitCode": 0,
+    "outputSnippet": "ci_monitor.test.ts\ne2e-headless.test.ts\ne2e-smoke.test.ts\npack-install.test.ts\nparity-baseline-contract.test.ts\nparity-fixture-manifest.test.ts\nparity-m113-reconciliation.test.ts\nrepo-mode-fixture-contract.test.ts\nweb-auth-token.test.ts\nweb-auto-dashboard-lock-reconciliation.test.ts\nweb-boot-node24.test.ts\nweb-bridge-contract.test.ts\nweb-bridge-package-root.test.ts\nweb-bridge-terminal-contract.test.ts\nweb-cli-entry.test.ts\nweb-command-parity-contract.test.ts\nweb-continuity-contract.test.ts\nweb-d",
+    "timestamp": 1777010940653
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_h8O1O82ODqhbSSqa2YSVHwMZ",
+    "command": "find src/tests/integration -maxdepth 1 -type f | sort",
+    "exitCode": 0,
+    "outputSnippet": "src/tests/integration/ci_monitor.test.ts\nsrc/tests/integration/e2e-headless.test.ts\nsrc/tests/integration/e2e-smoke.test.ts\nsrc/tests/integration/pack-install.test.ts\nsrc/tests/integration/parity-baseline-contract.test.ts\nsrc/tests/integration/parity-fixture-manifest.test.ts\nsrc/tests/integration/parity-m113-reconciliation.test.ts\nsrc/tests/integration/repo-mode-fixture-contract.test.ts\nsrc/tests/integration/web-auth-token.test.ts\nsrc/tests/integration/web-auto-dashboard-lock-reconciliation.test",
+    "timestamp": 1777010940653
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_Hxi1V6milUhlxJLJv5p9EFxA",
+    "command": "rg -n \"repo-mode|coding-loop|artifactPath|failedPhase|browser diagnostics|phase-local|parity\" src tests -g '!dist'",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/artifacts/baseline-report.json:5:  \"artifactPath\": \"tests/parity/artifacts/baseline-report.json\",\ntests/parity/artifacts/baseline-report.json:28:      \"uncovered-coding-loop\": 1\ntests/parity/artifacts/baseline-report.json:44:      \"parityScope\": \"partial\",\ntests/parity/artifacts/baseline-report.json:59:      \"proofClass\": \"uncovered-coding-loop\",\ntests/parity/artifacts/baseline-report.json:60:      \"parityScope\": \"partial\",\ntests/parity/artifacts/baseline-report.json:76:      \"parit",
+    "timestamp": 1777010964276
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_bWOnBtZEp0JAiQr4LO4VSR2B",
+    "command": "find tests/fixtures -maxdepth 3 -type f | sort | grep 'record'",
+    "exitCode": 0,
+    "outputSnippet": "tests/fixtures/recordings/agent-creates-file.json\ntests/fixtures/recordings/agent-handles-error.json\ntests/fixtures/recordings/agent-multi-turn-tools.json\ntests/fixtures/recordings/agent-reads-and-edits.json\ntests/fixtures/record.ts\n",
+    "timestamp": 1777010983609
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_jk34EYwiEZ91ieSZafqSuujo",
+    "command": "rg -n \"recording|recordings|phaseResults|failedPhase|artifactPath|inspect|edit|dev-server|browser\" tests src/scripts scripts -g '!dist'",
+    "exitCode": 2,
+    "outputSnippet": "tests/parity/artifacts/baseline-report.json:5:  \"artifactPath\": \"tests/parity/artifacts/baseline-report.json\",\ntests/parity/artifacts/baseline-report.json:31:      \"inspect-repository-context\",\ntests/parity/artifacts/baseline-report.json:32:      \"edit-application-code\",\ntests/parity/artifacts/baseline-report.json:34:      \"manage-dev-server-lifecycle\",\ntests/parity/artifacts/baseline-report.json:35:      \"verify-browser-behavior\"\ntests/parity/artifacts/baseline-report.json:167:        \"name\": \"",
+    "timestamp": 1777010983609
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_HNswGkXnvqu3uCc9VNk9fyt4",
+    "path": "tests/parity/baseline-lanes.ts",
+    "timestamp": 1777011308494
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_3Vy1KOmbGoAB6EM3oXqtrfo6",
+    "path": "tests/parity/run.ts",
+    "timestamp": 1777011313483
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_Safk36jQTaYiYX5IekBtv0sW",
+    "command": "node --check tests/parity/baseline-lanes.ts >/dev/null 2>&1; echo $?",
+    "exitCode": 0,
+    "outputSnippet": "0\n",
+    "timestamp": 1777011330205
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_WfJKL6d20o69ZR7KRgcyQ59X",
+    "path": "tests/parity/run.ts",
+    "timestamp": 1777011339842
+  }
+]

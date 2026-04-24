@@ -30,7 +30,7 @@ function parseCliArgs(argv: readonly string[]): CliOptions {
 
 async function main(): Promise<void> {
   const options = parseCliArgs(process.argv.slice(2))
-  const report = await createBaselineReport({ cwd: process.cwd() })
+  const report = await createBaselineReport({ cwd: process.cwd(), env: process.env })
   const writtenPath = await writeBaselineReport(report, process.cwd())
 
   if (options.format === "json") {

@@ -74,7 +74,7 @@ Negative Tests (Q7): cover wrong-file edits, fixture tests still failing after t
   - Files: `tests/fixtures/recordings/repo-mode-parity-web-task.json`, `src/tests/integration/helpers/repo-mode-parity.ts`, `src/tests/integration/repo-mode-coding-loop.test.ts`, `tests/fixtures/parity-web-task/TASK.md`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/repo-mode-coding-loop.test.ts
 
-- [ ] **T03: Wire repo-mode proof into the parity manifest and report** `est:45m`
+- [x] **T03: Wire repo-mode proof into the parity manifest and report** `est:45m`
   Skills to load before coding: `test`, `observability`, `verify-before-complete`.
 
 Close the slice by wiring the new repo-mode proof into the existing parity inventory layer so S01's manifest-backed uncovered-capability report becomes truthful repo-mode coverage instead of stale prose. Keep the baseline runner deterministic and machine-readable.
