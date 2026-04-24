@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T13:37:10.837Z",
+  "generatedAt": "2026-04-24T14:19:08.887Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/secondary-release-report.json",
   "verdict": "passed",
@@ -61,15 +61,13 @@
   },
   "secondaryParitySummary": {
     "totalSurfaces": 4,
-    "partialSurfaces": 4,
-    "coveredSurfaces": 0,
+    "partialSurfaces": 2,
+    "coveredSurfaces": 2,
     "uncoveredSurfaces": 0,
     "totalDriftFindings": 12,
     "surfacesMissingReleaseReadableCoverage": [
-      "web-mode",
       "mcp",
-      "workflow-bmad",
-      "worktree-session-recovery"
+      "workflow-bmad"
     ]
   },
   "requiredLanes": [
@@ -77,7 +75,7 @@
       "name": "web-mode",
       "title": "Browser-only web mode parity surface",
       "surfaceId": "web-mode",
-      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
+      "reportPath": "tests/parity/artifacts/secondary-parity-report.json#rows.web-mode",
       "artifactPaths": [
         "tests/parity/artifacts/baseline-report.json",
         "tests/parity/artifacts/secondary-surface-inventory.json"
@@ -87,7 +85,7 @@
       "summary": "Web-mode required coverage is present in the canonical secondary-surface report; remaining web-mode gaps stay explicit and non-blocking.",
       "diagnostics": [
         "inventoryStatus: partial",
-        "releaseReadableStatus: partial",
+        "releaseReadableStatus: covered",
         "requiredLaneNames: secondary-parity-report, integration:web-mode",
         "missingRequiredLaneNames: none",
         "optionalLaneNames: repo-recording:web-mode, installed-recording:web-mode",
@@ -204,7 +202,7 @@
       "required": false,
       "blocking": false,
       "status": "planned",
-      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
+      "reportPath": "tests/parity/artifacts/secondary-parity-report.json#rows.web-mode",
       "artifactPaths": [],
       "summary": "Optional parity lane remains planned-proof and is explicitly non-blocking for web-mode.",
       "diagnostics": [
@@ -221,7 +219,7 @@
       "required": false,
       "blocking": false,
       "status": "planned",
-      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
+      "reportPath": "tests/parity/artifacts/secondary-parity-report.json#rows.web-mode",
       "artifactPaths": [],
       "summary": "Optional parity lane remains planned-proof and is explicitly non-blocking for web-mode.",
       "diagnostics": [

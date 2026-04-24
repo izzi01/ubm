@@ -1,5 +1,4 @@
-import test from "node:test"
-import assert from "node:assert/strict"
+import { test, expect } from "vitest"
 import { execFileSync } from "node:child_process"
 import { join } from "node:path"
 
@@ -25,54 +24,39 @@ function runParity(env: NodeJS.ProcessEnv = process.env): { stdout: string; stde
   }
 }
 
-test("baseline parity runner emits a truthful web-mode secondary parity row", () => {
+test("baseline parity runner emits a covered web-mode secondary parity row backed by the secondary parity report", { timeout: 60000 }, () => {
   const result = runParity({
     ...process.env,
     GSD_LIVE_TESTS: "0",
   })
 
-  assert.equal(result.status, 0, `runner stderr:\n${result.stderr}`)
+  expect(result.status).toBe(0)
   const report = JSON.parse(result.stdout)
-
-  assert.ok(report.secondaryParity, "expected secondaryParity payload in baseline report")
   const webSurface = report.secondaryParity.surfaces.find((surface: { id: string }) => surface.id === "web-mode")
 
-  assert.ok(webSurface, "expected web-mode secondary parity surface")
-  assert.equal(webSurface.inventoryStatus, "partial")
-  assert.equal(webSurface.releaseReadableStatus, "partial")
-  assert.deepEqual(webSurface.requiredLaneNames, ["secondary-parity-report", "integration:web-mode"])
-  assert.deepEqual(webSurface.existingRequiredLaneNames, ["integration:web-mode"])
-  assert.deepEqual(webSurface.missingRequiredLaneNames, ["secondary-parity-report"])
-  assert.ok(
-    webSurface.presentFixturePaths.includes("src/tests/integration/web-mode-cli.test.ts"),
-    "expected current deterministic web-mode integration coverage to stay attached",
-  )
-  assert.ok(
-    webSurface.plannedFixturePaths.includes("tests/parity/artifacts/secondary-parity-report.json#web-mode"),
-    "expected reserved release-readable report path to stay explicit",
-  )
-  assert.deepEqual(webSurface.coverageGapIds, ["web-parity-artifact-missing", "web-installed-mode-proof-missing"])
-  assert.equal(
-    webSurface.reportPath,
-    "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
-  )
+  expect(webSurface).toBeTruthy()
+  expect(webSurface.inventoryStatus).toBe("partial")
+  expect(webSurface.releaseReadableStatus).toBe("covered")
+  expect(webSurface.requiredLaneNames).toEqual(["secondary-parity-report", "integration:web-mode"])
+  expect(webSurface.existingRequiredLaneNames).toEqual(["secondary-parity-report", "integration:web-mode"])
+  expect(webSurface.missingRequiredLaneNames).toEqual([])
+  expect(webSurface.presentFixturePaths).toContain("src/tests/integration/web-mode-cli.test.ts")
+  expect(webSurface.plannedFixturePaths).toContain("tests/parity/artifacts/secondary-parity-report.json#web-mode")
+  expect(webSurface.coverageGapIds).toEqual(["web-parity-artifact-missing", "web-installed-mode-proof-missing"])
+  expect(webSurface.reportPath).toBe("tests/parity/artifacts/secondary-parity-report.json#rows.web-mode")
 })
 
-test("baseline parity report keeps web-mode gaps actionable for downstream release reporting", () => {
+test("baseline parity summary retires web-mode from missing release-readable coverage once promoted", { timeout: 60000 }, () => {
   const result = runParity({
     ...process.env,
     GSD_LIVE_TESTS: "0",
   })
 
-  assert.equal(result.status, 0, `runner stderr:\n${result.stderr}`)
+  expect(result.status).toBe(0)
   const report = JSON.parse(result.stdout)
   const webSurface = report.secondaryParity.uncoveredSurfaces.find((surface: { id: string }) => surface.id === "web-mode")
 
-  assert.ok(webSurface, "expected web-mode to remain listed among uncovered secondary surfaces until its release-readable lane exists")
-  assert.match(webSurface.uncoveredAreas[0]?.summary ?? "", /secondary-surface parity artifact/i)
-  assert.match(webSurface.uncoveredAreas[0]?.downstreamNeed ?? "", /machine-readable lane\/report entry/i)
-  assert.ok(
-    report.secondaryParity.summary.surfacesMissingReleaseReadableCoverage.includes("web-mode"),
-    "expected summary to call out missing release-readable web-mode coverage",
-  )
+  expect(webSurface).toBeUndefined()
+  expect(report.secondaryParity.summary.surfacesMissingReleaseReadableCoverage).not.toContain("web-mode")
+  expect(report.secondaryParity.summary.coveredSurfaces).toBeGreaterThanOrEqual(1)
 })

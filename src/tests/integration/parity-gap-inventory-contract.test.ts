@@ -96,7 +96,23 @@ test("parity gap inventory keeps the baseline-red versus secondary-green disagre
   expect(liveRunner.rationale).toMatch(/opt-?in/i)
   expect(liveRunner.closureExpectation).toMatch(/not required for the canonical release gate to pass/i)
 
-  for (const surfaceId of ["web-mode", "mcp", "workflow-bmad", "worktree-session-recovery"] as const) {
+  for (const surfaceId of ["web-mode", "worktree-session-recovery"] as const) {
+    const row = rowById(inventory.rows, `secondary-surface:${surfaceId}`)
+    expect(row.kind).toBe("secondary-surface")
+    expect(row.laneName).toBeNull()
+    expect(row.surfaceId).toBe(surfaceId)
+    expect(row.class).toBe("scoped-exception-candidate")
+    expect(row.blocking).toBe(false)
+    expect(row.currentReportStatus.baselineReport).toBe("covered")
+    expect(row.currentReportStatus.secondaryReleaseReport).toBe("passed")
+    expect(row.reportPath).toMatch(/^tests\/parity\/artifacts\/.+#/)
+    expect(row.artifactPath, `${surfaceId} should preserve an actionable artifact path`).toMatch(/^tests\//)
+    expect(row.remediationSummary, `${surfaceId} should preserve a remediation summary`).not.toHaveLength(0)
+    expect(row.closureExpectation, `${surfaceId} should preserve a downstream closure expectation`).toMatch(/Publish|Define|Resolve|Decide|Add/)
+    expect(row.evidencePaths.length, `${surfaceId} should preserve report plus tracked evidence paths`).toBeGreaterThanOrEqual(3)
+  }
+
+  for (const surfaceId of ["mcp", "workflow-bmad"] as const) {
     const row = rowById(inventory.rows, `secondary-surface:${surfaceId}`)
     expect(row.kind).toBe("secondary-surface")
     expect(row.laneName).toBeNull()

@@ -409,8 +409,8 @@
     "totalLanes": 13,
     "requiredLanes": 8,
     "optionalLanes": 5,
-    "presentFixtures": 10,
-    "plannedFixtures": 2,
+    "presentFixtures": 8,
+    "plannedFixtures": 4,
     "partialSurfaces": 4,
     "uncoveredSurfaces": 0,
     "coveredSurfaces": 0

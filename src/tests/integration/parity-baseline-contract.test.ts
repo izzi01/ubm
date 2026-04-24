@@ -108,10 +108,8 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
     assert.equal(report.secondaryParity.manifestPath, "tests/fixtures/secondary-parity-manifest.json")
     assert.equal(report.secondaryParity.summary.totalSurfaces, 4)
     assert.deepEqual(report.secondaryParity.summary.surfacesMissingReleaseReadableCoverage, [
-      "web-mode",
       "mcp",
       "workflow-bmad",
-      "worktree-session-recovery",
     ])
 
     const artifact = JSON.parse(readFileSync(join(repoRoot, "tests", "parity", "artifacts", "baseline-report.json"), "utf8"))

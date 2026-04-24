@@ -61,7 +61,7 @@ const surfaces: SecondarySurfaceInventorySurface[] = [
     title: "Browser-only web mode parity surface",
     status: "partial",
     scopeBoundary:
-      "Covers the shipped `umb --web` / `umb web` launch path, host/network flags, onboarding lock state, command-surface parity, and recovery/session diagnostics exposed in the web UI. It does not yet prove a dedicated parity fixture through the release-gate artifact.",
+      "Covers the shipped `umb --web` / `umb web` launch path, host/network flags, onboarding lock state, command-surface parity, runtime startup diagnostics, and recovery/session diagnostics exposed in the web UI. It does not yet prove a dedicated parity fixture through the release-gate artifact.",
     alreadyCoveredBy: [
       {
         path: "src/tests/integration/web-mode-cli.test.ts",
@@ -99,7 +99,7 @@ const surfaces: SecondarySurfaceInventorySurface[] = [
     title: "MCP server and client parity surface",
     status: "partial",
     scopeBoundary:
-      "Covers `--mode mcp` startup, packaged MCP module importability, bundled MCP extension conflicts, and MCP-related package server contracts. It does not yet prove an end-to-end secondary parity lane that a downstream release gate can read as MCP parity.",
+      "Covers `--mode mcp` startup, operator-visible startup branding, packaged MCP module importability, bundled MCP extension conflicts, and MCP-related package server contracts. It does not yet prove an end-to-end secondary parity lane that a downstream release gate can read as MCP parity.",
     alreadyCoveredBy: [
       {
         path: "src/mcp-server.ts",
@@ -215,76 +215,6 @@ const surfaces: SecondarySurfaceInventorySurface[] = [
 ]
 
 const rebrandDrift: RebrandDriftFinding[] = [
-  {
-    id: "drift-cli-warning-prefix",
-    surfaceId: "workflow-bmad",
-    severity: "high",
-    kind: "runtime-diagnostic",
-    path: "src/cli.ts",
-    line: 148,
-    match: "[gsd] Warning: RTK unavailable — continuing without shell-command compression",
-    whyItMatters: "Runtime stderr still brands the shipped CLI as gsd, so parity and support logs misidentify umb sessions.",
-  },
-  {
-    id: "drift-cli-noninteractive-guidance",
-    surfaceId: "mcp",
-    severity: "high",
-    kind: "runtime-diagnostic",
-    path: "src/cli.ts",
-    line: 160,
-    match: "[gsd]   gsd auto                       Auto-mode (pipeable, no TUI)",
-    whyItMatters: "Non-interactive guidance still tells users to run gsd subcommands, which is visible in real failure output.",
-  },
-  {
-    id: "drift-cli-web-guidance",
-    surfaceId: "web-mode",
-    severity: "high",
-    kind: "runtime-diagnostic",
-    path: "src/cli.ts",
-    line: 744,
-    match: "[gsd]   gsd --web [path]               Browser-only web mode",
-    whyItMatters: "The renamed CLI still advertises web mode under the old command name in TTY failure guidance.",
-  },
-  {
-    id: "drift-worktree-usage-merge",
-    surfaceId: "worktree-session-recovery",
-    severity: "high",
-    kind: "runtime-diagnostic",
-    path: "src/worktree-cli.ts",
-    line: 177,
-    match: "Usage: gsd worktree merge <name>",
-    whyItMatters: "Worktree subcommand errors still expose the old executable name in user-visible usage text.",
-  },
-  {
-    id: "drift-worktree-usage-remove",
-    surfaceId: "worktree-session-recovery",
-    severity: "high",
-    kind: "runtime-diagnostic",
-    path: "src/worktree-cli.ts",
-    line: 263,
-    match: "Usage: gsd worktree remove <name>",
-    whyItMatters: "Worktree removal guidance still references gsd, creating rename drift on a key secondary surface.",
-  },
-  {
-    id: "drift-mcp-startup-prefix",
-    surfaceId: "mcp",
-    severity: "high",
-    kind: "runtime-diagnostic",
-    path: "src/mcp-server.ts",
-    line: 111,
-    match: "[gsd] MCP server started",
-    whyItMatters: "MCP hosts and logs still see the old brand during server startup.",
-  },
-  {
-    id: "drift-web-startup-prefix",
-    surfaceId: "web-mode",
-    severity: "high",
-    kind: "runtime-diagnostic",
-    path: "src/web-mode.ts",
-    line: 577,
-    match: "[gsd] Starting web mode…",
-    whyItMatters: "Web-mode operational diagnostics still emit the old prefix in normal runtime flows.",
-  },
   {
     id: "drift-package-docker-image",
     surfaceId: "mcp",

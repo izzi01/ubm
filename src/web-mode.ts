@@ -574,7 +574,7 @@ export async function launchWebMode(
     return failure
   }
 
-  stderr.write(`[gsd] Starting web mode…\n`)
+  stderr.write(`[umb] Starting web mode…\n`)
 
   // Kill any stale server instance for this project before reserving a port.
   // This prevents EADDRINUSE when the previous `gsd --web` was terminated

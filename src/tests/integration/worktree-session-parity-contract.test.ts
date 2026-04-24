@@ -1,5 +1,4 @@
-import test from "node:test"
-import assert from "node:assert/strict"
+import { test, expect } from "vitest"
 import { readFileSync } from "node:fs"
 import { join } from "node:path"
 
@@ -30,23 +29,20 @@ function escapeRegExp(value: string): string {
 test("worktree/session parity manifest stays scoped to the release-readable secondary surface contract", () => {
   const manifest = loadManifest()
 
-  assert.equal(manifest.version, 1)
-  assert.equal(manifest.surfaceId, "worktree-session-recovery")
-  assert.match(manifest.goal, /branchless worktree\/session\/recovery parity/i)
-  assert.equal(manifest.requiredContracts.worktreeSession.length, 6)
-  assert.equal(manifest.requiredContracts.operatorHelp.length, 3)
+  expect(manifest.version).toBe(1)
+  expect(manifest.surfaceId).toBe("worktree-session-recovery")
+  expect(manifest.goal).toMatch(/branchless worktree\/session\/recovery parity/i)
+  expect(manifest.requiredContracts.worktreeSession).toHaveLength(6)
+  expect(manifest.requiredContracts.operatorHelp).toHaveLength(3)
 
-  assert.deepEqual(
-    manifest.requiredContracts.worktreeSession.map((entry) => entry.id),
-    [
-      "branchless-worktree-create",
-      "branchless-worktree-merge",
-      "stale-worktree-cwd-escape",
-      "stale-runtime-unit-cleanup",
-      "headless-resume-resolution",
-      "recovery-remediation-guidance",
-    ],
-  )
+  expect(manifest.requiredContracts.worktreeSession.map((entry) => entry.id)).toEqual([
+    "branchless-worktree-create",
+    "branchless-worktree-merge",
+    "stale-worktree-cwd-escape",
+    "stale-runtime-unit-cleanup",
+    "headless-resume-resolution",
+    "recovery-remediation-guidance",
+  ])
 })
 
 test("worktree/session parity contract pins the current branchless lifecycle and resume/recovery exports", () => {
@@ -54,12 +50,8 @@ test("worktree/session parity contract pins the current branchless lifecycle and
 
   for (const entry of manifest.requiredContracts.worktreeSession) {
     const source = readText(entry.path)
-    assert.match(
-      source,
-      new RegExp(`export function ${entry.symbol}\\s*\\(`),
-      `${entry.path} must export ${entry.symbol} for the parity contract`,
-    )
-    assert.equal(entry.status, "covered")
+    expect(source).toMatch(new RegExp(`export function ${entry.symbol}\\s*\\(`))
+    expect(entry.status).toBe("covered")
   }
 })
 
@@ -68,13 +60,13 @@ test("worktree/session parity contract keeps operator help branded as umb while 
 
   for (const entry of manifest.requiredContracts.operatorHelp) {
     const source = readText(entry.path)
-    assert.match(source, new RegExp(escapeRegExp(entry.match)))
-    assert.equal(entry.status, "covered")
+    expect(source).toMatch(new RegExp(escapeRegExp(entry.match)))
+    expect(entry.status).toBe("covered")
   }
 
   const helpTextSource = readText("src/help-text.ts")
-  assert.doesNotMatch(helpTextSource, /Usage: gsd sessions/)
-  assert.doesNotMatch(helpTextSource, /Usage: gsd worktree <command> \[args\]/)
-  assert.match(helpTextSource, /umb -w\s+Auto-name a new worktree, or resume the only active one/)
-  assert.match(helpTextSource, /umb worktree merge auth-refactor\s+Merge and clean up/)
+  expect(helpTextSource).not.toMatch(/Usage: gsd sessions/)
+  expect(helpTextSource).not.toMatch(/Usage: gsd worktree <command> \[args\]/)
+  expect(helpTextSource).toMatch(/umb -w\s+Auto-name a new worktree, or resume the only active one/)
+  expect(helpTextSource).toMatch(/umb worktree merge auth-refactor\s+Merge and clean up/)
 })

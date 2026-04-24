@@ -174,8 +174,8 @@ async function handleMerge(basePath: string, args: string[]): Promise<void> {
       await doMerge(ext, basePath, worktrees[0].name)
       return
     }
-    process.stderr.write(chalk.red('Usage: gsd worktree merge <name>\n'))
-    process.stderr.write(chalk.dim('Run gsd worktree list to see worktrees.\n'))
+    process.stderr.write(chalk.red('Usage: umb worktree merge <name>\n'))
+    process.stderr.write(chalk.dim('Run umb worktree list to see worktrees.\n'))
     process.exit(1)
   }
   await doMerge(ext, basePath, name)
@@ -220,7 +220,7 @@ async function doMerge(ext: ExtensionModules, basePath: string, name: string): P
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)
     process.stderr.write(chalk.red(`✗ Merge failed: ${msg}\n`))
-    process.stderr.write(chalk.dim('  Resolve conflicts manually, then run gsd worktree merge again.\n'))
+    process.stderr.write(chalk.dim('  Resolve conflicts manually, then run umb worktree merge again.\n'))
     process.exit(1)
   }
 }
@@ -260,7 +260,7 @@ async function handleRemove(basePath: string, args: string[]): Promise<void> {
   const ext = await loadExtensionModules()
   const name = args[0]
   if (!name) {
-    process.stderr.write(chalk.red('Usage: gsd worktree remove <name>\n'))
+    process.stderr.write(chalk.red('Usage: umb worktree remove <name>\n'))
     process.exit(1)
   }
 

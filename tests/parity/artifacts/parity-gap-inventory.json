@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T13:37:10.707Z",
+  "generatedAt": "2026-04-24T14:18:54.304Z",
   "artifactPath": "tests/parity/artifacts/parity-gap-inventory.json",
   "baselineReportPath": "tests/parity/artifacts/baseline-report.json",
   "secondaryReleaseReportPath": "tests/parity/artifacts/secondary-release-report.json",
@@ -124,12 +124,12 @@
       "class": "scoped-exception-candidate",
       "blocking": false,
       "currentReportStatus": {
-        "baselineReport": "partial",
+        "baselineReport": "covered",
         "secondaryReleaseReport": "passed"
       },
       "failedPhase": null,
       "artifactPath": "tests/parity/artifacts/baseline-report.json",
-      "reportPath": "tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.web-mode",
+      "reportPath": "tests/parity/artifacts/secondary-parity-report.json#rows.web-mode",
       "rationale": "Baseline parity still records web-mode as partial because release-readable scope gaps remain, while the secondary release gate passes because the currently required secondary lane for this surface is already satisfied. That is a scoped-closure question, not a present release blocker.",
       "remediationSummary": "No dedicated secondary-surface parity artifact reports web-mode coverage in the parity release workflow. Current web-mode evidence is integration-heavy but not framed as installed-mode parity proof alongside repo-mode parity.",
       "closureExpectation": "Publish a machine-readable lane/report entry so release-gate consumers can read web-mode parity without re-inferring it from individual tests. Define whether web mode needs repo/install dual proof or an explicit scoped exception in the parity matrix.",
@@ -238,7 +238,7 @@
       "class": "scoped-exception-candidate",
       "blocking": false,
       "currentReportStatus": {
-        "baselineReport": "partial",
+        "baselineReport": "covered",
         "secondaryReleaseReport": "passed"
       },
       "failedPhase": null,

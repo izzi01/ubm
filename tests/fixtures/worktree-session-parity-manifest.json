@@ -71,41 +71,5 @@
       }
     ]
   },
-  "rebrandDrift": [
-    {
-      "id": "drift-cli-warning-prefix",
-      "path": "src/cli.ts",
-      "match": "[gsd] Warning: RTK unavailable — continuing without shell-command compression",
-      "line": 148,
-      "status": "expected-drift"
-    },
-    {
-      "id": "drift-cli-noninteractive-guidance",
-      "path": "src/cli.ts",
-      "match": "[gsd]   gsd auto                       Auto-mode (pipeable, no TUI)",
-      "line": 160,
-      "status": "expected-drift"
-    },
-    {
-      "id": "drift-cli-web-guidance",
-      "path": "src/cli.ts",
-      "match": "[gsd]   gsd --web [path]               Browser-only web mode",
-      "line": 744,
-      "status": "expected-drift"
-    },
-    {
-      "id": "drift-worktree-usage-merge",
-      "path": "src/worktree-cli.ts",
-      "match": "Usage: gsd worktree merge <name>",
-      "line": 177,
-      "status": "expected-drift"
-    },
-    {
-      "id": "drift-worktree-usage-remove",
-      "path": "src/worktree-cli.ts",
-      "match": "Usage: gsd worktree remove <name>",
-      "line": 263,
-      "status": "expected-drift"
-    }
-  ]
+  "rebrandDrift": []
 }

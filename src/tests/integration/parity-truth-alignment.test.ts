@@ -32,7 +32,15 @@ test("baseline failure stays blocking while passing secondary lanes remain scope
   expect(liveRunner.currentReportStatus.baselineReport).toBe("skipped")
   expect(liveRunner.currentReportStatus.secondaryReleaseReport).toBe("skipped")
 
-  for (const surfaceId of ["web-mode", "mcp", "workflow-bmad", "worktree-session-recovery"] as const) {
+  for (const surfaceId of ["web-mode", "worktree-session-recovery"] as const) {
+    const row = rowById(inventory, `secondary-surface:${surfaceId}`)
+    expect(row.class).toBe("scoped-exception-candidate")
+    expect(row.blocking).toBe(false)
+    expect(row.currentReportStatus.baselineReport).toBe("covered")
+    expect(row.currentReportStatus.secondaryReleaseReport).toBe("passed")
+  }
+
+  for (const surfaceId of ["mcp", "workflow-bmad"] as const) {
     const row = rowById(inventory, `secondary-surface:${surfaceId}`)
     expect(row.class).toBe("scoped-exception-candidate")
     expect(row.blocking).toBe(false)

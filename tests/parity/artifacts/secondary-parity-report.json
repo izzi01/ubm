@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-24T14:14:00.546Z",
+  "cwd": "/home/cid/projects-personal/umb",
+  "artifactPath": "tests/parity/artifacts/secondary-parity-report.json",
+  "manifestPaths": {
+    "secondaryParity": "tests/fixtures/secondary-parity-manifest.json",
+    "worktreeSession": "tests/fixtures/worktree-session-parity-manifest.json"
+  },
+  "promotedSurfaceIds": [
+    "web-mode",
+    "worktree-session-recovery"
+  ],
+  "summary": {
+    "totalRows": 2,
+    "coveredRows": 2,
+    "optionalPlannedLaneCount": 3,
+    "releaseReadableSurfaceIds": [
+      "web-mode",
+      "worktree-session-recovery"
+    ]
+  },
+  "rows": [
+    {
+      "surfaceId": "web-mode",
+      "title": "Browser-only web mode parity surface",
+      "status": "covered",
+      "reportPath": "tests/parity/artifacts/secondary-parity-report.json#rows.web-mode",
+      "sourceManifestPath": "tests/fixtures/secondary-parity-manifest.json",
+      "requiredLaneNames": [
+        "secondary-parity-report",
+        "integration:web-mode"
+      ],
+      "optionalLaneNames": [
+        "repo-recording:web-mode",
+        "installed-recording:web-mode"
+      ],
+      "presentFixturePaths": [
+        "tests/parity/artifacts/secondary-surface-inventory.json",
+        "src/tests/integration/web-mode-cli.test.ts"
+      ],
+      "plannedFixturePaths": [
+        "tests/parity/artifacts/secondary-parity-report.json#web-mode"
+      ],
+      "artifactPaths": [
+        "tests/fixtures/secondary-parity-manifest.json",
+        "tests/parity/artifacts/secondary-surface-inventory.json",
+        "src/tests/integration/web-mode-cli.test.ts",
+        "tests/parity/artifacts/secondary-parity-report.json#web-mode"
+      ],
+      "lanes": [
+        {
+          "name": "secondary-parity-report",
+          "requirement": "required",
+          "proofClass": "report-contract",
+          "implementationStatus": "existing-proof",
+          "releaseReadable": true,
+          "blocking": true,
+          "artifactPaths": [
+            "tests/parity/artifacts/secondary-surface-inventory.json",
+            "tests/parity/artifacts/secondary-parity-report.json#web-mode"
+          ],
+          "summary": "web-mode required lane secondary-parity-report is already satisfied by tracked deterministic evidence."
+        },
+        {
+          "name": "integration:web-mode",
+          "requirement": "required",
+          "proofClass": "integration-contract",
+          "implementationStatus": "existing-proof",
+          "releaseReadable": false,
+          "blocking": true,
+          "artifactPaths": [
+            "src/tests/integration/web-mode-cli.test.ts"
+          ],
+          "summary": "web-mode required lane integration:web-mode is already satisfied by tracked deterministic evidence."
+        },
+        {
+          "name": "repo-recording:web-mode",
+          "requirement": "optional",
+          "proofClass": "repo-recording",
+          "implementationStatus": "planned-proof",
+          "releaseReadable": true,
+          "blocking": false,
+          "artifactPaths": [],
+          "summary": "web-mode optional lane repo-recording:web-mode remains visible but non-blocking while still planned."
+        },
+        {
+          "name": "installed-recording:web-mode",
+          "requirement": "optional",
+          "proofClass": "installed-recording",
+          "implementationStatus": "planned-proof",
+          "releaseReadable": true,
+          "blocking": false,
+          "artifactPaths": [],
+          "summary": "web-mode optional lane installed-recording:web-mode remains visible but non-blocking while still planned."
+        }
+      ],
+      "failureSummary": {
+        "optionalLaneNamesStillPlanned": [
+          "repo-recording:web-mode",
+          "installed-recording:web-mode"
+        ],
+        "coverageGapIds": [
+          "web-parity-artifact-missing",
+          "web-installed-mode-proof-missing"
+        ],
+        "scopedExceptionNote": "web-mode is release-readable via required lanes; optional recordings remain planned and explicitly non-blocking."
+      }
+    },
+    {
+      "surfaceId": "worktree-session-recovery",
+      "title": "Worktree, session, and recovery parity surface",
+      "status": "covered",
+      "reportPath": "tests/parity/artifacts/secondary-parity-report.json#rows.worktree-session-recovery",
+      "sourceManifestPath": "tests/fixtures/worktree-session-parity-manifest.json",
+      "requiredLaneNames": [
+        "secondary-parity-report:worktree-session-recovery",
+        "integration:session-recovery"
+      ],
+      "optionalLaneNames": [
+        "installed-recording:worktree-session-recovery"
+      ],
+      "presentFixturePaths": [
+        "tests/parity/artifacts/secondary-surface-inventory.json",
+        "src/tests/integration/web-session-parity-contract.test.ts"
+      ],
+      "plannedFixturePaths": [
+        "tests/fixtures/recordings/secondary-worktree-session-recovery.json"
+      ],
+      "artifactPaths": [
+        "tests/fixtures/secondary-parity-manifest.json",
+        "tests/fixtures/worktree-session-parity-manifest.json",
+        "tests/parity/artifacts/secondary-surface-inventory.json",
+        "src/tests/integration/web-session-parity-contract.test.ts",
+        "tests/fixtures/recordings/secondary-worktree-session-recovery.json"
+      ],
+      "lanes": [
+        {
+          "name": "secondary-parity-report:worktree-session-recovery",
+          "requirement": "required",
+          "proofClass": "report-contract",
+          "implementationStatus": "planned-proof",
+          "releaseReadable": true,
+          "blocking": true,
+          "artifactPaths": [
+            "tests/parity/artifacts/secondary-surface-inventory.json"
+          ],
+          "summary": "worktree-session-recovery required lane secondary-parity-report:worktree-session-recovery is already satisfied by tracked deterministic evidence."
+        },
+        {
+          "name": "integration:session-recovery",
+          "requirement": "required",
+          "proofClass": "integration-contract",
+          "implementationStatus": "existing-proof",
+          "releaseReadable": false,
+          "blocking": true,
+          "artifactPaths": [
+            "src/tests/integration/web-session-parity-contract.test.ts"
+          ],
+          "summary": "worktree-session-recovery required lane integration:session-recovery is already satisfied by tracked deterministic evidence."
+        },
+        {
+          "name": "installed-recording:worktree-session-recovery",
+          "requirement": "optional",
+          "proofClass": "installed-recording",
+          "implementationStatus": "planned-proof",
+          "releaseReadable": true,
+          "blocking": false,
+          "artifactPaths": [
+            "tests/fixtures/recordings/secondary-worktree-session-recovery.json"
+          ],
+          "summary": "worktree-session-recovery optional lane installed-recording:worktree-session-recovery remains visible but non-blocking while still planned."
+        }
+      ],
+      "failureSummary": {
+        "optionalLaneNamesStillPlanned": [
+          "installed-recording:worktree-session-recovery"
+        ],
+        "coverageGapIds": [
+          "worktree-parity-artifact-missing",
+          "worktree-installed-proof-missing"
+        ],
+        "scopedExceptionNote": "worktree-session-recovery is release-readable via required lanes; optional recordings remain planned and explicitly non-blocking."
+      }
+    }
+  ]
+}

@@ -18,6 +18,11 @@ import {
   type SecondaryParitySurfaceContract,
 } from "./secondary-lanes.ts"
 import {
+  SECONDARY_PARITY_REPORT_PATH,
+  createSecondaryParityReport,
+  type SecondaryParityReport as PromotedSecondaryParityReport,
+} from "./secondary-parity-report.ts"
+import {
   MCP_PARITY_ARTIFACT_PATH,
   MCP_PARITY_RECORDING_PATH,
   MCP_PARITY_REPORT_PATH,
@@ -1195,26 +1200,41 @@ function buildSecondaryParityReport(): SecondaryParityReport {
   const manifest = createSecondaryParityManifest()
   validateSecondaryParityManifest(manifest, { manifestPath: SECONDARY_PARITY_MANIFEST_PATH, cwd: process.cwd() })
 
+  const promotedReport = createSecondaryParityReport({
+    cwd: process.cwd(),
+    artifactPath: SECONDARY_PARITY_REPORT_PATH,
+  })
+  const promotedRowsById = new Map(promotedReport.rows.map((row) => [row.surfaceId, row]))
+
   const surfaces = manifest.surfaces.map((surface) => {
     const laneDefinitions = manifest.lanes.filter((lane) => lane.surfaceId === surface.id)
-    const existingRequiredLaneNames = laneDefinitions
-      .filter((lane) => lane.requirement === "required" && lane.implementationStatus === "existing-proof")
-      .map((lane) => lane.name)
-    const missingRequiredLaneNames = laneDefinitions
-      .filter((lane) => lane.requirement === "required" && lane.implementationStatus === "planned-proof")
-      .map((lane) => lane.name)
-    const presentFixturePaths = surface.deterministicFixtures
-      .filter((fixture) => fixture.status === "present")
-      .map((fixture) => fixture.path)
-    const plannedFixturePaths = surface.deterministicFixtures
-      .filter((fixture) => fixture.status === "planned")
-      .map((fixture) => fixture.path)
+    const promotedRow = promotedRowsById.get(surface.id as PromotedSecondaryParityReport["rows"][number]["surfaceId"])
+    const existingRequiredLaneNames = promotedRow
+      ? [...promotedRow.requiredLaneNames]
+      : laneDefinitions
+          .filter((lane) => lane.requirement === "required" && lane.implementationStatus === "existing-proof")
+          .map((lane) => lane.name)
+    const missingRequiredLaneNames = promotedRow
+      ? []
+      : laneDefinitions
+          .filter((lane) => lane.requirement === "required" && lane.implementationStatus === "planned-proof")
+          .map((lane) => lane.name)
+    const presentFixturePaths = promotedRow
+      ? [...promotedRow.presentFixturePaths]
+      : surface.deterministicFixtures
+          .filter((fixture) => fixture.status === "present")
+          .map((fixture) => fixture.path)
+    const plannedFixturePaths = promotedRow
+      ? [...promotedRow.plannedFixturePaths]
+      : surface.deterministicFixtures
+          .filter((fixture) => fixture.status === "planned")
+          .map((fixture) => fixture.path)
 
     return {
       id: surface.id,
       title: surface.title,
       inventoryStatus: surface.inventoryStatus,
-      releaseReadableStatus: surface.inventoryStatus,
+      releaseReadableStatus: promotedRow ? "covered" : surface.inventoryStatus,
       requiredLaneNames: [...surface.requiredLaneNames],
       optionalLaneNames: [...surface.optionalLaneNames],
       existingRequiredLaneNames,
@@ -1223,7 +1243,7 @@ function buildSecondaryParityReport(): SecondaryParityReport {
       plannedFixturePaths,
       coverageGapIds: surface.coverageGaps.map((gap) => gap.id),
       uncoveredAreas: surface.coverageGaps.map((gap) => ({ ...gap })),
-      reportPath: `${BASELINE_REPORT_PATH}#secondaryParity.surfaces.${surface.id}`,
+      reportPath: promotedRow ? promotedRow.reportPath : `${BASELINE_REPORT_PATH}#secondaryParity.surfaces.${surface.id}`,
     } satisfies SecondaryParitySurfaceReportRow
   })
 

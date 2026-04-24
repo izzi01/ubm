@@ -145,7 +145,7 @@ async function ensureRtkBootstrap(): Promise<void> {
   ;(ensureRtkBootstrap as { _done?: boolean })._done = true
   markStartup('bootstrapRtk')
   if (!rtkStatus.available && rtkStatus.supported && rtkStatus.enabled && rtkStatus.reason) {
-    process.stderr.write(`[gsd] Warning: RTK unavailable — continuing without shell-command compression (${rtkStatus.reason}).\n`)
+    process.stderr.write(`[umb] Warning: RTK unavailable — continuing without shell-command compression (${rtkStatus.reason}).\n`)
   }
 }
 
@@ -155,13 +155,13 @@ exitIfManagedResourcesAreNewer(agentDir)
 // handles that prevent process.exit() from completing promptly.
 const hasSubcommand = cliFlags.messages.length > 0
 if (!process.stdin.isTTY && !isPrintMode && !hasSubcommand && !cliFlags.listModels && !cliFlags.web) {
-  process.stderr.write('[gsd] Error: Interactive mode requires a terminal (TTY).\n')
-  process.stderr.write('[gsd] Non-interactive alternatives:\n')
-  process.stderr.write('[gsd]   gsd auto                       Auto-mode (pipeable, no TUI)\n')
-  process.stderr.write('[gsd]   gsd --print "your message"     Single-shot prompt\n')
-  process.stderr.write('[gsd]   gsd --mode rpc                 JSON-RPC over stdin/stdout\n')
-  process.stderr.write('[gsd]   gsd --mode mcp                 MCP server over stdin/stdout\n')
-  process.stderr.write('[gsd]   gsd --mode text "message"      Text output mode\n')
+  process.stderr.write('[umb] Error: Interactive mode requires a terminal (TTY).\n')
+  process.stderr.write('[umb] Non-interactive alternatives:\n')
+  process.stderr.write('[umb]   umb auto                       Auto-mode (pipeable, no TUI)\n')
+  process.stderr.write('[umb]   umb --print "your message"     Single-shot prompt\n')
+  process.stderr.write('[umb]   umb --mode rpc                 JSON-RPC over stdin/stdout\n')
+  process.stderr.write('[umb]   umb --mode mcp                 MCP server over stdin/stdout\n')
+  process.stderr.write('[umb]   umb --mode text "message"      Text output mode\n')
   process.exit(1)
 }
 
@@ -738,14 +738,14 @@ if (!process.stdin.isTTY || !process.stdout.isTTY) {
       ? 'stdin is'
       : 'stdout is'
   process.stderr.write(`[gsd] Error: Interactive mode requires a terminal (TTY) but ${missing} not a TTY.\n`)
-  process.stderr.write('[gsd] Non-interactive alternatives:\n')
-  process.stderr.write('[gsd]   gsd auto                       Auto-mode (pipeable, no TUI)\n')
-  process.stderr.write('[gsd]   gsd --print "your message"     Single-shot prompt\n')
-  process.stderr.write('[gsd]   gsd --web [path]               Browser-only web mode\n')
-  process.stderr.write('[gsd]   gsd --mode rpc                 JSON-RPC over stdin/stdout\n')
-  process.stderr.write('[gsd]   gsd --mode mcp                 MCP server over stdin/stdout\n')
-  process.stderr.write('[gsd]   gsd --mode text "message"      Text output mode\n')
-  process.stderr.write('[gsd]   gsd headless                   Auto-mode without TUI\n')
+  process.stderr.write('[umb] Non-interactive alternatives:\n')
+  process.stderr.write('[umb]   umb auto                       Auto-mode (pipeable, no TUI)\n')
+  process.stderr.write('[umb]   umb --print "your message"     Single-shot prompt\n')
+  process.stderr.write('[umb]   umb --web [path]               Browser-only web mode\n')
+  process.stderr.write('[umb]   umb --mode rpc                 JSON-RPC over stdin/stdout\n')
+  process.stderr.write('[umb]   umb --mode mcp                 MCP server over stdin/stdout\n')
+  process.stderr.write('[umb]   umb --mode text "message"      Text output mode\n')
+  process.stderr.write('[umb]   umb headless                   Auto-mode without TUI\n')
   process.exit(1)
 }
 
