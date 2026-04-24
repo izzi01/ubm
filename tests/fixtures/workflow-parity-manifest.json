@@ -75,7 +75,7 @@
             "entity": "task",
             "field": "verification_result",
             "from": "missing",
-            "to": "passed"
+            "to": "node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts"
           }
         ]
       }
@@ -99,7 +99,7 @@
         "producerPhase": "plan-slice",
         "mustContain": [
           "# <sliceId>:",
-          "## Goal",
+          "**Goal:**",
           "## Tasks"
         ]
       },

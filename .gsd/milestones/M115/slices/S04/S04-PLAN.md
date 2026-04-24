@@ -31,7 +31,7 @@ Workflow parity evidence can be summarized in the milestone report without reint
   - Files: `tests/parity/secondary-lanes.ts`, `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/fixtures/recordings/workflow-parity.json`, `src/tests/integration/workflow-parity-contract.test.ts`, `src/resources/extensions/umb/bmad-pipeline/`, `src/resources/extensions/gsd/`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-contract.test.ts && node --experimental-strip-types tests/parity/run.ts --format json
 
-- [ ] **T03: Lock workflow diagnostic contract** `est:0.5 day`
+- [x] **T03: Lock workflow diagnostic contract** `est:0.5 day`
   Add contract coverage for operator-facing workflow diagnostics so failures name the missing artifact, invalid transition, or mismatched expected output directly. Ensure the parity report and diagnostics renderer can summarize workflow proof status without forcing humans to inspect raw task logs.
   - Files: `tests/parity/diagnostics.ts`, `src/tests/integration/workflow-parity-diagnostics-contract.test.ts`, `tests/parity/artifacts/workflow-parity.json`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-diagnostics-contract.test.ts

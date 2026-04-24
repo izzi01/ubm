@@ -1,0 +1,146 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_D19kJ8t9OVN97eFJKjQ6bOQ8",
+    "command": "rg -n \"from \\\"\\./.*\\.js\\\"|from '\\./.*\\.js'|from \\\"\\.\\./.*\\.js\\\"|from '\\.\\./.*\\.js'\" src/resources/extensions/gsd tests/parity src/tests/integration | sed -n '1,220p'",
+    "exitCode": 0,
+    "outputSnippet": "src/resources/extensions/gsd/auto-worktree.ts:23:import { GSDError, GSD_IO_ERROR, GSD_GIT_ERROR } from \"./errors.js\";\nsrc/resources/extensions/gsd/auto-worktree.ts:29:} from \"./gsd-db.js\";\nsrc/resources/extensions/gsd/auto-worktree.ts:30:import { atomicWriteSync } from \"./atomic-write.js\";\nsrc/resources/extensions/gsd/auto-worktree.ts:32:import { gsdRoot } from \"./paths.js\";\nsrc/resources/extensions/gsd/auto-worktree.ts:39:} from \"./worktree-manager.js\";\nsrc/resources/extensions/gsd/auto-worktre",
+    "timestamp": 1777028078348
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_puqwCZ76jPyEC0X09ynrrbel",
+    "command": "node --experimental-strip-types tests/parity/run.ts --format json",
+    "exitCode": 1,
+    "outputSnippet": "node:internal/modules/esm/resolve:275\n    throw new ERR_MODULE_NOT_FOUND(\n          ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/cid/projects-personal/umb/src/resources/extensions/gsd/errors.js' imported from /home/cid/projects-personal/umb/src/resources/extensions/gsd/gsd-db.ts\n    at finalizeResolution (node:internal/modules/esm/resolve:275:11)\n    at moduleResolve (node:internal/modules/esm/resolve:866:10)\n    at defaultResolve (node:internal/modules/esm/resolve:992:11)\n    at #",
+    "timestamp": 1777028078348
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_pts35RIld04eEvOS2OSsNvtH",
+    "command": "rg -n \"from \\\"\\./.*\\.js\\\"|from '\\./.*\\.js'|from \\\"\\.\\./.*\\.js\\\"|from '\\.\\./.*\\.js'\" src/resources/extensions/gsd/tools/workflow-tool-executors.ts src/resources/extensions/gsd/workflow-manifest.ts src/resources/extensions/gsd | sed -n '1,260p'",
+    "exitCode": 0,
+    "outputSnippet": "src/resources/extensions/gsd/workflow-manifest.ts:7:} from \"./gsd-db.js\";\nsrc/resources/extensions/gsd/workflow-manifest.ts:8:import type { Decision } from \"./types.js\";\nsrc/resources/extensions/gsd/workflow-manifest.ts:9:import { atomicWriteSync } from \"./atomic-write.js\";\nsrc/resources/extensions/gsd/tools/workflow-tool-executors.ts:1:import { ensureDbOpen } from \"../bootstrap/dynamic-tools.js\";\nsrc/resources/extensions/gsd/tools/workflow-tool-executors.ts:2:import { sanitizeCompleteMilestoneP",
+    "timestamp": 1777028096200
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_apidElobzXjjIqjZIfMxJeNS",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-contract.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "✖ baseline parity runner emits a tracked workflow parity artifact and report row (20575.015762ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 20646.605948\n\n✖ failing tests:\n\ntest at src/tests/integration/workflow-parity-contract.test.ts:39:1\n✖ baseline parity runner emits a tracked workflow parity artifact and report row (20575.015762ms)\n  AssertionError [ERR_ASSERTION]: expected all workflow state transitions to pass\n      at TestContext.<anonymous> (",
+    "timestamp": 1777028096200
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_UALBe2RqYrHYRsyQyhMnfdtf",
+    "command": "ls tests/parity | sed -n '1,120p' && echo '---' && ls tests/parity/artifacts | sed -n '1,120p'",
+    "exitCode": 0,
+    "outputSnippet": "artifacts\nbaseline-lanes.ts\ndiagnostics.ts\nhuman-uat.md\nmcp-parity.ts\nrelease-gate.ts\nrun.ts\nsecondary-lanes.ts\nsecondary-surface-inventory.ts\nworkflow-parity.ts\n---\nbaseline-report.json\nmcp-parity.json\nsecondary-surface-inventory.json\nworkflow-parity.json\n",
+    "timestamp": 1777028141710
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_DnVgq9CI1hTDT0XC47CNExs5",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types -e \"import { createWorkflowParityReport } from './tests/parity/workflow-parity.ts'; const r = await createWorkflowParityReport(); console.log(JSON.stringify(r,null,2));\"",
+    "exitCode": 0,
+    "outputSnippet": "{\n  \"version\": 1,\n  \"fixtureId\": \"workflow-parity-fixture\",\n  \"representativePathId\": \"gsd-planning-to-execution\",\n  \"status\": \"failed\",\n  \"artifactPath\": \"tests/parity/artifacts/workflow-parity.json\",\n  \"recordingPath\": \"tests/fixtures/recordings/workflow-parity.json\",\n  \"ids\": {\n    \"milestoneId\": \"M901\",\n    \"sliceId\": \"S01\",\n    \"taskId\": \"T01\"\n  },\n  \"diagnostics\": {\n    \"stateManifestPath\": \".gsd/state-manifest.json\",\n    \"taskSummaryPath\": \".gsd/milestones/M901/slices/S01/tasks/T01-SUMMAR",
+    "timestamp": 1777028156122
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_dsCQwklKRfJkwJtCMsmXNs9Q",
+    "command": "rg -n \"verification_result\" src/resources/extensions/gsd -g '!**/*.d.ts' | sed -n '1,220p'",
+    "exitCode": 0,
+    "outputSnippet": "src/resources/extensions/gsd/gsd-db.ts:308:        verification_result TEXT NOT NULL DEFAULT '',\nsrc/resources/extensions/gsd/gsd-db.ts:567:          verification_result TEXT NOT NULL DEFAULT '',\nsrc/resources/extensions/gsd/gsd-db.ts:1326:      verification_result, duration, completed_at, blocker_discovered,\nsrc/resources/extensions/gsd/gsd-db.ts:1331:      :verification_result, :duration, :completed_at, :blocker_discovered,\nsrc/resources/extensions/gsd/gsd-db.ts:1340:      verification_result ",
+    "timestamp": 1777028156122
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_BdK1G84XDPRhVugLMteDGQhb",
+    "command": "rg -n \"## Goal|Goal\" src/resources/extensions/gsd -g '*.ts' | sed -n '1,220p'",
+    "exitCode": 0,
+    "outputSnippet": "src/resources/extensions/gsd/bootstrap/system-context.ts:452:  const goalLine = lines.find((line) => line.startsWith(\"**Goal:**\"))?.trim();\nsrc/resources/extensions/gsd/workflow-projections.ts:53:  lines.push(`**Goal:** ${sliceRow.goal || \"TBD\"}`);\nsrc/resources/extensions/gsd/migrate/writer.ts:154:  lines.push(`**Goal:** ${slice.goal || slice.title}`);\nsrc/resources/extensions/gsd/auto-prompts.ts:776:  const goalLine = lines.find(l => l.startsWith(\"**Goal:**\"))?.trim();\nsrc/resources/extensions",
+    "timestamp": 1777028156122
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_qVBpXkbBCuTJU748pL56mT54",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types -e \"import { createWorkflowParityReport } from './tests/parity/workflow-parity.ts'; import { mkdirSync, writeFileSync } from 'node:fs'; const report = await createWorkflowParityReport(); mkdirSync('tmp',{recursive:true}); writeFileSync('tmp/workflow-report.json', JSON.stringify(report,null,2)); console.log('wrote tmp/workflow-report.json');\"",
+    "exitCode": 0,
+    "outputSnippet": "wrote tmp/workflow-report.json\n",
+    "timestamp": 1777028156122
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_V444RLApxRMEFkw1SkETCgZI",
+    "path": "tests/parity/workflow-parity-worker.ts",
+    "timestamp": 1777028301193
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_QV7wq3wEUYqCYX5BvYwNyiwQ",
+    "path": "tests/parity/workflow-parity.ts",
+    "timestamp": 1777028316583
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_pS1HEteQqP0GQdrrDjDUEaP1",
+    "path": "tests/fixtures/workflow-parity-manifest.json",
+    "timestamp": 1777028321557
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_67IUbyjhGkiqJaR1KncyndAX",
+    "path": "tests/fixtures/workflow-parity-manifest.json",
+    "timestamp": 1777028326304
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_Gs4YlNOHoOwuD0ugRfKkXi7t",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777028332150
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_t5CHSUmA7YPbzmvVBaTNSKPl",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777028346917
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_fsR5hJrJgtcCMMoluyGhEoZ2",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777028353410
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_lyCnYSJcGILqY9e9EffphnXX",
+    "path": "src/tests/integration/workflow-parity-diagnostics-contract.test.ts",
+    "timestamp": 1777028395569
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_W7L3lBuDbLrkvxf4wPmQD6wf",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-diagnostics-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ workflow diagnostics renderer names missing artifacts, invalid transitions, and missing verification evidence (1.176429ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 279.902709\n",
+    "timestamp": 1777028403043
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_S3runeKOPKUtfRyTadV3dWoH",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/workflow-parity-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ baseline parity runner emits a tracked workflow parity artifact and report row (21601.038361ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 21693.719658\n",
+    "timestamp": 1777028403043
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_wnVuTy5vlKULEihSBfT0wo4X",
+    "command": "node --experimental-strip-types tests/parity/run.ts --format json",
+    "exitCode": 0,
+    "outputSnippet": "            \"downstreamNeed\": \"Publish explicit scope semantics describing which workflow/BMAD experiences are in or out of parity scope.\"\n          }\n        ],\n        \"reportPath\": \"tests/parity/artifacts/baseline-report.json#secondaryParity.surfaces.workflow-bmad\"\n      },\n      {\n        \"id\": \"worktree-session-recovery\",\n        \"title\": \"Worktree, session, and recovery parity surface\",\n        \"inventoryStatus\": \"partial\",\n        \"releaseReadableStatus\": \"partial\",\n        \"requiredLaneN",
+    "timestamp": 1777028403043
+  }
+]

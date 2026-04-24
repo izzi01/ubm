@@ -11,6 +11,7 @@ import {
   type RepoModeCommandDiagnostic,
   type RepoModePhaseResult,
 } from "./baseline-lanes.ts"
+import type { WorkflowParityReport } from "./workflow-parity.ts"
 
 export interface ParityEvidenceSummary {
   type: "browser" | "command" | "summary"
@@ -232,6 +233,53 @@ function renderMcpParityDiagnostics(mcpParity: McpParitySurfaceReportRow | undef
   return lines
 }
 
+function renderWorkflowParityDiagnostics(workflowParity: {
+  id: string
+  title: string
+  releaseReadableStatus: "partial" | "covered" | "uncovered"
+  parityStatus: WorkflowParityReport["status"]
+  reportPath: string
+  parityArtifactPath: string
+  recordingPath: string
+  diagnostics: WorkflowParityReport["diagnostics"]
+} | undefined): string[] {
+  if (!workflowParity) {
+    return []
+  }
+
+  const lines = [
+    "workflow parity:",
+    `  surface: ${workflowParity.id}`,
+    `  title: ${workflowParity.title}`,
+    `  releaseReadableStatus: ${workflowParity.releaseReadableStatus}`,
+    `  parityStatus: ${workflowParity.parityStatus}`,
+    `  reportPath: ${workflowParity.reportPath}`,
+    `  artifactPath: ${workflowParity.parityArtifactPath}`,
+    `  recordingPath: ${workflowParity.recordingPath}`,
+    `  stateManifestPath: ${workflowParity.diagnostics.stateManifestPath}`,
+    `  taskSummaryPath: ${workflowParity.diagnostics.taskSummaryPath}`,
+    `  verificationEvidence: status=${workflowParity.diagnostics.verificationEvidence.status} rows=${workflowParity.diagnostics.verificationEvidence.rowCount}`,
+  ]
+
+  for (const artifact of workflowParity.diagnostics.artifactChecks) {
+    lines.push(
+      `  artifactCheck: id=${artifact.id} phase=${artifact.producerPhase} exists=${artifact.exists ? "yes" : "no"} path=${artifact.path}${artifact.missingMarkers.length > 0 ? ` missingMarkers=${artifact.missingMarkers.join(", ")}` : ""}`,
+    )
+  }
+
+  for (const transition of workflowParity.diagnostics.stateTransitions) {
+    lines.push(
+      `  stateTransition: phase=${transition.phase} ${transition.entity}.${transition.field} expected=${transition.expected} observed=${transition.observed ?? "missing"} status=${transition.status}`,
+    )
+  }
+
+  for (const failure of workflowParity.diagnostics.failureDiagnostics) {
+    lines.push(`  failure: ${failure}`)
+  }
+
+  return lines
+}
+
 export function renderParityDiagnostics(report: BaselineReport): string {
   const lines: string[] = []
   lines.push(`Parity diagnostics: verdict=${report.summary.verdict}`)
@@ -269,6 +317,12 @@ export function renderParityDiagnostics(report: BaselineReport): string {
   if (mcpLines.length > 0) {
     lines.push("")
     lines.push(...mcpLines)
+  }
+
+  const workflowLines = renderWorkflowParityDiagnostics(report.workflowParity)
+  if (workflowLines.length > 0) {
+    lines.push("")
+    lines.push(...workflowLines)
   }
 
   return `${lines.join("\n")}\n`

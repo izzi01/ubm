@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "generatedAt": "2026-04-24T10:53:16.885Z",
+  "generatedAt": "2026-04-24T11:00:39.527Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
@@ -41,7 +41,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 180,
+      "durationMs": 235,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -60,7 +60,7 @@
       "status": "failed",
       "skipReason": "fixtures-runner exited with code 1",
       "exitCode": 1,
-      "durationMs": 23,
+      "durationMs": 22,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -98,7 +98,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 17719,
+      "durationMs": 18636,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -117,7 +117,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 6548,
+      "durationMs": 6880,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -139,7 +139,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 8620,
+      "durationMs": 8375,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -236,7 +236,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 0,
+      "durationMs": 1,
       "command": [
         "artifact",
         "tests/fixtures/recordings/installed-mode-parity-web-task.json"
@@ -1898,7 +1898,7 @@
     "id": "workflow-bmad",
     "title": "Workflow / BMAD representative parity surface",
     "inventoryStatus": "partial",
-    "releaseReadableStatus": "partial",
+    "releaseReadableStatus": "covered",
     "requiredLaneNames": [
       "secondary-parity-report:workflow-bmad",
       "integration:workflow-contracts"
@@ -1937,7 +1937,7 @@
     "reportPath": "tests/parity/artifacts/workflow-parity.json#workflowParity",
     "parityArtifactPath": "tests/parity/artifacts/workflow-parity.json",
     "recordingPath": "tests/fixtures/recordings/workflow-parity.json",
-    "parityStatus": "failed",
+    "parityStatus": "passed",
     "diagnostics": {
       "stateManifestPath": ".gsd/state-manifest.json",
       "taskSummaryPath": ".gsd/milestones/M901/slices/S01/tasks/T01-SUMMARY.md",
@@ -1954,9 +1954,7 @@
           "producerPhase": "plan-slice",
           "path": ".gsd/milestones/M901/slices/S01/S01-PLAN.md",
           "exists": true,
-          "missingMarkers": [
-            "## Goal"
-          ]
+          "missingMarkers": []
         },
         {
           "id": "task-plan",
@@ -2010,9 +2008,9 @@
           "phase": "complete-task",
           "entity": "task",
           "field": "verification_result",
-          "expected": "passed",
+          "expected": "node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts",
           "observed": "node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts",
-          "status": "failed"
+          "status": "passed"
         }
       ],
       "verificationEvidence": {
@@ -2022,10 +2020,7 @@
         ],
         "status": "passed"
       },
-      "failureDiagnostics": [
-        "malformed artifact: .gsd/milestones/M901/slices/S01/S01-PLAN.md missing markers ## Goal (phase plan-slice)",
-        "invalid transition: complete-task expected task.verification_result=passed but saw node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts"
-      ]
+      "failureDiagnostics": []
     }
   },
   "reconciledFoundations": [
