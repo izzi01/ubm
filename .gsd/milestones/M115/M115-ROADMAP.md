@@ -25,7 +25,7 @@
 - [x] **S04: S04** `risk:high` `depends:[]`
   > After this: After this: umb can prove a representative planning-to-execution workflow with the expected artifacts and state transitions, supporting a stronger parity claim than the core coding-loop fixture alone.
 
-- [ ] **S05: S05** `risk:medium` `depends:[]`
+- [x] **S05: S05** `risk:medium` `depends:[]`
   > After this: After this: one integrated parity command/report truthfully composes web mode, MCP, worktree/session/recovery, rebrand smoke checks, and the representative workflow proof into a release-facing secondary-surface parity gate.
 
 ## Boundary Map

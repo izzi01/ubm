@@ -9,8 +9,8 @@
       "sourceFile": "STATE.md"
     },
     {
-      "id": "concept:phase:evaluating-gates",
-      "label": "Phase: evaluating-gates",
+      "id": "concept:phase:validating-milestone",
+      "label": "Phase: validating-milestone",
       "type": "concept",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
@@ -2349,5 +2349,5 @@
       "confidence": "EXTRACTED"
     }
   ],
-  "builtAt": "2026-04-24T11:04:31.564Z"
+  "builtAt": "2026-04-24T11:25:40.659Z"
 }
