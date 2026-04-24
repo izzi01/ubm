@@ -1,4 +1,4 @@
-import { createBaselineReport, writeBaselineReport } from "./baseline-lanes.ts"
+import { PARITY_MANIFEST_PATH, createBaselineReport, writeBaselineReport } from "./baseline-lanes.ts"
 
 type CliOptions = {
   format: "json"
@@ -34,7 +34,17 @@ async function main(): Promise<void> {
   const writtenPath = await writeBaselineReport(report, process.cwd())
 
   if (options.format === "json") {
-    process.stdout.write(`${JSON.stringify({ ...report, artifactPath: writtenPath }, null, 2)}\n`)
+    process.stdout.write(
+      `${JSON.stringify(
+        {
+          ...report,
+          artifactPath: writtenPath,
+          manifestPath: PARITY_MANIFEST_PATH,
+        },
+        null,
+        2,
+      )}\n`,
+    )
   }
 
   if (report.summary.verdict === "failing") {

@@ -92,7 +92,7 @@ Negative Tests (Q7): stale active status, missing validation note, and inconsist
   - Files: `.gsd/REQUIREMENTS.md`, `tests/parity/baseline-lanes.ts`, `src/tests/integration/parity-m113-reconciliation.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-m113-reconciliation.test.ts
 
-- [ ] **T03: Publish the fixture acceptance manifest and wire uncovered capability reporting** `est:75m`
+- [x] **T03: Publish the fixture acceptance manifest and wire uncovered capability reporting** `est:75m`
   Skills to load before coding: `test`, `verify-before-complete`.
 
 Define the exact downstream contract for the purpose-built small web-task fixture and wire it into the baseline report so S02 starts from a truthful acceptance target instead of milestone prose. This task should publish a tracked manifest describing the required inspect, edit, test, dev-server, and browser-verification steps, then make the baseline report explicitly mark those capabilities as not-yet-proven in S01.

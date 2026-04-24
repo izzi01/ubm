@@ -1,10 +1,11 @@
-import { existsSync } from "node:fs"
+import { existsSync, readFileSync } from "node:fs"
 import { mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { spawn } from "node:child_process"
 
-export const BASELINE_REPORT_VERSION = 1 as const
+export const BASELINE_REPORT_VERSION = 2 as const
 export const BASELINE_REPORT_PATH = "tests/parity/artifacts/baseline-report.json" as const
+export const PARITY_MANIFEST_PATH = "tests/fixtures/parity-web-task-manifest.json" as const
 
 export const PROOF_CLASSES = [
   "smoke",
@@ -17,11 +18,15 @@ export const PROOF_CLASSES = [
 export const LANE_STATUSES = ["passed", "failed", "skipped", "timed_out"] as const
 export const PARITY_SCOPES = ["repo-mode", "installed-mode", "live-only", "partial"] as const
 export const SUMMARY_VERDICTS = ["failing", "partial", "covered"] as const
+export const MANIFEST_PROOF_STATUSES = ["covered", "uncovered"] as const
+export const MANIFEST_COVERAGE_STATUSES = ["covered", "partial", "not-covered"] as const
 
 export type ProofClass = (typeof PROOF_CLASSES)[number]
 export type LaneStatus = (typeof LANE_STATUSES)[number]
 export type ParityScope = (typeof PARITY_SCOPES)[number]
 export type SummaryVerdict = (typeof SUMMARY_VERDICTS)[number]
+export type ManifestProofStatus = (typeof MANIFEST_PROOF_STATUSES)[number]
+export type ManifestCoverageStatus = (typeof MANIFEST_COVERAGE_STATUSES)[number]
 
 export interface BaselineLaneDefinition {
   name: string
@@ -49,6 +54,33 @@ export interface BaselineLaneResult {
   command: string[]
 }
 
+export interface ParityManifestCapability {
+  name: string
+  description: string
+  observableCompletionCriteria: string[]
+  proof: ManifestProofStatus
+  currentGap: string
+  laneCoverage: Record<string, ManifestCoverageStatus>
+}
+
+export interface ParityManifest {
+  version: number
+  fixtureId: string
+  title: string
+  capabilities: ParityManifestCapability[]
+}
+
+export interface UncoveredCapabilityReportRow {
+  capabilityName: string
+  proof: ManifestProofStatus
+  uncovered: boolean
+  currentGap: string
+  observableCompletionCriteria: string[]
+  coveringLaneNames: string[]
+  partialLaneNames: string[]
+  uncoveredLaneNames: string[]
+}
+
 export interface BaselineSummary {
   verdict: SummaryVerdict
   totalLanes: number
@@ -59,6 +91,7 @@ export interface BaselineSummary {
   provesCodingLoop: boolean
   uncoveredLaneNames: string[]
   proofClassCounts: Record<ProofClass, number>
+  uncoveredCapabilityNames: string[]
 }
 
 export interface BaselineReport {
@@ -68,6 +101,9 @@ export interface BaselineReport {
   artifactPath: string
   summary: BaselineSummary
   lanes: BaselineLaneResult[]
+  parityManifest: ParityManifest
+  uncoveredCapabilities: UncoveredCapabilityReportRow[]
+  reconciledFoundations: readonly typeof M113_RECONCILIATION[]
 }
 
 export const M113_RECONCILED_REQUIREMENT_IDS = ["R023", "R026"] as const
@@ -332,7 +368,180 @@ export async function executeBaselineLane(
   })
 }
 
-export function summarizeBaselineResults(results: readonly BaselineLaneResult[]): BaselineSummary {
+export function loadParityManifest(manifestPath: string = PARITY_MANIFEST_PATH, cwd: string = process.cwd()): ParityManifest {
+  const absolutePath = join(cwd, manifestPath)
+  if (!existsSync(absolutePath)) {
+    throw new Error(`Parity manifest not found at ${manifestPath}`)
+  }
+
+  let raw: string
+  try {
+    raw = readFileSync(absolutePath, "utf8")
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`Failed to read parity manifest at ${manifestPath}: ${message}`)
+  }
+
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(raw)
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error)
+    throw new Error(`Failed to parse parity manifest at ${manifestPath}: ${message}`)
+  }
+
+  return validateParityManifest(parsed, { manifestPath, lanes: BASELINE_LANES })
+}
+
+export function validateParityManifest(
+  manifest: unknown,
+  options: { manifestPath?: string; lanes?: readonly BaselineLaneDefinition[] } = {},
+): ParityManifest {
+  const manifestPath = options.manifestPath ?? PARITY_MANIFEST_PATH
+  const lanes = options.lanes ?? BASELINE_LANES
+  const laneNames = new Set(lanes.map((lane) => lane.name))
+
+  if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
+    throw new Error(`Invalid parity manifest at ${manifestPath}: expected a JSON object at the root`)
+  }
+
+  const candidate = manifest as Record<string, unknown>
+  if (!Number.isInteger(candidate.version) || Number(candidate.version) <= 0) {
+    throw new Error(`Invalid parity manifest at ${manifestPath}: version must be a positive integer`)
+  }
+  if (typeof candidate.fixtureId !== "string" || candidate.fixtureId.trim().length === 0) {
+    throw new Error(`Invalid parity manifest at ${manifestPath}: fixtureId must be a non-empty string`)
+  }
+  if (typeof candidate.title !== "string" || candidate.title.trim().length === 0) {
+    throw new Error(`Invalid parity manifest at ${manifestPath}: title must be a non-empty string`)
+  }
+  if (!Array.isArray(candidate.capabilities) || candidate.capabilities.length === 0) {
+    throw new Error(`Invalid parity manifest at ${manifestPath}: capabilities must be a non-empty array`)
+  }
+
+  const seen = new Set<string>()
+  const capabilities = candidate.capabilities.map((entry, index) => {
+    const pointer = `capabilities[${index}]`
+    if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+      throw new Error(`Invalid parity manifest at ${manifestPath}: ${pointer} must be an object`)
+    }
+
+    const capability = entry as Record<string, unknown>
+    const name = capability.name
+    if (typeof name !== "string" || name.trim().length === 0) {
+      throw new Error(`Invalid parity manifest at ${manifestPath}: ${pointer}.name must be a non-empty string`)
+    }
+    if (seen.has(name)) {
+      throw new Error(`Invalid parity manifest at ${manifestPath}: duplicate capability name ${name}`)
+    }
+    seen.add(name)
+
+    const description = capability.description
+    if (typeof description !== "string" || description.trim().length === 0) {
+      throw new Error(`Invalid parity manifest at ${manifestPath}: ${pointer}.description must be a non-empty string`)
+    }
+
+    const observableCompletionCriteria = capability.observableCompletionCriteria
+    if (
+      !Array.isArray(observableCompletionCriteria) ||
+      observableCompletionCriteria.length === 0 ||
+      observableCompletionCriteria.some((criterion) => typeof criterion !== "string" || criterion.trim().length === 0)
+    ) {
+      throw new Error(
+        `Invalid parity manifest at ${manifestPath}: ${pointer}.observableCompletionCriteria must be a non-empty string array`,
+      )
+    }
+
+    const proof = capability.proof
+    if (typeof proof !== "string" || !MANIFEST_PROOF_STATUSES.includes(proof as ManifestProofStatus)) {
+      throw new Error(
+        `Invalid parity manifest at ${manifestPath}: ${pointer}.proof must be one of ${MANIFEST_PROOF_STATUSES.join(", ")}`,
+      )
+    }
+
+    const currentGap = capability.currentGap
+    if (typeof currentGap !== "string" || currentGap.trim().length === 0) {
+      throw new Error(`Invalid parity manifest at ${manifestPath}: ${pointer}.currentGap must be a non-empty string`)
+    }
+
+    const laneCoverage = capability.laneCoverage
+    if (!laneCoverage || typeof laneCoverage !== "object" || Array.isArray(laneCoverage)) {
+      throw new Error(`Invalid parity manifest at ${manifestPath}: ${pointer}.laneCoverage must be an object`)
+    }
+
+    const coverageRecord = laneCoverage as Record<string, unknown>
+    for (const lane of lanes) {
+      if (!(lane.name in coverageRecord)) {
+        throw new Error(
+          `Invalid parity manifest at ${manifestPath}: ${pointer}.laneCoverage is missing required mapping for ${lane.name}`,
+        )
+      }
+    }
+
+    for (const [laneName, status] of Object.entries(coverageRecord)) {
+      if (!laneNames.has(laneName)) {
+        throw new Error(`Invalid parity manifest at ${manifestPath}: ${pointer}.laneCoverage references unknown lane ${laneName}`)
+      }
+      if (typeof status !== "string" || !MANIFEST_COVERAGE_STATUSES.includes(status as ManifestCoverageStatus)) {
+        throw new Error(
+          `Invalid parity manifest at ${manifestPath}: ${pointer}.laneCoverage.${laneName} must be one of ${MANIFEST_COVERAGE_STATUSES.join(", ")}`,
+        )
+      }
+    }
+
+    return {
+      name,
+      description,
+      observableCompletionCriteria: [...observableCompletionCriteria] as string[],
+      proof: proof as ManifestProofStatus,
+      currentGap,
+      laneCoverage: { ...coverageRecord } as Record<string, ManifestCoverageStatus>,
+    } satisfies ParityManifestCapability
+  })
+
+  return {
+    version: candidate.version as number,
+    fixtureId: candidate.fixtureId as string,
+    title: candidate.title as string,
+    capabilities,
+  }
+}
+
+export function buildUncoveredCapabilityRows(manifest: ParityManifest): UncoveredCapabilityReportRow[] {
+  return manifest.capabilities.map((capability) => {
+    const coveringLaneNames = Object.entries(capability.laneCoverage)
+      .filter(([, coverage]) => coverage === "covered")
+      .map(([laneName]) => laneName)
+    const partialLaneNames = Object.entries(capability.laneCoverage)
+      .filter(([, coverage]) => coverage === "partial")
+      .map(([laneName]) => laneName)
+    const uncoveredLaneNames = Object.entries(capability.laneCoverage)
+      .filter(([, coverage]) => coverage === "not-covered")
+      .map(([laneName]) => laneName)
+
+    if (capability.proof === "covered" && uncoveredLaneNames.length > 0) {
+      throw new Error(
+        `Invalid parity manifest at ${PARITY_MANIFEST_PATH}: capability ${capability.name} is marked covered but still has not-covered lanes`,
+      )
+    }
+
+    return {
+      capabilityName: capability.name,
+      proof: capability.proof,
+      uncovered: capability.proof !== "covered",
+      currentGap: capability.currentGap,
+      observableCompletionCriteria: capability.observableCompletionCriteria,
+      coveringLaneNames,
+      partialLaneNames,
+      uncoveredLaneNames,
+    }
+  })
+}
+
+export function summarizeBaselineResults(
+  results: readonly BaselineLaneResult[],
+  uncoveredCapabilities: readonly UncoveredCapabilityReportRow[] = [],
+): BaselineSummary {
   const proofClassCounts = Object.fromEntries(PROOF_CLASSES.map((proofClass) => [proofClass, 0])) as Record<ProofClass, number>
 
   for (const result of results) {
@@ -345,11 +554,12 @@ export function summarizeBaselineResults(results: readonly BaselineLaneResult[])
   const timedOut = results.filter((result) => result.status === "timed_out").length
   const provesCodingLoop = results.some((result) => result.provesCodingLoop && result.status === "passed")
   const uncoveredLaneNames = results.filter((result) => !result.provesCodingLoop).map((result) => result.name)
+  const uncoveredCapabilityNames = uncoveredCapabilities.filter((capability) => capability.uncovered).map((capability) => capability.capabilityName)
 
   let verdict: SummaryVerdict = "covered"
   if (failed > 0 || timedOut > 0) {
     verdict = "failing"
-  } else if (!provesCodingLoop || skipped > 0 || uncoveredLaneNames.length > 0) {
+  } else if (!provesCodingLoop || skipped > 0 || uncoveredLaneNames.length > 0 || uncoveredCapabilityNames.length > 0) {
     verdict = "partial"
   }
 
@@ -363,28 +573,33 @@ export function summarizeBaselineResults(results: readonly BaselineLaneResult[])
     provesCodingLoop,
     uncoveredLaneNames,
     proofClassCounts,
+    uncoveredCapabilityNames,
   }
 }
 
 export async function createBaselineReport(
-  options: { cwd?: string; env?: NodeJS.ProcessEnv; artifactPath?: string } = {},
+  options: { cwd?: string; env?: NodeJS.ProcessEnv; artifactPath?: string; manifestPath?: string } = {},
 ): Promise<BaselineReport> {
   const cwd = options.cwd ?? process.cwd()
   validateBaselineLaneDefinitions(BASELINE_LANES, { cwd, requireTargets: true })
+  const parityManifest = loadParityManifest(options.manifestPath ?? PARITY_MANIFEST_PATH, cwd)
 
   const lanes: BaselineLaneResult[] = []
   for (const lane of BASELINE_LANES) {
     lanes.push(await executeBaselineLane(lane, { cwd, env: options.env }))
   }
 
+  const uncoveredCapabilities = buildUncoveredCapabilityRows(parityManifest)
   const artifactPath = options.artifactPath ?? BASELINE_REPORT_PATH
   return {
     version: BASELINE_REPORT_VERSION,
     generatedAt: new Date().toISOString(),
     cwd,
     artifactPath,
-    summary: summarizeBaselineResults(lanes),
+    summary: summarizeBaselineResults(lanes, uncoveredCapabilities),
     lanes,
+    parityManifest,
+    uncoveredCapabilities,
     reconciledFoundations: [M113_RECONCILIATION],
   }
 }

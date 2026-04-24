@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "fixtureId": "parity-web-task",
+  "title": "Purpose-built small web-task coding loop fixture",
+  "capabilities": [
+    {
+      "name": "inspect-repository-context",
+      "description": "The agent can read the fixture repo, inspect the existing code paths, and identify the intended change surface before editing.",
+      "observableCompletionCriteria": [
+        "Reads the fixture app files that define the task surface before making edits.",
+        "Identifies the target route or component that must change for the fixture task.",
+        "Uses tracked fixture files instead of relying on ephemeral runtime artifacts."
+      ],
+      "proof": "uncovered",
+      "currentGap": "S01 only inventories existing lanes; none of them yet prove an agent can inspect a fresh web-task fixture and choose the right change target.",
+      "laneCoverage": {
+        "smoke-runner": "not-covered",
+        "fixtures-runner": "partial",
+        "live-runner": "not-covered",
+        "live-regression-runner": "not-covered",
+        "e2e-smoke": "not-covered",
+        "e2e-headless": "partial",
+        "pack-install": "not-covered"
+      }
+    },
+    {
+      "name": "edit-application-code",
+      "description": "The agent can modify the fixture application code to satisfy the requested web-task behavior.",
+      "observableCompletionCriteria": [
+        "Applies a code change to the fixture app rather than only editing test snapshots or metadata.",
+        "Leaves the fixture in a runnable state after the change.",
+        "Produces a diff that can be checked in git-tracked fixture files."
+      ],
+      "proof": "uncovered",
+      "currentGap": "Current S01 lanes prove command surfaces and packaging contracts, but not a truthful code-edit loop against the purpose-built web fixture.",
+      "laneCoverage": {
+        "smoke-runner": "not-covered",
+        "fixtures-runner": "partial",
+        "live-runner": "not-covered",
+        "live-regression-runner": "not-covered",
+        "e2e-smoke": "not-covered",
+        "e2e-headless": "partial",
+        "pack-install": "not-covered"
+      }
+    },
+    {
+      "name": "run-targeted-tests",
+      "description": "The agent can execute the fixture's targeted tests and use the result as part of the coding loop.",
+      "observableCompletionCriteria": [
+        "Runs the fixture's task-scoped test command after editing.",
+        "Reports pass/fail status with exit code visibility.",
+        "Uses the test result to determine whether the fixture task is complete."
+      ],
+      "proof": "uncovered",
+      "currentGap": "Existing smoke and integration lanes run repository tests, but they do not yet prove that umb can drive the fixture's own task-scoped test loop.",
+      "laneCoverage": {
+        "smoke-runner": "not-covered",
+        "fixtures-runner": "partial",
+        "live-runner": "not-covered",
+        "live-regression-runner": "not-covered",
+        "e2e-smoke": "partial",
+        "e2e-headless": "partial",
+        "pack-install": "not-covered"
+      }
+    },
+    {
+      "name": "manage-dev-server-lifecycle",
+      "description": "The agent can start, observe, and stop the fixture application's dev server as part of the proof path.",
+      "observableCompletionCriteria": [
+        "Starts the fixture dev server without hanging the parent process.",
+        "Waits for readiness with an observable signal rather than arbitrary sleeps.",
+        "Stops or cleans up the dev server after verification."
+      ],
+      "proof": "uncovered",
+      "currentGap": "No current S01 lane proves dev-server lifecycle management against the purpose-built parity fixture yet.",
+      "laneCoverage": {
+        "smoke-runner": "not-covered",
+        "fixtures-runner": "not-covered",
+        "live-runner": "not-covered",
+        "live-regression-runner": "not-covered",
+        "e2e-smoke": "partial",
+        "e2e-headless": "partial",
+        "pack-install": "not-covered"
+      }
+    },
+    {
+      "name": "verify-browser-behavior",
+      "description": "The agent can use browser verification to confirm the fixture's user-visible web behavior after the code change.",
+      "observableCompletionCriteria": [
+        "Navigates to the running fixture app in a browser context.",
+        "Checks the intended UI state with explicit assertions rather than prose only.",
+        "Captures enough observable evidence to diagnose a parity failure."
+      ],
+      "proof": "uncovered",
+      "currentGap": "The baseline report can currently inventory lanes, but none of those lanes yet prove browser-assisted verification of the small web-task fixture.",
+      "laneCoverage": {
+        "smoke-runner": "not-covered",
+        "fixtures-runner": "not-covered",
+        "live-runner": "not-covered",
+        "live-regression-runner": "not-covered",
+        "e2e-smoke": "not-covered",
+        "e2e-headless": "partial",
+        "pack-install": "not-covered"
+      }
+    }
+  ]
+}
