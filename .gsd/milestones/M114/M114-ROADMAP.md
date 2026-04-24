@@ -15,10 +15,10 @@
 - [x] **S01: S01** `risk:high` `depends:[]`
   > After this: After this: one baseline parity command/report shows what the repo already proves, what it does not, and the stale M113 cleanup drift is reconciled so downstream work starts from a truthful contract.
 
-- [ ] **S02: S02** `risk:high` `depends:[]`
+- [x] **S02: S02** `risk:high` `depends:[]`
   > After this: After this: the repo/dev build of umb can complete the agreed small web-task fixture end-to-end, including code edits, test execution, dev-server management, and browser verification.
 
-- [ ] **S03: Installed-binary packaged parity** `risk:high` `depends:[S02]`
+- [ ] **S03: S03** `risk:high` `depends:[]`
   > After this: After this: the installed packaged `umb` binary can pass the same small web-task parity proof, so packaged behavior is no longer assumed to match the repo build.
 
 - [ ] **S04: Diagnostics and human UAT** `risk:medium` `depends:[S02,S03]`

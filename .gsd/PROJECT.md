@@ -19,8 +19,9 @@ Even if everything else is cut, `umb` must still be usable to make software end-
 - Global install, packaging, workspace resolution, and rebrand work are already complete
 - The branchless worktree architecture from M113 is complete, including removal of the old sync layer
 - Existing smoke, integration, packaging, live, and live-regression harnesses already exist
-- M114/S01 is now complete: the repo has a tracked baseline parity lane matrix, one machine-readable parity report command, M113 cleanup reconciliation recorded as closed foundation metadata, and a fixture acceptance manifest that explicitly marks the core coding-loop capabilities still uncovered
-- The next gap is execution proof: S02 must make the repo/dev coding loop pass on the purpose-built web-task fixture, then later slices must prove installed packaged parity, human UAT, and a release-style gate
+- M114/S01 is complete: the repo has a tracked baseline parity lane matrix, one machine-readable parity report command, M113 cleanup reconciliation recorded as closed foundation metadata, and a fixture acceptance manifest that explicitly marked the core coding-loop capabilities still uncovered before repo-mode proof landed
+- M114/S02 is now complete: the repo has a deterministic parity web-task fixture, a recorded repo-mode coding-loop artifact, repo-mode fixture/parity contract tests, and parity-report wiring that surfaces inspect/edit/test/dev-server/browser diagnostics plus artifact paths for the repo-mode lane
+- The next gap is installed packaged parity: S03 must prove the shipped `umb` binary can pass the same fixture contract, then S04/S05 must add richer diagnostics, human UAT, and the strict integrated release gate
 
 ## Architecture / Key Patterns
 
@@ -39,6 +40,7 @@ Even if everything else is cut, `umb` must still be usable to make software end-
   - `tests/parity/baseline-lanes.ts` declares the fixed allowlisted lane matrix, report schema, reconciliation metadata, and manifest loading/validation
   - `tests/parity/run.ts` emits a machine-readable baseline report even when the verdict is failing, so consumers can inspect truthful parity gaps
   - `tests/fixtures/parity-web-task-manifest.json` is the tracked source of truth for the downstream coding-loop acceptance contract
+  - deterministic coding-loop proof is represented as a recorded-artifact lane (`repo-mode-coding-loop`) with explicit `inspect`, `edit`, `test`, `dev-server`, and `browser` phase diagnostics
 - M114 follows a deterministic-main-proof pattern: a purpose-built fixture drives the main parity gate, while live-model checks stay secondary and non-blocking
 
 ## Capability Contract

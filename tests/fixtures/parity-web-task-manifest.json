@@ -20,6 +20,7 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "not-covered",
         "e2e-headless": "partial",
+        "repo-mode-coding-loop": "not-covered",
         "pack-install": "not-covered"
       }
     },
@@ -40,6 +41,7 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "not-covered",
         "e2e-headless": "partial",
+        "repo-mode-coding-loop": "not-covered",
         "pack-install": "not-covered"
       }
     },
@@ -60,6 +62,7 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "partial",
         "e2e-headless": "partial",
+        "repo-mode-coding-loop": "not-covered",
         "pack-install": "not-covered"
       }
     },
@@ -80,6 +83,7 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "partial",
         "e2e-headless": "partial",
+        "repo-mode-coding-loop": "not-covered",
         "pack-install": "not-covered"
       }
     },
@@ -100,6 +104,7 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "not-covered",
         "e2e-headless": "partial",
+        "repo-mode-coding-loop": "not-covered",
         "pack-install": "not-covered"
       }
     }

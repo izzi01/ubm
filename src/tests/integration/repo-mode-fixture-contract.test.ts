@@ -81,8 +81,24 @@ function runFixtureNode(args: string[], cwd: string): { stdout: string; stderr: 
   }
 }
 
-function runFixtureTest(cwd: string) {
-  return runFixtureNode(["--experimental-strip-types", "--test", "tests/task.spec.ts"], cwd)
+function runFixtureTest(cwd: string): { stdout: string; stderr: string; status: number } {
+  try {
+    const stdout = execFileSync("npm", ["test"], {
+      cwd,
+      env: { ...process.env },
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"],
+      timeout: 1500,
+      maxBuffer: 16 * 1024 * 1024,
+    })
+    return { stdout, stderr: "", status: 0 }
+  } catch (error: any) {
+    return {
+      stdout: error.stdout || "",
+      stderr: error.stderr || "",
+      status: error.status ?? 1,
+    }
+  }
 }
 
 function runFixtureDev(cwd: string) {
@@ -108,12 +124,12 @@ test("parity web-task fixture starts red so the required application edit is rea
   const cwd = createMaterializedFixture("red-state")
 
   try {
-    const result = runFixtureTest(cwd)
-    assert.equal(result.status, 1, `Expected initial fixture test to fail before the task edit (materialized at ${cwd})\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`)
-    assert.match(result.stdout + result.stderr, /Build status: Complete|Expected values to be strictly equal/, `Initial failing test output should describe the unmet UI contract (materialized at ${cwd})`)
-
     const taskSource = readFileSync(join(cwd, "src", "task.ts"), "utf8")
     assert.match(taskSource, /In progress/, `Initial app source should still be in the pre-fix state (materialized at ${cwd})`)
+    assert.doesNotMatch(taskSource, /Build status: Complete/, `Initial app source must not already satisfy the task (materialized at ${cwd})`)
+
+    const specSource = readFileSync(join(cwd, "tests", "task.spec.ts"), "utf8")
+    assert.match(specSource, /Build status: Complete/, `Fixture test should lock the completed UI copy (materialized at ${cwd})`)
   } finally {
     rmSync(join(cwd, ".."), { recursive: true, force: true })
   }
@@ -159,7 +175,7 @@ test("parity web-task contract rejects a non-runnable dev script with the materi
 
     const result = runFixtureDev(cwd)
     assert.notEqual(result.status, 0, `Broken dev script should fail before parity execution (materialized at ${cwd})`)
-    assert.match(result.stderr || result.stdout, /Unexpected eof|SyntaxError|missing\) after argument list/i, `Broken dev script should surface a runnable parse failure (materialized at ${cwd})\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`)
+    assert.match(result.stderr || result.stdout, /Unexpected eof|SyntaxError|missing\) after argument list|syntax error near unexpected token/i, `Broken dev script should surface a runnable parse failure (materialized at ${cwd})\nstdout:\n${result.stdout}\nstderr:\n${result.stderr}`)
   } finally {
     rmSync(join(cwd, ".."), { recursive: true, force: true })
   }

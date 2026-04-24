@@ -1,0 +1,66 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_e1qEN5cHnrCQPcUf8rPGQZIl",
+    "command": "find src/tests -maxdepth 3 -type f | sort | sed 's#^#- #' | head -200",
+    "exitCode": 0,
+    "outputSnippet": "- src/tests/app-smoke.test.ts\n- src/tests/artifact-manager.test.ts\n- src/tests/auto-budget.test.ts\n- src/tests/auto-mode-piped.test.ts\n- src/tests/auto-piped-io.test.ts\n- src/tests/auto-resume-resource-loader.test.ts\n- src/tests/auto-tool-tracking.test.ts\n- src/tests/bg-shell-persistence-cwd.test.ts\n- src/tests/bg-shell-session-cleanup.test.ts\n- src/tests/blob-store.test.ts\n- src/tests/bridge-package-root.test.ts\n- src/tests/bundled-extension-paths.test.ts\n- src/tests/create-gsd-extension-paths.",
+    "timestamp": 1777012445194
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_nNo7TWB3hl0AtA5KV42J6axh",
+    "command": "find tests -maxdepth 3 -type f | sort | sed 's#^#- #' | head -200",
+    "exitCode": 0,
+    "outputSnippet": "- tests/fixtures/parity-web-task/index.html\n- tests/fixtures/parity-web-task-manifest.json\n- tests/fixtures/parity-web-task/package.json\n- tests/fixtures/parity-web-task/TASK.md\n- tests/fixtures/provider.ts\n- tests/fixtures/recordings/agent-creates-file.json\n- tests/fixtures/recordings/agent-handles-error.json\n- tests/fixtures/recordings/agent-multi-turn-tools.json\n- tests/fixtures/recordings/agent-reads-and-edits.json\n- tests/fixtures/recordings/repo-mode-parity-web-task.json\n- tests/fixtures/r",
+    "timestamp": 1777012445194
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_z2GmixxUPGdkAhDqv5GPJ4TO",
+    "command": "find src/tests/integration -maxdepth 2 -type f | sort | grep helper",
+    "exitCode": 1,
+    "outputSnippet": "(no output)\n\nCommand exited with code 1",
+    "timestamp": 1777012452029
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_qDMocnr7RESvfqBpYoSaLMtn",
+    "command": "rg -n \"installed-mode|pack-install|\\.umb|\\bumb\\b|GSD_SMOKE_BINARY\" src/tests tests -g '!tests/parity/artifacts/**'",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/baseline-lanes.ts:21:export const PARITY_SCOPES = [\"repo-mode\", \"installed-mode\", \"live-only\", \"partial\"] as const\ntests/parity/baseline-lanes.ts:209:      parityScope: \"installed-mode\",\ntests/parity/baseline-lanes.ts:249:      name: \"pack-install\",\ntests/parity/baseline-lanes.ts:250:      target: \"src/tests/integration/pack-install.test.ts\",\ntests/parity/baseline-lanes.ts:253:      parityScope: \"installed-mode\",\ntests/parity/baseline-lanes.ts:335:    if (env.GSD_SMOKE_BINARY && env",
+    "timestamp": 1777012458442
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_QtFyqyjr225esmnvCrnRedfb",
+    "command": "find src/tests/integration -maxdepth 2 \\( -type d -o -type f \\) | sort",
+    "exitCode": 0,
+    "outputSnippet": "src/tests/integration\nsrc/tests/integration/ci_monitor.test.ts\nsrc/tests/integration/e2e-headless.test.ts\nsrc/tests/integration/e2e-smoke.test.ts\nsrc/tests/integration/pack-install.test.ts\nsrc/tests/integration/parity-baseline-contract.test.ts\nsrc/tests/integration/parity-fixture-manifest.test.ts\nsrc/tests/integration/parity-m113-reconciliation.test.ts\nsrc/tests/integration/repo-mode-fixture-contract.test.ts\nsrc/tests/integration/repo-mode-parity-contract.test.ts\nsrc/tests/integration/web-auth-t",
+    "timestamp": 1777012466783
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_m8r8cMD93ZxJjRw7CYy1DDpJ",
+    "command": "rg -n \"parity-web-task|TASK.md|Build status: Complete|headless .*new-milestone|headless .*auto|context-text|new-milestone\" src tests -g '!tests/fixtures/recordings/**'",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/artifacts/baseline-report.json:157:      \"target\": \".tmp-repo-mode-parity-contract-3jjhqB/repo-mode-parity-web-task.failed.json\",\ntests/parity/artifacts/baseline-report.json:168:        \".tmp-repo-mode-parity-contract-3jjhqB/repo-mode-parity-web-task.failed.json\"\ntests/parity/artifacts/baseline-report.json:170:      \"artifactPath\": \".tmp-repo-mode-parity-contract-3jjhqB/repo-mode-parity-web-task.failed.json\",\ntests/parity/artifacts/baseline-report.json:176:          \"summary\": \"Insp",
+    "timestamp": 1777012476760
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_jc9wihmi6WbWVcPSWMxqcVYN",
+    "command": "rg -n \"GSD_FIXTURE_MODE|recordings|fixture mode|replay|recording\" src tests scripts packages -g '!tests/fixtures/recordings/**'",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/baseline-lanes.ts:9:export const DEFAULT_REPO_MODE_PARITY_ARTIFACT_PATH = \"tests/fixtures/recordings/repo-mode-parity-web-task.json\" as const\ntests/parity/baseline-lanes.ts:191:      description: \"Deterministic fixture replay coverage without proving the real coding loop.\",\nsrc/cli.ts:189:// `gsd config` — replay the setup wizard and exit\ntests/fixtures/run.ts:8:const recordingsDir = join(__dirname, \"recordings\");\ntests/fixtures/run.ts:10:const files = readdirSync(recordingsDir)\ntes",
+    "timestamp": 1777012489557
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_WdQbyVQN69yB89o65j4t8I7k",
+    "command": "rg -n \"GSD_FIXTURE_MODE|FixtureReplayer|FixtureRecorder|loadFixture\\(|saveFixture\\(|recordingsDir|recordings/\" src packages scripts tests -g '!tests/fixtures/provider.ts' -g '!tests/fixtures/run.ts' -g '!tests/fixtures/record.ts'",
+    "exitCode": 1,
+    "outputSnippet": "Skipped due to queued user message.",
+    "timestamp": 1777012499465
+  }
+]
