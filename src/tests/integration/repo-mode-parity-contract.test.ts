@@ -45,7 +45,7 @@ test("repo-mode parity lane target exists and is wired into the tracked manifest
   assert.ok(parity.BASELINE_LANES.some((lane: { name: string; target: string }) => lane.name === parity.REPO_MODE_LANE_NAME && lane.target === "tests/fixtures/recordings/repo-mode-parity-web-task.json"))
 
   for (const capability of manifest.capabilities) {
-    assert.equal(capability.laneCoverage[parity.REPO_MODE_LANE_NAME], "not-covered")
+    assert.equal(capability.laneCoverage[parity.REPO_MODE_LANE_NAME], "covered")
   }
 })
 

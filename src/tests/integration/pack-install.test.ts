@@ -140,15 +140,15 @@ test("npm pack produces tarball with required files", async (t) => {
   // pkg/package.json must have piConfig
   const pkgJson = readFileSync(join(projectRoot, "pkg", "package.json"), "utf-8");
   const pkg = JSON.parse(pkgJson);
-  assert.equal(pkg.piConfig?.name, "gsd", "pkg/package.json piConfig.name is gsd");
-  assert.equal(pkg.piConfig?.configDir, ".gsd", "pkg/package.json piConfig.configDir is .gsd");
+  assert.equal(pkg.piConfig?.name, "umb", "pkg/package.json piConfig.name is umb");
+  assert.equal(pkg.piConfig?.configDir, ".umb", "pkg/package.json piConfig.configDir is .umb");
 });
 
 // ═══════════════════════════════════════════════════════════════════════════
-// 2. npm pack → install → gsd binary resolves
+// 2. npm pack → install → umb binary resolves
 // ═══════════════════════════════════════════════════════════════════════════
 
-test("tarball installs and gsd binary resolves", async (t) => {
+test("tarball installs and umb binary resolves", async (t) => {
   const sandbox = createNpmSandbox("gsd-install-test-");
   const tarballPath = packTarball(sandbox);
 
@@ -160,13 +160,13 @@ test("tarball installs and gsd binary resolves", async (t) => {
   // Install from tarball into a temp prefix
   runNpmQuiet(["install", "--prefix", sandbox.installPrefix, tarballPath, "--no-save"], sandbox);
 
-  // Verify the gsd bin exists in the installed package
-  const binName = process.platform === "win32" ? "gsd.cmd" : "gsd";
+  // Verify the umb bin exists in the installed package
+  const binName = process.platform === "win32" ? "umb.cmd" : "umb";
   const installedBin = join(sandbox.installPrefix, "node_modules", ".bin", binName);
-  assert.ok(existsSync(installedBin), `gsd binary exists in node_modules/.bin/ (${binName})`);
+  assert.ok(existsSync(installedBin), `umb binary exists in node_modules/.bin/ (${binName})`);
 
   // Verify loader.js is executable (has shebang)
-  const installedLoader = join(sandbox.installPrefix, "node_modules", "gsd-pi", "dist", "loader.js");
+  const installedLoader = join(sandbox.installPrefix, "node_modules", "umb-cli", "dist", "loader.js");
   const loaderContent = readFileSync(installedLoader, "utf-8");
   if (process.platform !== "win32") {
     assert.ok(loaderContent.startsWith("#!/usr/bin/env node"), "loader.js has node shebang");
@@ -190,8 +190,8 @@ test("tarball installs and gsd binary resolves", async (t) => {
 // 3. Launch → extensions load → no errors on stderr
 // ═══════════════════════════════════════════════════════════════════════════
 
-test("gsd launches and loads extensions without errors", async () => {
-  // Launch gsd with all optional keys set (skip wizard) and capture stderr.
+test("umb launches and loads extensions without errors", async () => {
+  // Launch umb with all optional keys set (skip wizard) and capture stderr.
   // Kill after 5 seconds — we just need to see if extensions load.
   // Assumes build already done.
   const output = await new Promise<string>((resolve) => {
@@ -229,7 +229,7 @@ test("gsd launches and loads extensions without errors", async () => {
 
   // No extension load errors
   assert.ok(
-    !output.includes("[gsd] Extension load error"),
+    !output.includes("[umb] Extension load error"),
     `no extension load errors on stderr (got: ${output.slice(0, 500)})`,
   );
 
@@ -244,13 +244,13 @@ test("gsd launches and loads extensions without errors", async () => {
   );
 });
 
-test("gsd exits early with a clear message when synced resources are newer than the binary", async (t) => {
-  const fakeHome = mkdtempSync(join(tmpdir(), "gsd-version-skew-"));
-  const fakeAgentDir = join(fakeHome, ".gsd", "agent");
+test("umb exits early with a clear message when synced resources are newer than the binary", async (t) => {
+  const fakeHome = mkdtempSync(join(tmpdir(), "umb-version-skew-"));
+  const fakeAgentDir = join(fakeHome, ".umb", "agent");
   mkdirSync(fakeAgentDir, { recursive: true });
   writeFileSync(
     join(fakeAgentDir, "managed-resources.json"),
-    JSON.stringify({ gsdVersion: "999.0.0" }),
+        JSON.stringify({ gsdVersion: "999.0.0" }),
   );
 
   t.after(() => { rmSync(fakeHome, { recursive: true, force: true }); });
@@ -283,6 +283,6 @@ test("gsd exits early with a clear message when synced resources are newer than 
 
   assert.equal(result.code, 1, "startup exits with code 1 without a TTY");
   assert.match(result.stderr, /Interactive mode requires a terminal \(TTY\)/, "prints the current TTY guidance");
-  assert.match(result.stderr, /gsd auto|--print|--mode rpc|--mode mcp|--mode text/, "prints non-interactive alternatives");
-  assert.doesNotMatch(result.stderr, /\[gsd\] Extension load error/, "fails without extension load errors");
+  assert.match(result.stderr, /umb auto|--print|--mode rpc|--mode mcp|--mode text/, "prints non-interactive alternatives");
+  assert.doesNotMatch(result.stderr, /\[umb\] Extension load error/, "fails without extension load errors");
 });

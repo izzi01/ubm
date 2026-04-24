@@ -1,0 +1,96 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_CVJIyNI9c2rpkk9qF1wtJEHK",
+    "command": "printf '--- diagnostics.ts ---\\n'; if [ -e tests/parity/diagnostics.ts ]; then echo EXISTS; else echo MISSING; fi; printf '\\n--- contract test ---\\n'; if [ -e src/tests/integration/parity-diagnostics-contract.test.ts ]; then echo EXISTS; else echo MISSING; fi; printf '\\n--- baseline report ---\\n'; if [ -e tests/parity/artifacts/baseline-report.json ]; then echo EXISTS; else echo MISSING; fi",
+    "exitCode": 0,
+    "outputSnippet": "MISSING\n\n--- contract test ---\nMISSING\n\n--- baseline report ---\nEXISTS\n/bin/bash: line 1: printf: --: invalid option\nprintf: usage: printf [-v var] format [arguments]\n",
+    "timestamp": 1777015610842
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_6Tze0Tr6HR8CNt1BtgkLZCVv",
+    "command": "rg -n \"diagnostics\" tests/parity src/tests/integration | sed -n '1,120p'",
+    "exitCode": 0,
+    "outputSnippet": "src/tests/integration/installed-mode-parity-contract.test.ts:45:test(\"installed-mode parity artifact exists and validates ordered inspect/edit/test/dev-server/browser diagnostics\", () => {\nsrc/tests/integration/installed-mode-parity-contract.test.ts:67:test(\"baseline runner emits installed-mode lane diagnostics with artifact path and explicit browser evidence\", () => {\nsrc/tests/integration/installed-mode-parity-contract.test.ts:90:test(\"failing installed-mode artifact preserves failedPhase and ",
+    "timestamp": 1777015626246
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_PxXdUWfnP9Yg2Qd3GQRfisI9",
+    "command": "ls -R tests/parity | sed -n '1,200p'",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity:\nartifacts\nbaseline-lanes.ts\nrun.ts\n\ntests/parity/artifacts:\nbaseline-report.json\n",
+    "timestamp": 1777015626246
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_9gXEulqirU6v6C7RHRR7T3eX",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777015687308
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_GbJ6maeEQRYzDJKzw0eHAZNX",
+    "path": "src/tests/integration/parity-diagnostics-contract.test.ts",
+    "timestamp": 1777015727749
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_iCRMu3JGMDWRHRUaRd8fmlox",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-diagnostics-contract.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "✔ diagnostics renderer turns the tracked baseline report into a mode-aware actionable summary (9.383094ms)\n✔ diagnostics renderer promotes command evidence when a non-browser phase fails (0.585127ms)\n✖ diagnostics cli reads a synthetic passing report and preserves local artifact paths without extra harness state (55.596447ms)\n✔ diagnostics cli fails with a precise error when the baseline report path is missing (23.539544ms)\nℹ tests 4\nℹ suites 0\nℹ pass 3\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo ",
+    "timestamp": 1777015732022
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_bqevEh3kzgZ1BvybH25UG6oZ",
+    "path": "src/tests/integration/parity-diagnostics-contract.test.ts",
+    "timestamp": 1777015737742
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_2t0fP6f7ddI0LvfYVNNkVmMZ",
+    "path": "src/tests/integration/parity-diagnostics-contract.test.ts",
+    "timestamp": 1777015741246
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_xN3A1sjENZMGA2LbRwoHx3L4",
+    "path": "src/tests/integration/parity-diagnostics-contract.test.ts",
+    "timestamp": 1777015745226
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_tgWlCqZgKem95MXC7xGKZogw",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-diagnostics-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ diagnostics renderer turns the tracked baseline report into a mode-aware actionable summary (4.30644ms)\n✔ diagnostics renderer promotes command evidence when a non-browser phase fails (0.541267ms)\n✔ diagnostics cli reads a synthetic passing report and preserves local artifact paths without extra harness state (23.964456ms)\n✔ diagnostics cli fails with a precise error when the baseline report path is missing (21.920933ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0",
+    "timestamp": 1777015748924
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_QXmWbmkMBgXcYqoi2UXScdHZ",
+    "command": "node --experimental-strip-types tests/parity/diagnostics.ts --report tests/parity/artifacts/baseline-report.json | sed -n '1,120p'",
+    "exitCode": 0,
+    "outputSnippet": "Parity diagnostics: verdict=failing\nlanes: total=8, passed=5, failed=2, skipped=1, timedOut=0\nprovesCodingLoop: yes\nuncoveredLanes: smoke-runner, live-runner, repo-mode-coding-loop\nuncoveredCapabilities: inspect-repository-context, edit-application-code, run-targeted-tests, manage-dev-server-lifecycle, verify-browser-behavior\n\nactionable lanes:\n- smoke-runner [mode=partial] status=failed\n  summary: smoke-runner failed\n- live-runner [mode=live-only] status=skipped\n  summary: live-runner skipped\n-",
+    "timestamp": 1777015756315
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_vm7VLLIAzmFv9YOsETWYfryH",
+    "command": "python3 - <<'PY'\nimport subprocess, time, sys\ncmd = ['node','--import','./src/resources/extensions/gsd/tests/resolve-ts.mjs','--experimental-strip-types','--test','src/tests/integration/parity-diagnostics-contract.test.ts']\nstart = time.time()\nproc = subprocess.run(cmd, cwd='.', capture_output=True, text=True)\nduration = int((time.time()-start)*1000)\nprint(f'EXIT={proc.returncode}')\nprint(f'DURATION_MS={duration}')\nprint('--- STDOUT ---')\nprint(proc.stdout)\nprint('--- STDERR ---')\nprint(proc.stderr)\nPY",
+    "exitCode": 0,
+    "outputSnippet": "EXIT=0\nDURATION_MS=389\n--- STDOUT ---\n✔ diagnostics renderer turns the tracked baseline report into a mode-aware actionable summary (6.469301ms)\n✔ diagnostics renderer promotes command evidence when a non-browser phase fails (1.596602ms)\n✔ diagnostics cli reads a synthetic passing report and preserves local artifact paths without extra harness state (60.881435ms)\n✔ diagnostics cli fails with a precise error when the baseline report path is missing (94.753755ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fa",
+    "timestamp": 1777015800407
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_7EM4YnV9Qjz5p7je9FHtchBm",
+    "command": "python3 - <<'PY'\nimport subprocess, time\ncmd = ['node','--experimental-strip-types','tests/parity/diagnostics.ts','--report','tests/parity/artifacts/baseline-report.json']\nstart = time.time()\nproc = subprocess.run(cmd, cwd='.', capture_output=True, text=True)\nduration = int((time.time()-start)*1000)\nprint(f'EXIT={proc.returncode}')\nprint(f'DURATION_MS={duration}')\nprint('--- STDOUT ---')\nprint(proc.stdout)\nprint('--- STDERR ---')\nprint(proc.stderr)\nPY",
+    "exitCode": 0,
+    "outputSnippet": "EXIT=0\nDURATION_MS=48\n--- STDOUT ---\nParity diagnostics: verdict=failing\nlanes: total=8, passed=5, failed=2, skipped=1, timedOut=0\nprovesCodingLoop: yes\nuncoveredLanes: smoke-runner, live-runner, repo-mode-coding-loop\nuncoveredCapabilities: inspect-repository-context, edit-application-code, run-targeted-tests, manage-dev-server-lifecycle, verify-browser-behavior\n\nactionable lanes:\n- smoke-runner [mode=partial] status=failed\n  summary: smoke-runner failed\n- live-runner [mode=live-only] status=ski",
+    "timestamp": 1777015800407
+  }
+]

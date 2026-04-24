@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "generatedAt": "2026-04-24T07:05:49.645Z",
+  "generatedAt": "2026-04-24T07:21:38.244Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
@@ -14,7 +14,7 @@
     "uncoveredLaneNames": [
       "smoke-runner",
       "live-runner",
-      "pack-install"
+      "repo-mode-coding-loop"
     ],
     "proofClassCounts": {
       "smoke": 1,
@@ -42,7 +42,7 @@
       "status": "failed",
       "skipReason": "smoke-runner exited with code 1",
       "exitCode": 1,
-      "durationMs": 14728,
+      "durationMs": 7560,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -61,7 +61,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 51,
+      "durationMs": 25,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -99,7 +99,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 33074,
+      "durationMs": 21933,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -118,7 +118,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 40,
+      "durationMs": 28,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -140,7 +140,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 35,
+      "durationMs": 30,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -154,21 +154,21 @@
     },
     {
       "name": "repo-mode-coding-loop",
-      "target": "tests/fixtures/recordings/repo-mode-parity-web-task.json",
+      "target": ".tmp-repo-mode-parity-contract-BP3Z3A/repo-mode-parity-web-task.failed.json",
       "runner": "recorded-artifact",
       "proofClass": "repo-infra",
       "parityScope": "repo-mode",
       "provesCodingLoop": true,
-      "status": "passed",
-      "skipReason": null,
-      "exitCode": 0,
-      "durationMs": 1,
+      "status": "failed",
+      "skipReason": "repo-mode-coding-loop failed during browser",
+      "exitCode": 1,
+      "durationMs": 0,
       "command": [
         "artifact",
-        "tests/fixtures/recordings/repo-mode-parity-web-task.json"
+        ".tmp-repo-mode-parity-contract-BP3Z3A/repo-mode-parity-web-task.failed.json"
       ],
-      "artifactPath": "tests/fixtures/recordings/repo-mode-parity-web-task.json",
-      "failedPhase": null,
+      "artifactPath": ".tmp-repo-mode-parity-contract-BP3Z3A/repo-mode-parity-web-task.failed.json",
+      "failedPhase": "browser",
       "phaseResults": [
         {
           "phase": "inspect",
@@ -212,38 +212,38 @@
         },
         {
           "phase": "browser",
-          "status": "passed",
-          "summary": "Verified the browser-visible status message with an explicit assertion, then stopped the dev server.",
+          "status": "failed",
+          "summary": "Browser assertion failed for completed copy.",
           "command": {
             "command": "browser_assert text_visible #status-message",
-            "exitCode": 0,
-            "stdoutSnippet": "#status-message text matched expected completed copy"
+            "exitCode": 1,
+            "stderrSnippet": "Expected completed status copy"
           },
           "browser": {
             "assertion": "#status-message text",
             "expected": "Build status: Complete",
-            "actual": "Build status: Complete"
+            "actual": "Build status: In progress"
           }
         }
       ]
     },
     {
       "name": "pack-install",
-      "target": ".tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json",
+      "target": "tests/fixtures/recordings/installed-mode-parity-web-task.json",
       "runner": "recorded-artifact",
       "proofClass": "installed-binary",
       "parityScope": "installed-mode",
       "provesCodingLoop": true,
-      "status": "failed",
-      "skipReason": "pack-install failed during browser",
-      "exitCode": 1,
+      "status": "passed",
+      "skipReason": null,
+      "exitCode": 0,
       "durationMs": 0,
       "command": [
         "artifact",
-        ".tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json"
+        "tests/fixtures/recordings/installed-mode-parity-web-task.json"
       ],
-      "artifactPath": ".tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json",
-      "failedPhase": "browser",
+      "artifactPath": "tests/fixtures/recordings/installed-mode-parity-web-task.json",
+      "failedPhase": null,
       "phaseResults": [
         {
           "phase": "inspect",
@@ -287,17 +287,17 @@
         },
         {
           "phase": "browser",
-          "status": "failed",
-          "summary": "Browser assertion failed for completed copy in installed mode.",
+          "status": "passed",
+          "summary": "Verified the browser-visible status message with an explicit assertion, then stopped the installed-mode fixture dev server.",
           "command": {
             "command": "browser_assert text_visible #status-message",
-            "exitCode": 1,
-            "stderrSnippet": "Expected completed status copy from installed mode"
+            "exitCode": 0,
+            "stdoutSnippet": "#status-message text matched expected completed copy"
           },
           "browser": {
             "assertion": "#status-message text",
             "expected": "Build status: Complete",
-            "actual": "Build status: In progress"
+            "actual": "Build status: Complete"
           }
         }
       ]
@@ -401,7 +401,7 @@
           "Captures enough observable evidence to diagnose a parity failure."
         ],
         "proof": "uncovered",
-        "currentGap": "Installed-mode proof failed during browser; inspect .tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json for phase-local diagnostics.",
+        "currentGap": "Repo-mode proof failed during browser; inspect .tmp-repo-mode-parity-contract-BP3Z3A/repo-mode-parity-web-task.failed.json for phase-local diagnostics.",
         "laneCoverage": {
           "smoke-runner": "not-covered",
           "fixtures-runner": "not-covered",
@@ -409,8 +409,8 @@
           "live-regression-runner": "not-covered",
           "e2e-smoke": "not-covered",
           "e2e-headless": "partial",
-          "repo-mode-coding-loop": "covered",
-          "pack-install": "partial"
+          "repo-mode-coding-loop": "partial",
+          "pack-install": "covered"
         }
       }
     ]
@@ -520,18 +520,18 @@
       "capabilityName": "verify-browser-behavior",
       "proof": "uncovered",
       "uncovered": true,
-      "currentGap": "Installed-mode proof failed during browser; inspect .tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json for phase-local diagnostics.",
+      "currentGap": "Repo-mode proof failed during browser; inspect .tmp-repo-mode-parity-contract-BP3Z3A/repo-mode-parity-web-task.failed.json for phase-local diagnostics.",
       "observableCompletionCriteria": [
         "Navigates to the running fixture app in a browser context.",
         "Checks the intended UI state with explicit assertions rather than prose only.",
         "Captures enough observable evidence to diagnose a parity failure."
       ],
       "coveringLaneNames": [
-        "repo-mode-coding-loop"
+        "pack-install"
       ],
       "partialLaneNames": [
         "e2e-headless",
-        "pack-install"
+        "repo-mode-coding-loop"
       ],
       "uncoveredLaneNames": [
         "smoke-runner",
@@ -545,8 +545,8 @@
   "repoInstalledComparison": {
     "repoLaneName": "repo-mode-coding-loop",
     "installedLaneName": "pack-install",
-    "repoArtifactPath": "tests/fixtures/recordings/repo-mode-parity-web-task.json",
-    "installedArtifactPath": ".tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json",
+    "repoArtifactPath": ".tmp-repo-mode-parity-contract-BP3Z3A/repo-mode-parity-web-task.failed.json",
+    "installedArtifactPath": "tests/fixtures/recordings/installed-mode-parity-web-task.json",
     "comparableWithoutRerun": true,
     "divergencePhases": [
       "browser"
@@ -578,8 +578,8 @@
       },
       {
         "phase": "browser",
-        "repoStatus": "passed",
-        "installedStatus": "failed",
+        "repoStatus": "failed",
+        "installedStatus": "passed",
         "matches": false
       }
     ]

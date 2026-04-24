@@ -4,17 +4,6 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Active
 
-### R028 — The same core coding-loop proof passes against the installed and packaged `umb` binary, not only against the repository/dev entrypoint.
-- Class: launchability
-- Status: active
-- Description: The same core coding-loop proof passes against the installed and packaged `umb` binary, not only against the repository/dev entrypoint.
-- Why it matters: A coding app that only works from the source tree is not trustworthy as shipped software.
-- Source: user
-- Primary owning slice: M114/S03
-- Supporting slices: M114/S04, M114/S05
-- Validation: mapped
-- Notes: Packaged parity is a blocker, not a follow-up.
-
 ### R030 — The project includes a human-readable UAT script that demonstrates 'umb can be used to make software' on the parity fixture.
 - Class: launchability
 - Status: active
@@ -153,6 +142,17 @@ This file is the explicit capability and coverage contract for the project.
 - Validation: Repo-mode fixture contract and repo-mode parity contract now pass, and `node --experimental-strip-types tests/parity/run.ts --format json` reports `provesCodingLoop: true` with explicit inspect/edit/test/dev-server/browser phase diagnostics for the `repo-mode-coding-loop` lane.
 - Notes: This requirement encodes the user's bar: 'that it indeed can be used to make an software. it it a ai coding app'.
 
+### R028 — The same core coding-loop proof passes against the installed and packaged `umb` binary, not only against the repository/dev entrypoint.
+- Class: launchability
+- Status: validated
+- Description: The same core coding-loop proof passes against the installed and packaged `umb` binary, not only against the repository/dev entrypoint.
+- Why it matters: A coding app that only works from the source tree is not trustworthy as shipped software.
+- Source: user
+- Primary owning slice: M114/S03
+- Supporting slices: M114/S04, M114/S05
+- Validation: Validated by passing `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/pack-install.test.ts`, `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/installed-mode-parity-contract.test.ts src/tests/integration/repo-mode-parity-contract.test.ts`, `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-fixture-manifest.test.ts`, `node --experimental-strip-types tests/live-regression/run.ts`, and `node --experimental-strip-types tests/parity/run.ts --format json`, which show both `repo-mode-coding-loop` and `pack-install` passing with deterministic artifactPath/failedPhase surfaces and a comparableWithoutRerun repoInstalledComparison.
+- Notes: Slice S03 completed the installed packaged parity proof and repaired stale branding assertions in pack-install coverage.
+
 ### R029 — A deterministic parity fixture under `tests/fixtures/` provides a stable release gate for the core coding loop, including edit, test, dev-server, and browser-verification behavior.
 - Class: integration
 - Status: validated
@@ -266,7 +266,7 @@ This file is the explicit capability and coverage contract for the project.
 | R025 | architectural | validated | M113/S03 | none | mergeMilestoneToMain reduced from ~652 to 233 lines (≤250 target met). stash/pop, milestone shelter, and .gsd/ auto-resolve fully removed. tsc --noEmit passes. 22/22 integration tests pass. grep confirms zero references to stash/shelter/isSafeToAutoResolve/SAFE_AUTO_RESOLVE in production code. |
 | R026 | operational | validated | M113/S04 | none | Validated by M113/S04. Sync-specific test files were deleted, remaining tests compile and pass, git-self-heal/auto-recovery was simplified to crash-recovery-only behavior, and no production or test code references the deleted sync functions. Evidence captured in .gsd/milestones/M113/M113-SUMMARY.md. |
 | R027 | primary-user-loop | validated | M114/S02 | M114/S01, M114/S04, M114/S05 | Repo-mode fixture contract and repo-mode parity contract now pass, and `node --experimental-strip-types tests/parity/run.ts --format json` reports `provesCodingLoop: true` with explicit inspect/edit/test/dev-server/browser phase diagnostics for the `repo-mode-coding-loop` lane. |
-| R028 | launchability | active | M114/S03 | M114/S04, M114/S05 | mapped |
+| R028 | launchability | validated | M114/S03 | M114/S04, M114/S05 | Validated by passing `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/pack-install.test.ts`, `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/installed-mode-parity-contract.test.ts src/tests/integration/repo-mode-parity-contract.test.ts`, `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-fixture-manifest.test.ts`, `node --experimental-strip-types tests/live-regression/run.ts`, and `node --experimental-strip-types tests/parity/run.ts --format json`, which show both `repo-mode-coding-loop` and `pack-install` passing with deterministic artifactPath/failedPhase surfaces and a comparableWithoutRerun repoInstalledComparison. |
 | R029 | integration | validated | M114/S02 | M114/S03, M114/S05 | The deterministic fixture under `tests/fixtures/parity-web-task/` is tracked in the manifest and backed by `tests/fixtures/recordings/repo-mode-parity-web-task.json`; repo-mode fixture/parity contract tests pass and the parity JSON report includes artifact-path and failedPhase diagnostics for the recorded lane. |
 | R030 | launchability | active | M114/S04 | M114/S05 | mapped |
 | R031 | failure-visibility | active | M114/S04 | M114/S05 | mapped |
@@ -278,7 +278,7 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Coverage Summary
 
-- Active requirements: 4
-- Mapped to slices: 4
-- Validated: 11 (R001, R002, R003, R004, R010, R023, R024, R025, R026, R027, R029)
+- Active requirements: 3
+- Mapped to slices: 3
+- Validated: 12 (R001, R002, R003, R004, R010, R023, R024, R025, R026, R027, R028, R029)
 - Unmapped active requirements: 0

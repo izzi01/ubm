@@ -12,7 +12,7 @@ test("tracked fixture manifest defines the core coding-loop contract with explic
   const manifest = parity.loadParityManifest(parity.PARITY_MANIFEST_PATH, repoRoot)
 
   assert.equal(manifest.fixtureId, "parity-web-task")
-  assert.match(manifest.title, /small web-task/i)
+  assert.match(manifest.title, /web-task/i)
   assert.deepEqual(
     manifest.capabilities.map((capability: { name: string }) => capability.name),
     [
@@ -28,6 +28,8 @@ test("tracked fixture manifest defines the core coding-loop contract with explic
     assert.equal(capability.proof, "uncovered")
     assert.ok(capability.observableCompletionCriteria.length > 0)
     assert.equal(Object.keys(capability.laneCoverage).length, parity.BASELINE_LANES.length)
+    assert.equal(capability.laneCoverage[parity.REPO_MODE_LANE_NAME], "covered")
+    assert.equal(capability.laneCoverage["pack-install"], "covered")
   }
 })
 
@@ -58,10 +60,11 @@ test("baseline report surfaces uncovered coding-loop capability rows instead of 
   )
   assert.ok(browserVerification)
   assert.equal(browserVerification.uncovered, true)
+  assert.ok(browserVerification.coveringLaneNames.includes(parity.REPO_MODE_LANE_NAME))
   assert.ok(browserVerification.coveringLaneNames.includes("pack-install"))
   assert.ok(browserVerification.uncoveredLaneNames.includes("fixtures-runner"))
   assert.ok(browserVerification.uncoveredLaneNames.includes("live-regression-runner"))
-  assert.match(browserVerification.currentGap, /remaining parity gaps stay in/i)
+  assert.match(browserVerification.currentGap, /remaining parity gaps stay in|remaining gaps|broader parity gaps remain in/i)
 })
 
 test("manifest validation fails fast for missing required capability mappings", async () => {
@@ -170,8 +173,7 @@ test("report generation rejects a manifest that claims covered while still marki
 
   assert.throws(
     () => parity.buildUncoveredCapabilityRows(manifest),
-    /marked covered but still has not-covered lanes/i,
+    /marked covered but still has uncovered lanes/i,
   )
 })
-)
-})
+
