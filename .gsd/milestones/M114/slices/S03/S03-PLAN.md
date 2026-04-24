@@ -146,7 +146,7 @@ Promote the installed-binary fixture run into the same recorded-artifact pattern
   - Files: `src/tests/integration/helpers/installed-mode-parity.ts`, `tests/fixtures/recordings/installed-mode-parity-web-task.json`, `src/tests/integration/installed-mode-parity-contract.test.ts`, `tests/fixtures/parity-web-task/package.json`, `tests/fixtures/parity-web-task/src/task.ts`, `tests/fixtures/parity-web-task/tests/task.spec.ts`, `src/tests/integration/repo-mode-parity-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/installed-mode-parity-contract.test.ts && test -f tests/fixtures/recordings/installed-mode-parity-web-task.json
 
-- [ ] **T03: Wire installed parity into the manifest and baseline report** `est:1h`
+- [x] **T03: Wire installed parity into the manifest and baseline report** `est:1h`
   Skills to load before coding: `test`, `observability`, `verify-before-complete`.
 
 Finish the slice by making installed packaged parity a first-class lane in the shared M114 report contract. The manifest must truthfully describe which coding-loop capabilities are now covered in installed mode, and the JSON report must let later slices compare repo and installed artifacts directly when packaged behavior diverges.

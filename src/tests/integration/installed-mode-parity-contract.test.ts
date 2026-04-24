@@ -3,7 +3,6 @@ import assert from "node:assert/strict"
 import { execFileSync } from "node:child_process"
 import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
-import { tmpdir } from "node:os"
 
 import {
   DEFAULT_INSTALLED_MODE_PARITY_ARTIFACT_PATH,
@@ -84,6 +83,8 @@ test("baseline runner emits installed-mode lane diagnostics with artifact path a
     ["inspect", "edit", "test", "dev-server", "browser"],
   )
   assert.equal(installedLane.phaseResults.find((phase: { phase: string }) => phase.phase === "browser")?.browser.actual, "Build status: Complete")
+  assert.equal(report.repoInstalledComparison.installedArtifactPath, DEFAULT_INSTALLED_MODE_PARITY_ARTIFACT_PATH)
+  assert.equal(report.repoInstalledComparison.comparableWithoutRerun, true)
 })
 
 test("failing installed-mode artifact preserves failedPhase and browser expected/actual diagnostics in the parity report", () => {
@@ -132,6 +133,8 @@ test("failing installed-mode artifact preserves failedPhase and browser expected
     assert.equal(installedLane.artifactPath, relativeArtifactPath)
     assert.match(installedLane.skipReason, /failed during browser/i)
     assert.equal(installedLane.phaseResults.find((phase: { phase: string }) => phase.phase === "browser")?.browser.actual, "Build status: In progress")
+    assert.ok(report.repoInstalledComparison.divergencePhases.includes("browser"))
+    assert.equal(report.repoInstalledComparison.installedArtifactPath, relativeArtifactPath)
   } finally {
     rmSync(tempDir, { recursive: true, force: true })
   }

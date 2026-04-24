@@ -2,9 +2,15 @@ import { existsSync, readFileSync } from "node:fs"
 import { mkdir, writeFile } from "node:fs/promises"
 import { dirname, join } from "node:path"
 import { spawn } from "node:child_process"
-import { deriveInstalledModeLaneCoverage, loadInstalledModeProofArtifact, resolveInstalledModeArtifactPath } from "../../src/tests/integration/helpers/installed-mode-parity.ts"
+import {
+  DEFAULT_INSTALLED_MODE_PARITY_ARTIFACT_PATH,
+  INSTALLED_MODE_LANE_NAME,
+  deriveInstalledModeLaneCoverage,
+  loadInstalledModeProofArtifact,
+  resolveInstalledModeArtifactPath,
+} from "../../src/tests/integration/helpers/installed-mode-parity.ts"
 
-export const BASELINE_REPORT_VERSION = 3 as const
+export const BASELINE_REPORT_VERSION = 4 as const
 export const BASELINE_REPORT_PATH = "tests/parity/artifacts/baseline-report.json" as const
 export const PARITY_MANIFEST_PATH = "tests/fixtures/parity-web-task-manifest.json" as const
 export const DEFAULT_REPO_MODE_PARITY_ARTIFACT_PATH = "tests/fixtures/recordings/repo-mode-parity-web-task.json" as const
@@ -123,6 +129,23 @@ export interface BaselineSummary {
   uncoveredCapabilityNames: string[]
 }
 
+export interface RepoInstalledPhaseComparison {
+  phase: RepoModePhaseName
+  repoStatus: "passed" | "failed" | "missing"
+  installedStatus: "passed" | "failed" | "missing"
+  matches: boolean
+}
+
+export interface RepoInstalledComparison {
+  repoLaneName: typeof REPO_MODE_LANE_NAME
+  installedLaneName: typeof INSTALLED_MODE_LANE_NAME
+  repoArtifactPath: string | null
+  installedArtifactPath: string | null
+  comparableWithoutRerun: boolean
+  divergencePhases: RepoModePhaseName[]
+  phaseComparisons: RepoInstalledPhaseComparison[]
+}
+
 export interface BaselineReport {
   version: typeof BASELINE_REPORT_VERSION
   generatedAt: string
@@ -132,6 +155,7 @@ export interface BaselineReport {
   lanes: BaselineLaneResult[]
   parityManifest: ParityManifest
   uncoveredCapabilities: UncoveredCapabilityReportRow[]
+  repoInstalledComparison: RepoInstalledComparison
   reconciledFoundations: readonly typeof M113_RECONCILIATION[]
 }
 
@@ -167,6 +191,7 @@ const REPO_MODE_CAPABILITY_PHASE: Record<string, RepoModePhaseName> = {
 
 export function getBaselineLanes(env: NodeJS.ProcessEnv = process.env): readonly BaselineLaneDefinition[] {
   const repoModeArtifactPath = env.GSD_REPO_MODE_PARITY_ARTIFACT?.trim() || DEFAULT_REPO_MODE_PARITY_ARTIFACT_PATH
+  const installedModeArtifactPath = resolveInstalledModeArtifactPath(env)
 
   return [
     {
@@ -247,15 +272,15 @@ export function getBaselineLanes(env: NodeJS.ProcessEnv = process.env): readonly
       description: "Deterministic recorded repo/dev coding-loop proof with phase-local diagnostics and artifact-path coverage.",
     },
     {
-      name: "pack-install",
-      target: "src/tests/integration/pack-install.test.ts",
-      runner: "node-test",
+      name: INSTALLED_MODE_LANE_NAME,
+      target: installedModeArtifactPath,
+      runner: "recorded-artifact",
       proofClass: "installed-binary",
       parityScope: "installed-mode",
-      provesCodingLoop: false,
-      timeoutMs: 120_000,
+      provesCodingLoop: true,
+      timeoutMs: 1_000,
       skip: "never",
-      description: "Pack/install contract coverage for the published tarball/binary shape.",
+      description: "Deterministic recorded installed packaged coding-loop proof with phase-local diagnostics and artifact-path coverage.",
     },
   ] as const
 }
@@ -512,7 +537,9 @@ function executeRecordedArtifactLane(
   const startedAt = Date.now()
 
   try {
-    const artifact = loadRepoModeProofArtifact(lane.target, cwd)
+    const artifact = lane.name === INSTALLED_MODE_LANE_NAME
+      ? loadInstalledModeProofArtifact(lane.target, cwd)
+      : loadRepoModeProofArtifact(lane.target, cwd)
     const failedPhase = artifact.phaseResults.find((entry) => entry.status === "failed")?.phase ?? null
     return {
       name: lane.name,
@@ -816,7 +843,7 @@ export function reconcileParityManifestWithLaneResults(
   laneResults: readonly BaselineLaneResult[],
 ): ParityManifest {
   const repoModeLane = laneResults.find((lane) => lane.name === REPO_MODE_LANE_NAME)
-  const installedModeLane = laneResults.find((lane) => lane.name === "pack-install")
+  const installedModeLane = laneResults.find((lane) => lane.name === INSTALLED_MODE_LANE_NAME)
 
   const capabilities = manifest.capabilities.map((capability) => {
     const repoDerived = deriveRepoLaneCoverage(repoModeLane, capability.name)
@@ -824,7 +851,7 @@ export function reconcileParityManifestWithLaneResults(
     const laneCoverage = {
       ...capability.laneCoverage,
       [REPO_MODE_LANE_NAME]: repoDerived.coverage,
-      ["pack-install"]: installedDerived.coverage,
+      [INSTALLED_MODE_LANE_NAME]: installedDerived.coverage,
     }
 
     const hasUncovered = Object.values(laneCoverage).includes("not-covered")
@@ -927,6 +954,34 @@ export function summarizeBaselineResults(
   }
 }
 
+export function buildRepoInstalledComparison(laneResults: readonly BaselineLaneResult[]): RepoInstalledComparison {
+  const repoLane = laneResults.find((lane) => lane.name === REPO_MODE_LANE_NAME)
+  const installedLane = laneResults.find((lane) => lane.name === INSTALLED_MODE_LANE_NAME)
+
+  const phaseComparisons = REPO_MODE_PHASES.map((phase) => {
+    const repoPhase = repoLane?.phaseResults.find((entry) => entry.phase === phase)
+    const installedPhase = installedLane?.phaseResults.find((entry) => entry.phase === phase)
+    const repoStatus = repoPhase?.status ?? "missing"
+    const installedStatus = installedPhase?.status ?? "missing"
+    return {
+      phase,
+      repoStatus,
+      installedStatus,
+      matches: repoStatus === installedStatus,
+    } satisfies RepoInstalledPhaseComparison
+  })
+
+  return {
+    repoLaneName: REPO_MODE_LANE_NAME,
+    installedLaneName: INSTALLED_MODE_LANE_NAME,
+    repoArtifactPath: repoLane?.artifactPath ?? null,
+    installedArtifactPath: installedLane?.artifactPath ?? null,
+    comparableWithoutRerun: Boolean(repoLane?.artifactPath && installedLane?.artifactPath),
+    divergencePhases: phaseComparisons.filter((phase) => !phase.matches).map((phase) => phase.phase),
+    phaseComparisons,
+  }
+}
+
 export async function createBaselineReport(
   options: {
     cwd?: string
@@ -959,6 +1014,7 @@ export async function createBaselineReport(
     lanes: laneResults,
     parityManifest: reconciledManifest,
     uncoveredCapabilities,
+    repoInstalledComparison: buildRepoInstalledComparison(laneResults),
     reconciledFoundations: [M113_RECONCILIATION],
   }
 }

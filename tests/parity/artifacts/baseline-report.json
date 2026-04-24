@@ -1,19 +1,20 @@
 {
-  "version": 3,
-  "generatedAt": "2026-04-24T06:50:37.370Z",
+  "version": 4,
+  "generatedAt": "2026-04-24T07:05:49.645Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
     "verdict": "failing",
     "totalLanes": 8,
-    "passed": 6,
-    "failed": 1,
+    "passed": 5,
+    "failed": 2,
     "skipped": 1,
     "timedOut": 0,
     "provesCodingLoop": true,
     "uncoveredLaneNames": [
       "smoke-runner",
-      "live-runner"
+      "live-runner",
+      "pack-install"
     ],
     "proofClassCounts": {
       "smoke": 1,
@@ -41,7 +42,7 @@
       "status": "failed",
       "skipReason": "smoke-runner exited with code 1",
       "exitCode": 1,
-      "durationMs": 7711,
+      "durationMs": 14728,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -60,7 +61,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 32,
+      "durationMs": 51,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -98,7 +99,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 25695,
+      "durationMs": 33074,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -117,7 +118,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 33,
+      "durationMs": 40,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -139,7 +140,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 33,
+      "durationMs": 35,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -161,7 +162,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 2,
+      "durationMs": 1,
       "command": [
         "artifact",
         "tests/fixtures/recordings/repo-mode-parity-web-task.json"
@@ -228,25 +229,78 @@
     },
     {
       "name": "pack-install",
-      "target": "src/tests/integration/pack-install.test.ts",
-      "runner": "node-test",
+      "target": ".tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json",
+      "runner": "recorded-artifact",
       "proofClass": "installed-binary",
       "parityScope": "installed-mode",
-      "provesCodingLoop": false,
-      "status": "passed",
-      "skipReason": null,
-      "exitCode": 0,
-      "durationMs": 30,
+      "provesCodingLoop": true,
+      "status": "failed",
+      "skipReason": "pack-install failed during browser",
+      "exitCode": 1,
+      "durationMs": 0,
       "command": [
-        "--import",
-        "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
-        "--experimental-strip-types",
-        "--test",
-        "src/tests/integration/pack-install.test.ts"
+        "artifact",
+        ".tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json"
       ],
-      "artifactPath": null,
-      "failedPhase": null,
-      "phaseResults": []
+      "artifactPath": ".tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json",
+      "failedPhase": "browser",
+      "phaseResults": [
+        {
+          "phase": "inspect",
+          "status": "passed",
+          "summary": "Inspected TASK.md, src/task.ts, src/main.ts, and tests/task.spec.ts inside the installed-mode fixture before editing.",
+          "command": {
+            "command": "read tests/fixtures/parity-web-task/TASK.md && read tests/fixtures/parity-web-task/src/task.ts && read tests/fixtures/parity-web-task/src/main.ts && read tests/fixtures/parity-web-task/tests/task.spec.ts",
+            "exitCode": 0,
+            "stdoutSnippet": "Identified src/task.ts as the change target and tests/task.spec.ts as the copy contract."
+          }
+        },
+        {
+          "phase": "edit",
+          "status": "passed",
+          "summary": "Edited src/task.ts through the packaged umb workflow so getStatusMessage() returns the completed UI copy.",
+          "command": {
+            "command": "edit tests/fixtures/parity-web-task/src/task.ts",
+            "exitCode": 0,
+            "stdoutSnippet": "Replaced Build status: In progress with Build status: Complete."
+          }
+        },
+        {
+          "phase": "test",
+          "status": "passed",
+          "summary": "Ran the fixture task test from the installed-mode sandbox and observed a passing result.",
+          "command": {
+            "command": "npm test",
+            "exitCode": 0,
+            "stdoutSnippet": "tests/task.spec.ts: getStatusMessage returns the completed UI copy required by TASK.md"
+          }
+        },
+        {
+          "phase": "dev-server",
+          "status": "passed",
+          "summary": "Started the fixture dev server from the packaged install and waited for the READY URL on port 4173.",
+          "command": {
+            "command": "npm run dev",
+            "exitCode": 0,
+            "stdoutSnippet": "READY http://127.0.0.1:4173"
+          }
+        },
+        {
+          "phase": "browser",
+          "status": "failed",
+          "summary": "Browser assertion failed for completed copy in installed mode.",
+          "command": {
+            "command": "browser_assert text_visible #status-message",
+            "exitCode": 1,
+            "stderrSnippet": "Expected completed status copy from installed mode"
+          },
+          "browser": {
+            "assertion": "#status-message text",
+            "expected": "Build status: Complete",
+            "actual": "Build status: In progress"
+          }
+        }
+      ]
     }
   ],
   "parityManifest": {
@@ -263,7 +317,7 @@
           "Uses tracked fixture files instead of relying on ephemeral runtime artifacts."
         ],
         "proof": "uncovered",
-        "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+        "currentGap": "Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in smoke-runner, fixtures-runner, live-runner, live-regression-runner, e2e-smoke, e2e-headless.",
         "laneCoverage": {
           "smoke-runner": "not-covered",
           "fixtures-runner": "partial",
@@ -272,7 +326,7 @@
           "e2e-smoke": "not-covered",
           "e2e-headless": "partial",
           "repo-mode-coding-loop": "covered",
-          "pack-install": "not-covered"
+          "pack-install": "covered"
         }
       },
       {
@@ -284,7 +338,7 @@
           "Produces a diff that can be checked in git-tracked fixture files."
         ],
         "proof": "uncovered",
-        "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+        "currentGap": "Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in smoke-runner, fixtures-runner, live-runner, live-regression-runner, e2e-smoke, e2e-headless.",
         "laneCoverage": {
           "smoke-runner": "not-covered",
           "fixtures-runner": "partial",
@@ -293,7 +347,7 @@
           "e2e-smoke": "not-covered",
           "e2e-headless": "partial",
           "repo-mode-coding-loop": "covered",
-          "pack-install": "not-covered"
+          "pack-install": "covered"
         }
       },
       {
@@ -305,7 +359,7 @@
           "Uses the test result to determine whether the fixture task is complete."
         ],
         "proof": "uncovered",
-        "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+        "currentGap": "Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in smoke-runner, fixtures-runner, live-runner, live-regression-runner, e2e-smoke, e2e-headless.",
         "laneCoverage": {
           "smoke-runner": "not-covered",
           "fixtures-runner": "partial",
@@ -314,7 +368,7 @@
           "e2e-smoke": "partial",
           "e2e-headless": "partial",
           "repo-mode-coding-loop": "covered",
-          "pack-install": "not-covered"
+          "pack-install": "covered"
         }
       },
       {
@@ -326,7 +380,7 @@
           "Stops or cleans up the dev server after verification."
         ],
         "proof": "uncovered",
-        "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+        "currentGap": "Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in smoke-runner, fixtures-runner, live-runner, live-regression-runner, e2e-smoke, e2e-headless.",
         "laneCoverage": {
           "smoke-runner": "not-covered",
           "fixtures-runner": "not-covered",
@@ -335,7 +389,7 @@
           "e2e-smoke": "partial",
           "e2e-headless": "partial",
           "repo-mode-coding-loop": "covered",
-          "pack-install": "not-covered"
+          "pack-install": "covered"
         }
       },
       {
@@ -347,7 +401,7 @@
           "Captures enough observable evidence to diagnose a parity failure."
         ],
         "proof": "uncovered",
-        "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+        "currentGap": "Installed-mode proof failed during browser; inspect .tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json for phase-local diagnostics.",
         "laneCoverage": {
           "smoke-runner": "not-covered",
           "fixtures-runner": "not-covered",
@@ -356,7 +410,7 @@
           "e2e-smoke": "not-covered",
           "e2e-headless": "partial",
           "repo-mode-coding-loop": "covered",
-          "pack-install": "not-covered"
+          "pack-install": "partial"
         }
       }
     ]
@@ -366,14 +420,15 @@
       "capabilityName": "inspect-repository-context",
       "proof": "uncovered",
       "uncovered": true,
-      "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+      "currentGap": "Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in smoke-runner, fixtures-runner, live-runner, live-regression-runner, e2e-smoke, e2e-headless.",
       "observableCompletionCriteria": [
         "Reads the fixture app files that define the task surface before making edits.",
         "Identifies the target route or component that must change for the fixture task.",
         "Uses tracked fixture files instead of relying on ephemeral runtime artifacts."
       ],
       "coveringLaneNames": [
-        "repo-mode-coding-loop"
+        "repo-mode-coding-loop",
+        "pack-install"
       ],
       "partialLaneNames": [
         "fixtures-runner",
@@ -383,22 +438,22 @@
         "smoke-runner",
         "live-runner",
         "live-regression-runner",
-        "e2e-smoke",
-        "pack-install"
+        "e2e-smoke"
       ]
     },
     {
       "capabilityName": "edit-application-code",
       "proof": "uncovered",
       "uncovered": true,
-      "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+      "currentGap": "Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in smoke-runner, fixtures-runner, live-runner, live-regression-runner, e2e-smoke, e2e-headless.",
       "observableCompletionCriteria": [
         "Applies a code change to the fixture app rather than only editing test snapshots or metadata.",
         "Leaves the fixture in a runnable state after the change.",
         "Produces a diff that can be checked in git-tracked fixture files."
       ],
       "coveringLaneNames": [
-        "repo-mode-coding-loop"
+        "repo-mode-coding-loop",
+        "pack-install"
       ],
       "partialLaneNames": [
         "fixtures-runner",
@@ -408,22 +463,22 @@
         "smoke-runner",
         "live-runner",
         "live-regression-runner",
-        "e2e-smoke",
-        "pack-install"
+        "e2e-smoke"
       ]
     },
     {
       "capabilityName": "run-targeted-tests",
       "proof": "uncovered",
       "uncovered": true,
-      "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+      "currentGap": "Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in smoke-runner, fixtures-runner, live-runner, live-regression-runner, e2e-smoke, e2e-headless.",
       "observableCompletionCriteria": [
         "Runs the fixture's task-scoped test command after editing.",
         "Reports pass/fail status with exit code visibility.",
         "Uses the test result to determine whether the fixture task is complete."
       ],
       "coveringLaneNames": [
-        "repo-mode-coding-loop"
+        "repo-mode-coding-loop",
+        "pack-install"
       ],
       "partialLaneNames": [
         "fixtures-runner",
@@ -433,22 +488,22 @@
       "uncoveredLaneNames": [
         "smoke-runner",
         "live-runner",
-        "live-regression-runner",
-        "pack-install"
+        "live-regression-runner"
       ]
     },
     {
       "capabilityName": "manage-dev-server-lifecycle",
       "proof": "uncovered",
       "uncovered": true,
-      "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+      "currentGap": "Repo-mode and installed-mode proofs cover this capability, but remaining parity gaps stay in smoke-runner, fixtures-runner, live-runner, live-regression-runner, e2e-smoke, e2e-headless.",
       "observableCompletionCriteria": [
         "Starts the fixture dev server without hanging the parent process.",
         "Waits for readiness with an observable signal rather than arbitrary sleeps.",
         "Stops or cleans up the dev server after verification."
       ],
       "coveringLaneNames": [
-        "repo-mode-coding-loop"
+        "repo-mode-coding-loop",
+        "pack-install"
       ],
       "partialLaneNames": [
         "e2e-smoke",
@@ -458,15 +513,14 @@
         "smoke-runner",
         "fixtures-runner",
         "live-runner",
-        "live-regression-runner",
-        "pack-install"
+        "live-regression-runner"
       ]
     },
     {
       "capabilityName": "verify-browser-behavior",
       "proof": "uncovered",
       "uncovered": true,
-      "currentGap": "Installed-mode proof lane pack-install is missing an artifact path.",
+      "currentGap": "Installed-mode proof failed during browser; inspect .tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json for phase-local diagnostics.",
       "observableCompletionCriteria": [
         "Navigates to the running fixture app in a browser context.",
         "Checks the intended UI state with explicit assertions rather than prose only.",
@@ -476,18 +530,60 @@
         "repo-mode-coding-loop"
       ],
       "partialLaneNames": [
-        "e2e-headless"
+        "e2e-headless",
+        "pack-install"
       ],
       "uncoveredLaneNames": [
         "smoke-runner",
         "fixtures-runner",
         "live-runner",
         "live-regression-runner",
-        "e2e-smoke",
-        "pack-install"
+        "e2e-smoke"
       ]
     }
   ],
+  "repoInstalledComparison": {
+    "repoLaneName": "repo-mode-coding-loop",
+    "installedLaneName": "pack-install",
+    "repoArtifactPath": "tests/fixtures/recordings/repo-mode-parity-web-task.json",
+    "installedArtifactPath": ".tmp-installed-mode-parity-contract-cDpgf0/installed-mode-parity-web-task.failed.json",
+    "comparableWithoutRerun": true,
+    "divergencePhases": [
+      "browser"
+    ],
+    "phaseComparisons": [
+      {
+        "phase": "inspect",
+        "repoStatus": "passed",
+        "installedStatus": "passed",
+        "matches": true
+      },
+      {
+        "phase": "edit",
+        "repoStatus": "passed",
+        "installedStatus": "passed",
+        "matches": true
+      },
+      {
+        "phase": "test",
+        "repoStatus": "passed",
+        "installedStatus": "passed",
+        "matches": true
+      },
+      {
+        "phase": "dev-server",
+        "repoStatus": "passed",
+        "installedStatus": "passed",
+        "matches": true
+      },
+      {
+        "phase": "browser",
+        "repoStatus": "passed",
+        "installedStatus": "failed",
+        "matches": false
+      }
+    ]
+  },
   "reconciledFoundations": [
     {
       "milestoneId": "M113",

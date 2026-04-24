@@ -12,7 +12,7 @@
         "Uses tracked fixture files instead of relying on ephemeral runtime artifacts."
       ],
       "proof": "uncovered",
-      "currentGap": "S01 only inventories existing lanes; none of them yet prove an agent can inspect a fresh web-task fixture and choose the right change target.",
+      "currentGap": "Repo-mode and installed-mode recorded proof lanes now cover inspect, but broader parity gaps remain in smoke, fixture replay, live, and headless support lanes.",
       "laneCoverage": {
         "smoke-runner": "not-covered",
         "fixtures-runner": "partial",
@@ -20,8 +20,8 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "not-covered",
         "e2e-headless": "partial",
-        "repo-mode-coding-loop": "not-covered",
-        "pack-install": "not-covered"
+        "repo-mode-coding-loop": "covered",
+        "pack-install": "covered"
       }
     },
     {
@@ -33,7 +33,7 @@
         "Produces a diff that can be checked in git-tracked fixture files."
       ],
       "proof": "uncovered",
-      "currentGap": "Current S01 lanes prove command surfaces and packaging contracts, but not a truthful code-edit loop against the purpose-built web fixture.",
+      "currentGap": "Repo-mode and installed-mode recorded proof lanes now cover edit execution, but smoke, fixture replay, live, and headless support lanes still leave wider parity gaps visible.",
       "laneCoverage": {
         "smoke-runner": "not-covered",
         "fixtures-runner": "partial",
@@ -41,8 +41,8 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "not-covered",
         "e2e-headless": "partial",
-        "repo-mode-coding-loop": "not-covered",
-        "pack-install": "not-covered"
+        "repo-mode-coding-loop": "covered",
+        "pack-install": "covered"
       }
     },
     {
@@ -54,7 +54,7 @@
         "Uses the test result to determine whether the fixture task is complete."
       ],
       "proof": "uncovered",
-      "currentGap": "Existing smoke and integration lanes run repository tests, but they do not yet prove that umb can drive the fixture's own task-scoped test loop.",
+      "currentGap": "Repo-mode and installed-mode recorded proof lanes now cover task-scoped tests, but baseline parity still exposes remaining gaps in smoke, live, and generalized fixture/headless lanes.",
       "laneCoverage": {
         "smoke-runner": "not-covered",
         "fixtures-runner": "partial",
@@ -62,8 +62,8 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "partial",
         "e2e-headless": "partial",
-        "repo-mode-coding-loop": "not-covered",
-        "pack-install": "not-covered"
+        "repo-mode-coding-loop": "covered",
+        "pack-install": "covered"
       }
     },
     {
@@ -75,7 +75,7 @@
         "Stops or cleans up the dev server after verification."
       ],
       "proof": "uncovered",
-      "currentGap": "No current S01 lane proves dev-server lifecycle management against the purpose-built parity fixture yet.",
+      "currentGap": "Repo-mode and installed-mode recorded proof lanes now cover dev-server lifecycle handling, but smoke, fixture replay, live, and headless support lanes still leave broader parity work open.",
       "laneCoverage": {
         "smoke-runner": "not-covered",
         "fixtures-runner": "not-covered",
@@ -83,8 +83,8 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "partial",
         "e2e-headless": "partial",
-        "repo-mode-coding-loop": "not-covered",
-        "pack-install": "not-covered"
+        "repo-mode-coding-loop": "covered",
+        "pack-install": "covered"
       }
     },
     {
@@ -96,7 +96,7 @@
         "Captures enough observable evidence to diagnose a parity failure."
       ],
       "proof": "uncovered",
-      "currentGap": "The baseline report can currently inventory lanes, but none of those lanes yet prove browser-assisted verification of the small web-task fixture.",
+      "currentGap": "Repo-mode and installed-mode recorded proof lanes now cover browser verification, but broader parity gaps remain in smoke, fixture replay, live, and headless support lanes.",
       "laneCoverage": {
         "smoke-runner": "not-covered",
         "fixtures-runner": "not-covered",
@@ -104,8 +104,8 @@
         "live-regression-runner": "not-covered",
         "e2e-smoke": "not-covered",
         "e2e-headless": "partial",
-        "repo-mode-coding-loop": "not-covered",
-        "pack-install": "not-covered"
+        "repo-mode-coding-loop": "covered",
+        "pack-install": "covered"
       }
     }
   ]

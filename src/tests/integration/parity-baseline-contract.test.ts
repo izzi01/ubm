@@ -16,7 +16,8 @@ const expectedTargets = [
   "tests/live-regression/run.ts",
   "src/tests/integration/e2e-smoke.test.ts",
   "src/tests/integration/e2e-headless.test.ts",
-  "src/tests/integration/pack-install.test.ts",
+  "tests/fixtures/recordings/repo-mode-parity-web-task.json",
+  "tests/fixtures/recordings/installed-mode-parity-web-task.json",
 ] as const
 
 function runNode(args: string[], env: NodeJS.ProcessEnv = process.env, cwd: string = repoRoot): { stdout: string; stderr: string; status: number } {
@@ -79,9 +80,9 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
     assert.equal(result.status, 0, `runner stderr:\n${result.stderr}`)
 
     const report = JSON.parse(result.stdout)
-    assert.equal(report.version, 2)
+    assert.equal(report.version, 4)
     assert.equal(report.summary.verdict, "failing")
-    assert.equal(report.summary.provesCodingLoop, false)
+    assert.equal(report.summary.provesCodingLoop, true)
     assert.equal(report.lanes.length, expectedTargets.length)
     assert.equal(typeof report.generatedAt, "string")
     assert.ok(report.artifactPath.endsWith("tests/parity/artifacts/baseline-report.json"))
@@ -98,6 +99,10 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
     assert.equal(byName.get("live-runner").status, "skipped")
     assert.match(byName.get("live-runner").skipReason, /GSD_LIVE_TESTS/i)
     assert.equal(byName.get("live-regression-runner").status, "passed")
+    assert.equal(report.repoInstalledComparison.repoArtifactPath, "tests/fixtures/recordings/repo-mode-parity-web-task.json")
+    assert.equal(report.repoInstalledComparison.installedArtifactPath, "tests/fixtures/recordings/installed-mode-parity-web-task.json")
+    assert.equal(report.repoInstalledComparison.comparableWithoutRerun, true)
+    assert.deepEqual(report.repoInstalledComparison.divergencePhases, [])
 
     const artifact = JSON.parse(readFileSync(join(repoRoot, "tests", "parity", "artifacts", "baseline-report.json"), "utf8"))
     assert.equal(artifact.summary.verdict, report.summary.verdict)
@@ -180,6 +185,7 @@ test("baseline helpers classify invalid metadata, missing targets, skip semantic
   )
   assert.equal(timedOut.status, "timed_out")
   assert.match(timedOut.skipReason, /forced-timeout exceeded timeout/i)
+  rmSync(timedOutDir, { recursive: true, force: true })
 
   const spawnFailure = await parity.executeBaselineLane(
     {
@@ -195,6 +201,4 @@ test("baseline helpers classify invalid metadata, missing targets, skip semantic
   )
   assert.equal(spawnFailure.status, "failed")
   assert.match(spawnFailure.skipReason, /spawn-missing-cwd spawn failed/i)
-})
-atch(spawnFailure.skipReason, /spawn-missing-cwd spawn failed/i)
 })
