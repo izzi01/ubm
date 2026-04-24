@@ -21,7 +21,7 @@ Release consumers can rely on a single report/gate for the secondary parity band
 
 ## Tasks
 
-- [ ] **T01: Define worktree/session and rebrand parity contracts** `est:1 day`
+- [x] **T01: Define worktree/session and rebrand parity contracts** `est:1 day`
   Audit the current worktree/session/recovery and operator-facing rebrand surfaces that still matter for parity, then encode them into deterministic checks. Focus on create/resume/merge or equivalent current branchless flows plus help/package/runtime messaging that users actually see, ensuring the final release gate can treat them as explicit required or optional lanes rather than informal expectations.
   - Files: `src/resources/extensions/gsd/auto-worktree.ts`, `src/resources/extensions/gsd/auto-recovery.ts`, `src/help-text.ts`, `src/cli.ts`, `src/worktree-cli.ts`, `tests/fixtures/worktree-session-parity-manifest.json`, `src/tests/integration/worktree-session-parity-contract.test.ts`, `src/tests/integration/rebrand-surface-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/worktree-session-parity-contract.test.ts src/tests/integration/rebrand-surface-contract.test.ts

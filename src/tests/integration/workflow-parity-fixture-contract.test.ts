@@ -130,7 +130,7 @@ test("workflow parity manifest locks the expected phase sequence, tools, and per
       entity: "task",
       field: "verification_result",
       from: "missing",
-      to: "passed",
+      to: "node --test src/resources/extensions/gsd/tests/workflow-tool-executors.test.ts",
     },
   ])
 })
@@ -153,7 +153,7 @@ test("workflow parity manifest requires deterministic artifacts and explicit dia
     pathTemplate: ".gsd/milestones/<milestoneId>/slices/<sliceId>/<sliceId>-PLAN.md",
     kind: "slice-plan",
     producerPhase: "plan-slice",
-    mustContain: ["# <sliceId>:", "## Goal", "## Tasks"],
+    mustContain: ["# <sliceId>:", "**Goal:**", "## Tasks"],
   })
   assert.deepEqual(artifactById.get("task-plan"), {
     id: "task-plan",

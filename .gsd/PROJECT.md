@@ -25,8 +25,10 @@ Even if everything else is cut, `umb` must still be usable to make software end-
 - M115/S01 is complete: the repo has a tracked secondary-surface inventory, a secondary parity lane/fixture manifest, and canonical `secondaryParity` wiring in `tests/parity/artifacts/baseline-report.json` covering `web-mode`, `mcp`, `workflow-bmad`, and `worktree-session-recovery`
 - M115/S02 is complete: web-mode parity has a tracked deterministic fixture/manifest contract plus a locking integration contract that verifies the baseline report emits a truthful web-mode secondary parity row with explicit present fixtures, planned release-readable artifact path, and actionable uncovered-gap metadata
 - M115/S03 is complete: MCP parity now has a deterministic stdio fixture server, tracked manifest contract, dedicated `mcpParity` report block, machine-readable artifacts at `tests/parity/artifacts/mcp-parity.json` and `tests/fixtures/recordings/mcp-parity.json`, and locked diagnostics for discovery, schema inspection, successful invocation, and intentional failure attribution
-- MCP is now release-readable through the dedicated `mcpParity` block even while the broader `secondaryParity` matrix still remains partial for other secondary surfaces and still carries legacy MCP gap metadata pending later reconciliation
-- The remaining M115 work is still ahead: workflow/BMAD parity proof (S04) and the integrated secondary-surface release gate (S05)
+- M115/S04 is complete: workflow/BMAD parity now has a deterministic planning-to-execution manifest, a dedicated `workflowParity` block in the canonical baseline report, tracked artifacts at `tests/parity/artifacts/workflow-parity.json` and `tests/fixtures/recordings/workflow-parity.json`, resolver-backed execution that keeps the parity runner stable, and operator-facing diagnostics for missing artifacts, invalid transitions, and absent verification evidence
+- Workflow parity is intentionally scoped to one representative GSD planning-to-execution loop — milestone plan, slice plan, and task completion with persisted state transitions — instead of claiming every BMAD workflow template is covered
+- MCP and workflow are now release-readable through dedicated parity blocks even while the broader `secondaryParity` matrix remains partial for other secondary surfaces and still carries unreconciled gap metadata pending S05
+- The remaining M115 work is the integrated secondary-surface release gate (S05)
 
 ## Architecture / Key Patterns
 
@@ -53,9 +55,13 @@ Even if everything else is cut, `umb` must still be usable to make software end-
   - `tests/fixtures/secondary-parity-manifest.json` is the tracked source of truth for the four secondary surfaces and their required/optional proof lanes
   - `tests/fixtures/web-mode-parity-manifest.json` is the tracked source of truth for deterministic web-mode startup, project selection/switching, and browser-visible observables
   - `tests/fixtures/mcp-parity-manifest.json` is the tracked source of truth for deterministic MCP discovery, tool schema inspection, successful invocation, and intentional failure diagnostics
+  - `tests/fixtures/workflow-parity-manifest.json` is the tracked source of truth for the representative workflow/BMAD planning-to-execution contract
   - `tests/parity/mcp-parity.ts` runs the dedicated MCP parity lane and writes tracked MCP parity artifacts for downstream release/report consumers
+  - `tests/parity/workflow-parity.ts` runs the representative workflow parity lane and writes tracked workflow parity artifacts for downstream release/report consumers
+  - `tests/parity/workflow-parity-worker.ts` isolates deep GSD runtime imports behind a resolver-backed subprocess so the main parity runner can stay on plain `--experimental-strip-types`
   - `src/tests/integration/web-mode-parity-contract.test.ts` locks the current truthful web-mode parity row in the canonical baseline report so downstream release work cannot silently change fixture paths, missing required lanes, or gap semantics
-  - `src/tests/integration/mcp-parity-contract.test.ts` and `src/tests/integration/mcp-parity-diagnostics-contract.test.ts` lock the new MCP report block, artifact paths, and operator-facing failure attribution contract
+  - `src/tests/integration/mcp-parity-contract.test.ts` and `src/tests/integration/mcp-parity-diagnostics-contract.test.ts` lock the MCP report block, artifact paths, and operator-facing failure attribution contract
+  - `src/tests/integration/workflow-parity-fixture-contract.test.ts`, `src/tests/integration/workflow-parity-contract.test.ts`, and `src/tests/integration/workflow-parity-diagnostics-contract.test.ts` lock the workflow manifest, canonical baseline report row, artifact paths, persisted transition expectations, and operator-facing workflow diagnostics
   - deterministic coding-loop proof is represented as recorded-artifact lanes (`repo-mode-coding-loop` and `pack-install`) with explicit `inspect`, `edit`, `test`, `dev-server`, and `browser` phase diagnostics
   - `repoInstalledComparison` gives downstream slices and release operators a stable repo-vs-installed diff surface with artifact paths and per-phase matches/divergence
 - Current parity policy is truthfulness-first: secondary surfaces stay `partial` until dedicated release-readable proof lanes/artifacts exist, even if scattered lower-level tests already cover important behavior
@@ -83,4 +89,4 @@ See `.gsd/REQUIREMENTS.md` for the explicit capability contract, requirement sta
 - [x] M112: Implement BMAD method — add BMAD skill execution and multi-phase auto pipelines
 - [x] M113: Branchless worktree architecture — track planning artifacts in git and remove the sync layer
 - [ ] M114: AI coding app parity gate — core coding-loop proof and release-gate surfaces are assembled in code and recorded artifacts; milestone-level validation/completion remains pending
-- [ ] M115: UMB secondary-surface parity gate — S01 inventory/contracts, S02 web-mode parity proof, and S03 MCP parity proof are complete; workflow/BMAD proof and integrated secondary-surface release reporting remain ahead
+- [ ] M115: UMB secondary-surface parity gate — S01 inventory/contracts, S02 web-mode parity proof, S03 MCP parity proof, and S04 workflow/BMAD parity proof are complete; S05 integrated secondary-surface release reporting remains ahead

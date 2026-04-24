@@ -1,0 +1,142 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_4e6Gt9bK7E6lwm4KnlU0isZq",
+    "command": "printf '--- repo root ---\\n'; pwd; printf '\\n--- candidate files ---\\n'; rg -n \"worktree|session|rebrand|umb|gsd\" src tests package.json README* --hidden --glob '!node_modules' --glob '!.git'",
+    "exitCode": 0,
+    "outputSnippet": "src/resources/extensions/gsd/tests/integration/gitignore-tracked-gsd.test.ts:202:test(\"migrateToExternalState aborts when .gsd/ has tracked files (#1364)\", (t) => {\nsrc/resources/extensions/gsd/tests/integration/gitignore-tracked-gsd.test.ts:205:    // Create tracked .gsd/ files\nsrc/resources/extensions/gsd/tests/integration/gitignore-tracked-gsd.test.ts:206:    mkdirSync(join(dir, \".gsd\", \"milestones\"), { recursive: true });\nsrc/resources/extensions/gsd/tests/integration/gitignore-tracked-gsd.t",
+    "timestamp": 1777028685405
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_NGpPFLNlQc77YW6FC77mEinK",
+    "command": "ls -l tests/fixtures/worktree-session-parity-manifest.json src/tests/integration/worktree-session-parity-contract.test.ts src/tests/integration/rebrand-surface-contract.test.ts 2>/dev/null || true",
+    "exitCode": 0,
+    "outputSnippet": "(no output)",
+    "timestamp": 1777028692547
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_mUGT87yt4wjBzQgrjzxRpvnN",
+    "command": "rg -n \"parity-contract|contract\\.test|rebrand|worktree.*merge|resume|recover|sessions\" src/tests src/resources/extensions/gsd/tests tests --hidden --glob '!node_modules' --glob '!.git'",
+    "exitCode": 0,
+    "outputSnippet": "src/tests/integration/web-live-interaction-contract.test.ts:18:// Test infrastructure (reused from web-bridge-contract.test.ts)\nsrc/tests/integration/web-live-interaction-contract.test.ts:58:function makeWorkspaceFixture(): { projectCwd: string; sessionsDir: string; cleanup: () => void } {\nsrc/tests/integration/web-live-interaction-contract.test.ts:61:  const sessionsDir = join(root, \"sessions\");\nsrc/tests/integration/web-live-interaction-contract.test.ts:67:  mkdirSync(sessionsDir, { recursive:",
+    "timestamp": 1777028701035
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_USmZD1WYyuD7BvmsQnogoyWf",
+    "command": "rg -n \"drift-worktree-usage-merge|drift-worktree-usage-remove|drift-cli-warning-prefix|drift-cli-noninteractive-guidance|drift-cli-web-guidance\" tests/parity src tests --hidden --glob '!node_modules' --glob '!.git'",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/secondary-surface-inventory.ts:219:    id: \"drift-cli-warning-prefix\",\ntests/parity/secondary-surface-inventory.ts:229:    id: \"drift-cli-noninteractive-guidance\",\ntests/parity/secondary-surface-inventory.ts:239:    id: \"drift-cli-web-guidance\",\ntests/parity/secondary-surface-inventory.ts:249:    id: \"drift-worktree-usage-merge\",\ntests/parity/secondary-surface-inventory.ts:259:    id: \"drift-worktree-usage-remove\",\ntests/parity/secondary-surface-inventory.ts:219:    id: \"drift-cli-w",
+    "timestamp": 1777028716247
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_BPyZgKFtOWNj4RxRYcvHuYAB",
+    "command": "test -e tests/fixtures/worktree-session-parity-manifest.json && echo exists:tests/fixtures/worktree-session-parity-manifest.json; test -e src/tests/integration/worktree-session-parity-contract.test.ts && echo exists:src/tests/integration/worktree-session-parity-contract.test.ts; test -e src/tests/integration/rebrand-surface-contract.test.ts && echo exists:src/tests/integration/rebrand-surface-contract.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "(no output)\n\nCommand exited with code 1",
+    "timestamp": 1777028737132
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_i9LXu1eKzCxKkzala09L2Sax",
+    "command": "node - <<'NODE'\nconst fs=require('fs');\nconst path='src/cli.ts';\nconst lines=fs.readFileSync(path,'utf8').split(/\\n/);\nfor(const needle of ['[gsd] Warning: RTK unavailable','[gsd] Error: Interactive mode requires a terminal','[gsd]   gsd --web [path]']){\n  const idx=lines.findIndex(l=>l.includes(needle));\n  console.log(path, needle, idx+1);\n}\nconst path2='src/worktree-cli.ts';\nconst lines2=fs.readFileSync(path2,'utf8').split(/\\n/);\nfor(const needle of ['Usage: gsd worktree merge <name>','Usage: gsd worktree remove <name>']){\n  const idx=lines2.findIndex(l=>l.includes(needle));\n  console.log(path2, needle, idx+1);\n}\nNODE",
+    "exitCode": 0,
+    "outputSnippet": "src/cli.ts [gsd] Warning: RTK unavailable 148\nsrc/cli.ts [gsd] Error: Interactive mode requires a terminal 158\nsrc/cli.ts [gsd]   gsd --web [path] 744\nsrc/worktree-cli.ts Usage: gsd worktree merge <name> 177\nsrc/worktree-cli.ts Usage: gsd worktree remove <name> 263\n",
+    "timestamp": 1777028737132
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_egOO5l4EWJ4C1kBeTO06MTKm",
+    "command": "rg -n \"headless --resume|resume.*nonexistent|sessions --help|worktree --help|umb worktree|umb sessions\" src/tests/integration src --hidden --glob '!node_modules' --glob '!.git'",
+    "exitCode": 0,
+    "outputSnippet": "src/help-text.ts:26:    'Usage: umb sessions',\nsrc/help-text.ts:63:    'Usage: umb worktree <command> [args]',\nsrc/help-text.ts:82:    '  5. umb worktree merge Squash-merge into main when done',\nsrc/help-text.ts:87:    '  umb worktree list                   See all worktrees and their status',\nsrc/help-text.ts:88:    '  umb worktree merge auth-refactor    Merge and clean up',\nsrc/help-text.ts:89:    '  umb worktree clean                  Remove all merged/empty worktrees',\nsrc/help-text.ts:90:  ",
+    "timestamp": 1777028744227
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_ML8BstzyXfjDFRnCI7L2DHgt",
+    "command": "rg -n \"export function (createAutoWorktree|mergeMilestoneToMain|escapeStaleWorktree|cleanStaleRuntimeUnits|resolveResumeSession)|function (createAutoWorktree|mergeMilestoneToMain|escapeStaleWorktree|cleanStaleRuntimeUnits|resolveResumeSession)|buildLoopRemediationSteps\" src/resources/extensions/gsd/auto-worktree.ts src/resources/extensions/gsd/auto-recovery.ts src/headless.ts",
+    "exitCode": 0,
+    "outputSnippet": "src/resources/extensions/gsd/auto-recovery.ts:500:export function buildLoopRemediationSteps(\nsrc/headless.ts:104:export function resolveResumeSession(sessions: SessionInfo[], prefix: string): ResumeSessionResult {\nsrc/resources/extensions/gsd/auto-worktree.ts:197:export function escapeStaleWorktree(base: string): string {\nsrc/resources/extensions/gsd/auto-worktree.ts:244:export function cleanStaleRuntimeUnits(\nsrc/resources/extensions/gsd/auto-worktree.ts:346:export function createAutoWorktree(\n",
+    "timestamp": 1777028753548
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_ampJ7DCmanYf0E2fOU77BxCQ",
+    "command": "rg -n \"Usage: umb sessions|Usage: umb worktree|umb -w|umb worktree merge|umb worktree remove\" src/help-text.ts",
+    "exitCode": 0,
+    "outputSnippet": "26:    'Usage: umb sessions',\n63:    'Usage: umb worktree <command> [args]',\n74:    '  umb -w               Auto-name a new worktree, or resume the only active one',\n75:    '  umb -w my-feature    Create or resume a named worktree',\n78:    '  1. umb -w             Create worktree, start session inside it',\n81:    '  4. umb -w             Resume where you left off',\n82:    '  5. umb worktree merge Squash-merge into main when done',\n85:    '  umb -w                              Start in a new auto",
+    "timestamp": 1777028753549
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_VscuD0UYY58k37QrjvUuPONj",
+    "path": "tests/fixtures/worktree-session-parity-manifest.json",
+    "timestamp": 1777028780220
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_OeIfcfQTij1wAN2WxzUwSnlD",
+    "path": "src/tests/integration/worktree-session-parity-contract.test.ts",
+    "timestamp": 1777028799681
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_mwzP7rG8ae9Z0Q2nhykY7bzc",
+    "path": "src/tests/integration/worktree-session-parity-contract.test.ts",
+    "timestamp": 1777028844003
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_Nkv82dGywy7hk57sCa68eore",
+    "path": "src/tests/integration/rebrand-surface-contract.test.ts",
+    "timestamp": 1777028844004
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_XQWrOm3hFCvHEl39Pk9tz0D9",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/worktree-session-parity-contract.test.ts src/tests/integration/rebrand-surface-contract.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "✔ rebrand drift contract keeps the remaining worktree/session operator drift explicit and scoped (0.973804ms)\n✖ rebrand drift contract matches the tracked secondary-surface inventory findings (2.051211ms)\n✔ rebrand drift contract proves the remaining operator-visible strings still exist at the expected lines (0.73994ms)\n✔ worktree/session parity manifest stays scoped to the release-readable secondary surface contract (1.132158ms)\n✔ worktree/session parity contract pins the current branchless lif",
+    "timestamp": 1777028848420
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_E7W1zZ0S752VHfqdUL8nr0wb",
+    "path": "tests/fixtures/worktree-session-parity-manifest.json",
+    "timestamp": 1777028856660
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_m00dHIfdwdDMc42TQX40XtXv",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/worktree-session-parity-contract.test.ts src/tests/integration/rebrand-surface-contract.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "✔ rebrand drift contract keeps the remaining worktree/session operator drift explicit and scoped (0.87973ms)\n✖ rebrand drift contract matches the tracked secondary-surface inventory findings (0.746583ms)\n✔ rebrand drift contract proves the remaining operator-visible strings still exist at the expected lines (1.427164ms)\n✔ worktree/session parity manifest stays scoped to the release-readable secondary surface contract (0.95025ms)\n✔ worktree/session parity contract pins the current branchless life",
+    "timestamp": 1777028862871
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_R7S4stUtXrxZ36o3oIcq3Cdh",
+    "path": "src/tests/integration/rebrand-surface-contract.test.ts",
+    "timestamp": 1777028870675
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_AJgwTJvZAcbXW1ad93SHNYEn",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/worktree-session-parity-contract.test.ts src/tests/integration/rebrand-surface-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ rebrand drift contract keeps the remaining worktree/session operator drift explicit and scoped (0.869321ms)\n✔ rebrand drift contract matches the tracked secondary-surface inventory findings (0.93965ms)\n✔ rebrand drift contract proves the remaining operator-visible strings still exist at the expected lines (0.740441ms)\n✔ worktree/session parity manifest stays scoped to the release-readable secondary surface contract (1.105869ms)\n✔ worktree/session parity contract pins the current branchless lif",
+    "timestamp": 1777028873938
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_ixlbcWjkOzvAqqeRQPEgvmZ0",
+    "command": "python3 - <<'PY'\nimport time, subprocess\ncmd=['node','--import','./src/resources/extensions/gsd/tests/resolve-ts.mjs','--experimental-strip-types','--test','src/tests/integration/worktree-session-parity-contract.test.ts','src/tests/integration/rebrand-surface-contract.test.ts']\nt0=time.time()\nproc=subprocess.run(cmd,cwd='.',stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)\ndur=int((time.time()-t0)*1000)\nprint(proc.returncode)\nprint(dur)\nPY",
+    "exitCode": 0,
+    "outputSnippet": "0\n108\n",
+    "timestamp": 1777028880819
+  }
+]

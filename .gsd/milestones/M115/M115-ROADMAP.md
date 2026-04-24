@@ -22,10 +22,10 @@
 - [x] **S03: S03** `risk:high` `depends:[]`
   > After this: After this: umb can prove controlled MCP parity for discover → call → failure diagnostics on a repeatable fixture server rather than relying on anecdotal real-server usage.
 
-- [ ] **S04: S04** `risk:high` `depends:[]`
+- [x] **S04: S04** `risk:high` `depends:[]`
   > After this: After this: umb can prove a representative planning-to-execution workflow with the expected artifacts and state transitions, supporting a stronger parity claim than the core coding-loop fixture alone.
 
-- [ ] **S05: Integrated secondary-surface release gate** `risk:medium` `depends:[S01,S02,S03]`
+- [ ] **S05: S05** `risk:medium` `depends:[]`
   > After this: After this: one integrated parity command/report truthfully composes web mode, MCP, worktree/session/recovery, rebrand smoke checks, and the representative workflow proof into a release-facing secondary-surface parity gate.
 
 ## Boundary Map

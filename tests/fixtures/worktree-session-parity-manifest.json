@@ -1,0 +1,111 @@
+{
+  "version": 1,
+  "surfaceId": "worktree-session-recovery",
+  "goal": "Release-readable deterministic contract for branchless worktree/session/recovery parity and remaining operator-visible rebrand drift.",
+  "requiredContracts": {
+    "worktreeSession": [
+      {
+        "id": "branchless-worktree-create",
+        "kind": "source-export",
+        "path": "src/resources/extensions/gsd/auto-worktree.ts",
+        "symbol": "createAutoWorktree",
+        "status": "covered"
+      },
+      {
+        "id": "branchless-worktree-merge",
+        "kind": "source-export",
+        "path": "src/resources/extensions/gsd/auto-worktree.ts",
+        "symbol": "mergeMilestoneToMain",
+        "status": "covered"
+      },
+      {
+        "id": "stale-worktree-cwd-escape",
+        "kind": "source-export",
+        "path": "src/resources/extensions/gsd/auto-worktree.ts",
+        "symbol": "escapeStaleWorktree",
+        "status": "covered"
+      },
+      {
+        "id": "stale-runtime-unit-cleanup",
+        "kind": "source-export",
+        "path": "src/resources/extensions/gsd/auto-worktree.ts",
+        "symbol": "cleanStaleRuntimeUnits",
+        "status": "covered"
+      },
+      {
+        "id": "headless-resume-resolution",
+        "kind": "source-export",
+        "path": "src/headless.ts",
+        "symbol": "resolveResumeSession",
+        "status": "covered"
+      },
+      {
+        "id": "recovery-remediation-guidance",
+        "kind": "source-export",
+        "path": "src/resources/extensions/gsd/auto-recovery.ts",
+        "symbol": "buildLoopRemediationSteps",
+        "status": "covered"
+      }
+    ],
+    "operatorHelp": [
+      {
+        "id": "sessions-help-umb",
+        "kind": "help-text",
+        "path": "src/help-text.ts",
+        "match": "Usage: umb sessions",
+        "status": "covered"
+      },
+      {
+        "id": "worktree-help-umb",
+        "kind": "help-text",
+        "path": "src/help-text.ts",
+        "match": "Usage: umb worktree <command> [args]",
+        "status": "covered"
+      },
+      {
+        "id": "worktree-lifecycle-help-merge",
+        "kind": "help-text",
+        "path": "src/help-text.ts",
+        "match": "umb worktree merge",
+        "status": "covered"
+      }
+    ]
+  },
+  "rebrandDrift": [
+    {
+      "id": "drift-cli-warning-prefix",
+      "path": "src/cli.ts",
+      "match": "[gsd] Warning: RTK unavailable — continuing without shell-command compression",
+      "line": 148,
+      "status": "expected-drift"
+    },
+    {
+      "id": "drift-cli-noninteractive-guidance",
+      "path": "src/cli.ts",
+      "match": "[gsd]   gsd auto                       Auto-mode (pipeable, no TUI)",
+      "line": 160,
+      "status": "expected-drift"
+    },
+    {
+      "id": "drift-cli-web-guidance",
+      "path": "src/cli.ts",
+      "match": "[gsd]   gsd --web [path]               Browser-only web mode",
+      "line": 744,
+      "status": "expected-drift"
+    },
+    {
+      "id": "drift-worktree-usage-merge",
+      "path": "src/worktree-cli.ts",
+      "match": "Usage: gsd worktree merge <name>",
+      "line": 177,
+      "status": "expected-drift"
+    },
+    {
+      "id": "drift-worktree-usage-remove",
+      "path": "src/worktree-cli.ts",
+      "match": "Usage: gsd worktree remove <name>",
+      "line": 263,
+      "status": "expected-drift"
+    }
+  ]
+}
