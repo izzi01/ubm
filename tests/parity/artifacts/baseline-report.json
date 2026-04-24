@@ -1,18 +1,17 @@
 {
   "version": 4,
-  "generatedAt": "2026-04-24T11:23:32.820Z",
+  "generatedAt": "2026-04-24T13:32:34.660Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
-    "verdict": "failing",
+    "verdict": "partial",
     "totalLanes": 8,
-    "passed": 6,
-    "failed": 1,
+    "passed": 7,
+    "failed": 0,
     "skipped": 1,
     "timedOut": 0,
     "provesCodingLoop": true,
     "uncoveredLaneNames": [
-      "fixtures-runner",
       "live-runner"
     ],
     "proofClassCounts": {
@@ -41,7 +40,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 194,
+      "durationMs": 310,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -57,10 +56,10 @@
       "proofClass": "uncovered-coding-loop",
       "parityScope": "partial",
       "provesCodingLoop": false,
-      "status": "failed",
-      "skipReason": "fixtures-runner exited with code 1",
-      "exitCode": 1,
-      "durationMs": 23,
+      "status": "passed",
+      "skipReason": null,
+      "exitCode": 0,
+      "durationMs": 39,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -98,7 +97,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 17786,
+      "durationMs": 25415,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -117,7 +116,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 6565,
+      "durationMs": 7366,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -139,7 +138,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 8391,
+      "durationMs": 9076,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -161,7 +160,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 1,
+      "durationMs": 2,
       "command": [
         "artifact",
         "tests/fixtures/recordings/repo-mode-parity-web-task.json"
