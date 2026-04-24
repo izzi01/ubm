@@ -106,3 +106,6 @@ bun.lock
 
 # ── GSD baseline (auto-generated) ──
 .mcp.json
+
+# ── GSD baseline (auto-generated) ──
+.gsd
