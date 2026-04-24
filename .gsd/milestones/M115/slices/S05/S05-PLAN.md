@@ -31,7 +31,7 @@ Release consumers can rely on a single report/gate for the secondary parity band
   - Files: `tests/parity/secondary-lanes.ts`, `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/parity/secondary-release-gate.ts`, `src/tests/integration/secondary-release-gate-contract.test.ts`
   - Verify: node --experimental-strip-types tests/parity/secondary-release-gate.ts --format text && node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-release-gate-contract.test.ts
 
-- [ ] **T03: Publish secondary-surface UAT and diagnostics contract** `est:0.5 day`
+- [x] **T03: Publish secondary-surface UAT and diagnostics contract** `est:0.5 day`
   Add a human-readable UAT/reporting path for the secondary-surface parity band and confirm the final diagnostics stay truthful under pass/partial/fail outcomes. The output should help an operator understand what is proven now, what remains optional, and where to look when a lane breaks.
   - Files: `tests/parity/diagnostics.ts`, `tests/parity/human-uat-secondary.md`, `src/tests/integration/secondary-parity-diagnostics-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-parity-diagnostics-contract.test.ts

@@ -1,0 +1,90 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_NqkS7wo4v1itKp1aBrvbszf8",
+    "command": "rg -n \"human-uat|UAT|diagnostics contract|release gate\" tests/parity src/tests/integration -S",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/secondary-release-gate.ts:500:    summary: \"Live/provider-driven validation stays explicit and non-blocking in the secondary release gate.\",\ntests/parity/secondary-release-gate.ts:593:  lines.push(`Secondary parity release gate: verdict=${report.verdict}`)\nsrc/tests/integration/web-diagnostics-contract.test.ts:215:describe(\"diagnostics contract state\", () => {\nsrc/tests/integration/secondary-release-gate-contract.test.ts:47:test(\"secondary release gate composes required secondary su",
+    "timestamp": 1777029513432
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_5lrRe9CQfd6PtMVYyUZZMyM5",
+    "command": "rg -n \"renderParityDiagnostics|loadBaselineReport\\(|secondary release|SecondaryReleaseReport|secondary parity\" tests/parity src/tests/integration -S",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/secondary-release-gate.ts:72:export interface SecondaryReleaseReport {\ntests/parity/secondary-release-gate.ts:500:    summary: \"Live/provider-driven validation stays explicit and non-blocking in the secondary release gate.\",\ntests/parity/secondary-release-gate.ts:514:): SecondaryReleaseReport {\ntests/parity/secondary-release-gate.ts:591:export function renderSecondaryReleaseGateReport(report: SecondaryReleaseReport): string {\ntests/parity/secondary-release-gate.ts:671:  report: Seco",
+    "timestamp": 1777029525479
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_9cQ3uabuYzIwqgCyQIzWlGSg",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-release-gate-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ secondary release gate composes required secondary surfaces while keeping optional live/provider evidence non-blocking (139.828292ms)\n✔ secondary release gate fails when a required composed lane goes red and preserves failed surfaces, phases, and artifact paths (2.266018ms)\n✔ secondary release gate cli can consume the canonical baseline artifact without rerunning and exits non-zero when a required lane is red (110.217438ms)\n✔ secondary release gate cli writes the integrated artifact and emits ",
+    "timestamp": 1777029544729
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_RKAbwqFkIAMgCFuuZfn2MJ0i",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777029556598
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_ycwgNgOsICCoYbJgEmogfQTn",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777029608108
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_LRUvgoMZXYvHWpvMhHDRkOOk",
+    "path": "tests/parity/human-uat-secondary.md",
+    "timestamp": 1777029648822
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_6HSQ4eWkAbr1DNjRPI5oYJgf",
+    "path": "src/tests/integration/secondary-parity-diagnostics-contract.test.ts",
+    "timestamp": 1777029705758
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_hRLcGAUXXCc4DnYyp5rm0icp",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-parity-diagnostics-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ secondary diagnostics renderer keeps required, optional, and live secondary lanes human-auditable in the passing artifact (113.449155ms)\n✔ secondary diagnostics renderer preserves actionable failed surface, phase, and artifact attribution when a required lane is red (0.621181ms)\n✔ secondary diagnostics cli reads the tracked secondary artifact and exits non-zero when required lanes are red (135.495753ms)\n✔ secondary diagnostics cli fails with a precise error when the secondary release artifact ",
+    "timestamp": 1777029710965
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_fz4lYbGRTm49qEJOrtaVsLn6",
+    "command": "node --experimental-strip-types tests/parity/diagnostics.ts --surface secondary --report tests/parity/artifacts/secondary-release-report.json",
+    "exitCode": 0,
+    "outputSnippet": "Secondary parity diagnostics: verdict=passed\nrequiredLanesPassed: yes\nrequiredLaneNames: web-mode, mcp, workflow-bmad, worktree-session-recovery, rebrand-drift\nbaselineReportPath: tests/parity/artifacts/baseline-report.json\nsecondaryReleaseReportPath: tests/parity/artifacts/secondary-release-report.json\nsecondarySurfaceInventoryPath: tests/parity/artifacts/secondary-surface-inventory.json\nworktreeSessionManifestPath: tests/fixtures/worktree-session-parity-manifest.json\nmcpParityArtifactPath: tes",
+    "timestamp": 1777029717398
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_YAJjJ55FRbEkf8QioBCaQEfH",
+    "command": "node --experimental-strip-types tests/parity/secondary-release-gate.ts --report tests/parity/artifacts/baseline-report.json --format text",
+    "exitCode": 0,
+    "outputSnippet": "Secondary parity release gate: verdict=passed\nrequiredLanesPassed: yes\nrequiredLaneNames: web-mode, mcp, workflow-bmad, worktree-session-recovery, rebrand-drift\nbaselineReportPath: tests/parity/artifacts/baseline-report.json\nsecondaryReleaseReportPath: tests/parity/artifacts/secondary-release-report.json\nsecondarySurfaceInventoryPath: tests/parity/artifacts/secondary-surface-inventory.json\nworktreeSessionManifestPath: tests/fixtures/worktree-session-parity-manifest.json\nmcpParityArtifactPath: te",
+    "timestamp": 1777029717398
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_Ou49fvte3hjQDgw2SB7NuTKH",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-release-gate-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ secondary release gate composes required secondary surfaces while keeping optional live/provider evidence non-blocking (123.519953ms)\n✔ secondary release gate fails when a required composed lane goes red and preserves failed surfaces, phases, and artifact paths (2.230383ms)\n✔ secondary release gate cli can consume the canonical baseline artifact without rerunning and exits non-zero when a required lane is red (102.306098ms)\n✔ secondary release gate cli writes the integrated artifact and emits ",
+    "timestamp": 1777029717398
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_MmMmGWlNJvOFqmXYg6L0WrCF",
+    "command": "python3 - <<'PY'\nimport time, subprocess, json\ncmds = [\n    \"node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-parity-diagnostics-contract.test.ts\",\n    \"node --experimental-strip-types tests/parity/diagnostics.ts --surface secondary --report tests/parity/artifacts/secondary-release-report.json\",\n    \"node --experimental-strip-types tests/parity/secondary-release-gate.ts --report tests/parity/artifacts/baseline-report.json --format text\",\n    \"node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-release-gate-contract.test.ts\",\n]\nfor c in cmds:\n    start = time.time()\n    p = subprocess.run(c, shell=True, cwd='.', stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)\n    dur = int((time.time()-start)*1000)\n    verdict = '✅ pass' if p.returncode == 0 else '❌ fail'\n    print(json.dumps({'command': c, 'exitCode': p.returncode, 'verdict': verdict, 'durationMs': dur}))\nPY",
+    "exitCode": 0,
+    "outputSnippet": "{\"command\": \"node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-parity-diagnostics-contract.test.ts\", \"exitCode\": 0, \"verdict\": \"\\u2705 pass\", \"durationMs\": 421}\n{\"command\": \"node --experimental-strip-types tests/parity/diagnostics.ts --surface secondary --report tests/parity/artifacts/secondary-release-report.json\", \"exitCode\": 0, \"verdict\": \"\\u2705 pass\", \"durationMs\": 100}\n{\"command\": \"node --experimental-strip-t",
+    "timestamp": 1777029730521
+  }
+]

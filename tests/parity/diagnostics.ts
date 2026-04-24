@@ -11,6 +11,10 @@ import {
   type RepoModeCommandDiagnostic,
   type RepoModePhaseResult,
 } from "./baseline-lanes.ts"
+import {
+  SECONDARY_RELEASE_REPORT_PATH,
+  type SecondaryReleaseReport,
+} from "./secondary-release-gate.ts"
 import type { WorkflowParityReport } from "./workflow-parity.ts"
 
 export interface ParityEvidenceSummary {
@@ -328,10 +332,10 @@ export function renderParityDiagnostics(report: BaselineReport): string {
   return `${lines.join("\n")}\n`
 }
 
-export function loadBaselineReport(reportPath: string = BASELINE_REPORT_PATH, cwd: string = process.cwd()): BaselineReport {
+function loadJsonReport<T>(reportPath: string, cwd: string, label: string): T {
   const absolutePath = isAbsolute(reportPath) ? reportPath : join(cwd, reportPath)
   if (!existsSync(absolutePath)) {
-    throw new Error(`Baseline parity report not found at ${reportPath}`)
+    throw new Error(`${label} not found at ${reportPath}`)
   }
 
   let raw: string
@@ -339,7 +343,7 @@ export function loadBaselineReport(reportPath: string = BASELINE_REPORT_PATH, cw
     raw = readFileSync(absolutePath, "utf8")
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
-    throw new Error(`Failed to read baseline parity report at ${reportPath}: ${message}`)
+    throw new Error(`Failed to read ${label.toLowerCase()} at ${reportPath}: ${message}`)
   }
 
   let parsed: unknown
@@ -347,22 +351,141 @@ export function loadBaselineReport(reportPath: string = BASELINE_REPORT_PATH, cw
     parsed = JSON.parse(raw)
   } catch (error) {
     const message = error instanceof Error ? error.message : String(error)
-    throw new Error(`Failed to parse baseline parity report at ${reportPath}: ${message}`)
+    throw new Error(`Failed to parse ${label.toLowerCase()} at ${reportPath}: ${message}`)
   }
 
   if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
-    throw new Error(`Invalid baseline parity report at ${reportPath}: expected a JSON object at the root`)
+    throw new Error(`Invalid ${label.toLowerCase()} at ${reportPath}: expected a JSON object at the root`)
   }
 
-  return parsed as BaselineReport
+  return parsed as T
+}
+
+function renderSecondaryRequiredLane(report: SecondaryReleaseReport, lane: SecondaryReleaseReport["requiredLanes"][number]): string[] {
+  const lines = [
+    `- ${lane.name} [surface=${lane.surfaceId}] status=${lane.status} blocking=yes`,
+    `  summary: ${lane.summary}`,
+  ]
+
+  if (lane.reportPath) {
+    lines.push(`  reportPath: ${lane.reportPath}`)
+  }
+  if (lane.artifactPaths.length > 0) {
+    lines.push(`  artifactPaths: ${lane.artifactPaths.join(", ")}`)
+  }
+  if (lane.failedPhases.length > 0) {
+    lines.push(`  failedPhases: ${lane.failedPhases.join(", ")}`)
+  }
+  if (lane.failedSurfaces.length > 0) {
+    lines.push(`  failedSurfaces: ${lane.failedSurfaces.join(", ")}`)
+  }
+  for (const detail of lane.diagnostics) {
+    lines.push(`  detail: ${detail}`)
+  }
+
+  return lines
+}
+
+function renderSecondaryOptionalLane(lane: SecondaryReleaseReport["optionalLanes"][number]): string[] {
+  const lines = [
+    `- ${lane.name} [surface=${lane.surfaceId}] status=${lane.status} blocking=no`,
+    `  summary: ${lane.summary}`,
+  ]
+
+  if (lane.reportPath) {
+    lines.push(`  reportPath: ${lane.reportPath}`)
+  }
+  if (lane.artifactPaths.length > 0) {
+    lines.push(`  artifactPaths: ${lane.artifactPaths.join(", ")}`)
+  }
+  for (const detail of lane.diagnostics) {
+    lines.push(`  detail: ${detail}`)
+  }
+
+  return lines
+}
+
+export function renderSecondaryParityDiagnostics(report: SecondaryReleaseReport): string {
+  const lines: string[] = []
+  lines.push(`Secondary parity diagnostics: verdict=${report.verdict}`)
+  lines.push(`requiredLanesPassed: ${report.requiredLanesPassed ? "yes" : "no"}`)
+  lines.push(`requiredLaneNames: ${report.requiredLaneNames.join(", ")}`)
+  lines.push(`baselineReportPath: ${report.baselineReportPath}`)
+  lines.push(`secondaryReleaseReportPath: ${report.artifactPaths.secondaryReleaseReport}`)
+  lines.push(`secondarySurfaceInventoryPath: ${report.artifactPaths.secondarySurfaceInventory}`)
+  lines.push(`worktreeSessionManifestPath: ${report.artifactPaths.worktreeSessionManifest}`)
+  lines.push(`mcpParityArtifactPath: ${report.artifactPaths.mcpParity ?? "none"}`)
+  lines.push(`workflowParityArtifactPath: ${report.artifactPaths.workflowParity ?? "none"}`)
+  lines.push(`failedSurfaces: ${report.failedSurfaces.length > 0 ? report.failedSurfaces.join(", ") : "none"}`)
+  lines.push(`failedPhases: ${report.failedPhases.length > 0 ? report.failedPhases.join(", ") : "none"}`)
+  lines.push(`diagnosticsCommand: ${report.diagnosticsCommand.join(" ")}`)
+  lines.push(
+    `baselineSummary: verdict=${report.baselineSummary.verdict} passed=${report.baselineSummary.passed}/${report.baselineSummary.totalLanes} failed=${report.baselineSummary.failed} skipped=${report.baselineSummary.skipped} timedOut=${report.baselineSummary.timedOut}`,
+  )
+  lines.push(
+    `secondaryParitySummary: total=${report.secondaryParitySummary.totalSurfaces} partial=${report.secondaryParitySummary.partialSurfaces} covered=${report.secondaryParitySummary.coveredSurfaces} uncovered=${report.secondaryParitySummary.uncoveredSurfaces} drift=${report.secondaryParitySummary.totalDriftFindings}`,
+  )
+  lines.push(
+    `optionalLive: status=${report.optionalLive.status} required=no includeLiveRequested=${report.optionalLive.includeLiveRequested ? "yes" : "no"} enabled=${report.optionalLive.enabled ? "yes" : "no"} configured=${report.optionalLive.configured ? "yes" : "no"}`,
+  )
+  if (report.optionalLive.skipReason) {
+    lines.push(`optionalLiveSkipReason: ${report.optionalLive.skipReason}`)
+  }
+  if (report.optionalLive.reason) {
+    lines.push(`optionalLiveReason: ${report.optionalLive.reason}`)
+  }
+
+  lines.push("")
+  lines.push("required secondary lanes:")
+  for (const lane of report.requiredLanes) {
+    lines.push(...renderSecondaryRequiredLane(report, lane))
+  }
+
+  lines.push("")
+  lines.push("optional secondary lanes:")
+  for (const lane of report.optionalLanes) {
+    lines.push(...renderSecondaryOptionalLane(lane))
+  }
+
+  lines.push("")
+  if (report.failedRequiredLanes.length > 0) {
+    lines.push("failed required lanes:")
+    for (const lane of report.failedRequiredLanes) {
+      lines.push(`- ${lane.name} [surface=${lane.surfaceId}] status=${lane.status}`)
+      lines.push(`  summary: ${lane.summary}`)
+      if (lane.failedPhases.length > 0) {
+        lines.push(`  failedPhases: ${lane.failedPhases.join(", ")}`)
+      }
+      if (lane.artifactPaths.length > 0) {
+        lines.push(`  artifactPaths: ${lane.artifactPaths.join(", ")}`)
+      }
+    }
+  } else {
+    lines.push("failed required lanes: none")
+  }
+
+  return `${lines.join("\n")}\n`
+}
+
+export function loadBaselineReport(reportPath: string = BASELINE_REPORT_PATH, cwd: string = process.cwd()): BaselineReport {
+  return loadJsonReport<BaselineReport>(reportPath, cwd, "Baseline parity report")
+}
+
+export function loadSecondaryReleaseReport(
+  reportPath: string = SECONDARY_RELEASE_REPORT_PATH,
+  cwd: string = process.cwd(),
+): SecondaryReleaseReport {
+  return loadJsonReport<SecondaryReleaseReport>(reportPath, cwd, "Secondary parity release report")
 }
 
 type CliOptions = {
   reportPath: string
+  surface: "baseline" | "secondary"
 }
 
 function parseCliArgs(argv: readonly string[]): CliOptions {
   let reportPath = BASELINE_REPORT_PATH
+  let surface: "baseline" | "secondary" = "baseline"
 
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index]
@@ -375,18 +498,36 @@ function parseCliArgs(argv: readonly string[]): CliOptions {
       index += 1
       continue
     }
+    if (token === "--surface") {
+      const next = argv[index + 1]
+      if (next !== "baseline" && next !== "secondary") {
+        throw new Error(`Unsupported --surface value: ${String(next)}. Expected baseline or secondary.`)
+      }
+      surface = next
+      index += 1
+      continue
+    }
     if (token === "--help" || token === "-h") {
-      process.stdout.write("Usage: node --experimental-strip-types tests/parity/diagnostics.ts [--report tests/parity/artifacts/baseline-report.json]\n")
+      process.stdout.write("Usage: node --experimental-strip-types tests/parity/diagnostics.ts [--surface baseline|secondary] [--report tests/parity/artifacts/baseline-report.json]\n")
       process.exit(0)
     }
     throw new Error(`Unknown argument: ${token}`)
   }
 
-  return { reportPath }
+  return { reportPath, surface }
 }
 
 async function main(): Promise<void> {
   const options = parseCliArgs(process.argv.slice(2))
+  if (options.surface === "secondary") {
+    const report = loadSecondaryReleaseReport(options.reportPath, process.cwd())
+    process.stdout.write(renderSecondaryParityDiagnostics(report))
+    if (report.verdict !== "passed") {
+      process.exitCode = 1
+    }
+    return
+  }
+
   const report = loadBaselineReport(options.reportPath, process.cwd())
   process.stdout.write(renderParityDiagnostics(report))
 }
