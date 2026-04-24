@@ -1,0 +1,74 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_pUVOEbCHlVMNNq6erXGIxuOF",
+    "command": "rg -n \"mcpParity|secondaryParity|artifact path|schema mismatch|missing server|invocation failure|MCP parity|diagnostic\" src tests -S",
+    "exitCode": 0,
+    "outputSnippet": "src/tests/integration/web-recovery-diagnostics-contract.test.ts:132:      \"  Intentionally missing a summary to surface doctor diagnostics.\",\nsrc/tests/integration/web-recovery-diagnostics-contract.test.ts:212:test(\"/api/recovery returns structured recovery diagnostics and redacts secrets\", async (t) => {\nsrc/tests/integration/web-recovery-diagnostics-contract.test.ts:273:    [\"refresh_diagnostics\", \"refresh_workspace\", \"open_retry_controls\", \"open_resume_controls\", \"open_auth_controls\"],\nsrc/te",
+    "timestamp": 1777026727578
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_QtopOeZOtOhhRnPQ2vXJ4AGw",
+    "command": "ls -R tests/parity | sed -n '1,220p'",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity:\nartifacts\nbaseline-lanes.ts\ndiagnostics.ts\nhuman-uat.md\nmcp-parity.ts\nrelease-gate.ts\nrun.ts\nsecondary-lanes.ts\nsecondary-surface-inventory.ts\n\ntests/parity/artifacts:\nbaseline-report.json\nmcp-parity.json\nsecondary-surface-inventory.json\n",
+    "timestamp": 1777026734084
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_eHgEMQ71I7rqwjQtaQ26QwD8",
+    "command": "rg -n \"renderParityDiagnostics|summarizeLaneDiagnostic|loadBaselineReport\\(|mcpParity\" src/tests tests/parity -S",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/mcp-parity.ts:10:export const MCP_PARITY_REPORT_PATH = `${MCP_PARITY_ARTIFACT_PATH}#mcpParity` as const\ntests/parity/baseline-lanes.ts:240:  mcpParity: McpParitySurfaceReportRow\ntests/parity/baseline-lanes.ts:1203:  const mcpParity = await buildMcpParitySurfaceReport()\ntests/parity/baseline-lanes.ts:1215:    mcpParity,\ntests/parity/diagnostics.ts:121:export function summarizeLaneDiagnostic(lane: BaselineLaneResult): LaneDiagnosticSummary {\ntests/parity/diagnostics.ts:148:    .map((l",
+    "timestamp": 1777026741318
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_oHMuo4qMOxbekC00j2tABN4j",
+    "command": "test -f src/tests/integration/mcp-parity-diagnostics-contract.test.ts && echo exists || echo missing",
+    "exitCode": 0,
+    "outputSnippet": "missing\n",
+    "timestamp": 1777026741318
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_6quVwTMMVsWaJf9t4bFk7WW5",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777026765756
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_77ijUXs1qtYeAi1mCVqY3Rl7",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777026791047
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_ZA3Ym4IGvhu7ryajcgxnWCzR",
+    "path": "tests/parity/diagnostics.ts",
+    "timestamp": 1777026809662
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_OVAsYqxi574LO67AbHno8ZCc",
+    "path": "src/tests/integration/mcp-parity-diagnostics-contract.test.ts",
+    "timestamp": 1777026836918
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_AD8yDKSh9GLwZDs7antoNDG0",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/mcp-parity-diagnostics-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ renderParityDiagnostics includes MCP artifact paths and successful call reporting (3.168601ms)\n✔ renderParityDiagnostics names missing configured server and schema mismatch attribution clearly (0.759757ms)\n✔ renderParityDiagnostics keeps invocation failure attribution actionable when MCP reporting drifts (0.520143ms)\n✔ tracked MCP parity artifact stays aligned with the baseline report MCP section (0.878167ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_",
+    "timestamp": 1777026843806
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_KNy37hxlRjqlOixn7NiWyelT",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-diagnostics-contract.test.ts src/tests/integration/web-mode-diagnostics-contract.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ diagnostics renderer turns the tracked baseline report into a mode-aware actionable summary (176.073099ms)\n✔ diagnostics renderer promotes command evidence when a non-browser phase fails (1.277818ms)\n✔ diagnostics cli reads a synthetic passing report and preserves local artifact paths without extra harness state (115.591498ms)\n✔ diagnostics cli fails with a precise error when the baseline report path is missing (103.063195ms)\n✔ web-mode surface stays release-readable and truthfully partial unt",
+    "timestamp": 1777026843806
+  }
+]

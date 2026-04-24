@@ -5,6 +5,7 @@ import {
   type BaselineLaneResult,
   type BaselineReport,
   type LaneStatus,
+  type McpParitySurfaceReportRow,
   type RepoInstalledComparison,
   type RepoModeBrowserDiagnostic,
   type RepoModeCommandDiagnostic,
@@ -166,6 +167,71 @@ function renderRepoInstalledComparison(comparison: RepoInstalledComparison): str
   return lines
 }
 
+function renderMcpParityDiagnostics(mcpParity: McpParitySurfaceReportRow | undefined): string[] {
+  if (!mcpParity) {
+    return []
+  }
+
+  const lines = [
+    "mcp parity:",
+    `  surface: ${mcpParity.id}`,
+    `  title: ${mcpParity.title}`,
+    `  releaseReadableStatus: ${mcpParity.releaseReadableStatus}`,
+    `  parityStatus: ${mcpParity.parityStatus}`,
+    `  reportPath: ${mcpParity.reportPath}`,
+    `  artifactPath: ${mcpParity.parityArtifactPath}`,
+    `  recordingPath: ${mcpParity.recordingPath}`,
+  ]
+
+  const configured = mcpParity.diagnostics.configuredServer
+  lines.push(
+    `  configuredServer: status=${configured.status} name=${configured.name} transport=${configured.transport} readyLineSeen=${configured.readyLineSeen ? "yes" : "no"}`,
+  )
+  if (configured.status !== "passed") {
+    lines.push("    failureAttribution: configured server missing or misconfigured")
+  } else if (!configured.readyLineSeen) {
+    lines.push("    failureAttribution: configured server started without the expected readiness signal")
+  }
+
+  const discovered = mcpParity.diagnostics.discoveredTools
+  lines.push(
+    `  toolDiscovery: status=${discovered.status} expected=${discovered.expected.join(", ")} actual=${discovered.actual.join(", ")}`,
+  )
+
+  const schema = mcpParity.diagnostics.schemaInspection
+  lines.push(
+    `  schemaInspection: status=${schema.status} tool=${schema.tool} required=${schema.required.join(", ")} actualRequired=${schema.actualRequired.join(", ")} additionalProperties=${schema.additionalProperties === null ? "null" : String(schema.additionalProperties)}`,
+  )
+  if (schema.status !== "passed") {
+    lines.push(`    failureAttribution: schema mismatch on ${schema.tool}`)
+  }
+
+  const success = mcpParity.diagnostics.successInvocation
+  lines.push(
+    `  successInvocation: status=${success.status} tool=${success.tool} isError=${success.isError ? "yes" : "no"} phase=tool-call artifact=${mcpParity.parityArtifactPath}`,
+  )
+  if (success.status === "passed") {
+    lines.push(`    success: successful call reported by ${success.tool} via ${mcpParity.parityArtifactPath}`)
+  } else {
+    lines.push(`    failureAttribution: successful call reporting failed for ${success.tool}`)
+  }
+
+  const failure = mcpParity.diagnostics.failureInvocation
+  const failurePhase = typeof failure.payload.phase === "string" ? failure.payload.phase : "unknown"
+  const failureAttribution = typeof failure.payload.attribution === "string" ? failure.payload.attribution : failure.tool
+  const failureCode = typeof failure.payload.code === "string" ? failure.payload.code : "unknown"
+  lines.push(
+    `  failureInvocation: status=${failure.status} tool=${failure.tool} isError=${failure.isError ? "yes" : "no"} phase=${failurePhase} attribution=${failureAttribution} code=${failureCode} artifact=${mcpParity.parityArtifactPath}`,
+  )
+  if (failure.status === "passed") {
+    lines.push(`    failureAttribution: invocation failure preserved for ${failureAttribution} during ${failurePhase}`)
+  } else {
+    lines.push(`    failureAttribution: invocation failure reporting drifted for ${failureAttribution}`)
+  }
+
+  return lines
+}
+
 export function renderParityDiagnostics(report: BaselineReport): string {
   const lines: string[] = []
   lines.push(`Parity diagnostics: verdict=${report.summary.verdict}`)
@@ -198,6 +264,13 @@ export function renderParityDiagnostics(report: BaselineReport): string {
 
   lines.push("")
   lines.push(...renderRepoInstalledComparison(report.repoInstalledComparison))
+
+  const mcpLines = renderMcpParityDiagnostics(report.mcpParity)
+  if (mcpLines.length > 0) {
+    lines.push("")
+    lines.push(...mcpLines)
+  }
+
   return `${lines.join("\n")}\n`
 }
 
