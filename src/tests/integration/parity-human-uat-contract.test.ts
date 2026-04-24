@@ -40,6 +40,17 @@ test("human-readable parity UAT guide stays anchored to tracked files, both mode
     )
   }
 
+  assert.match(guide, /tests\/parity\/release-gate\.ts/)
+  assert.match(guide, /npm run test:parity:release-gate/)
+  assert.match(guide, /npm run test:parity:release-gate:live/)
+  assert.match(guide, /--include-live/)
+  assert.match(guide, /optionalLive\.includeLiveRequested/)
+  assert.match(guide, /optionalLive\.skipReason/)
+  assert.match(guide, /not-enabled/)
+  assert.match(guide, /no-provider-configured/)
+  assert.match(guide, /OPENAI_API_KEY/)
+  assert.match(guide, /ANTHROPIC_API_KEY/)
+
   assert.match(guide, /repo-mode-coding-loop/)
   assert.match(guide, /pack-install/)
   assert.match(guide, /repoInstalledComparison/)

@@ -31,7 +31,7 @@ Compose `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/parity/huma
   - Files: `tests/parity/release-gate.ts`, `tests/parity/baseline-lanes.ts`, `tests/parity/diagnostics.ts`, `src/tests/integration/parity-release-gate-contract.test.ts`, `package.json`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-release-gate-contract.test.ts
 
-- [ ] **T02: Integrate the optional live spot-check and lock release workflow semantics** `est:1h15m`
+- [x] **T02: Integrate the optional live spot-check and lock release workflow semantics** `est:1h15m`
   Wire the existing live harness into the release gate as an opt-in, non-blocking spot-check. Document and test the policy so missing `GSD_LIVE_TESTS` or missing live model configuration yields a precise skip instead of a flaky release failure, while enabled live runs still appear in the release report. Update the human/operator workflow and package scripts so one release command and one explicit include-live variant exist.
   - Files: `tests/live/run.ts`, `tests/parity/release-gate.ts`, `tests/parity/human-uat.md`, `src/tests/integration/parity-live-spot-check-contract.test.ts`, `src/tests/integration/parity-human-uat-contract.test.ts`, `package.json`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-live-spot-check-contract.test.ts src/tests/integration/parity-human-uat-contract.test.ts src/tests/integration/parity-release-gate-contract.test.ts && node --experimental-strip-types tests/parity/release-gate.ts --format json --include-live

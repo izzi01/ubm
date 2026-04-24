@@ -353,8 +353,13 @@ export function getLaneSkipReason(
   env: NodeJS.ProcessEnv = process.env,
   cwd: string = process.cwd(),
 ): string | null {
-  if (lane.skip === "requires-live-env" && env.GSD_LIVE_TESTS !== "1") {
-    return "live lane skipped because GSD_LIVE_TESTS is not enabled"
+  if (lane.skip === "requires-live-env") {
+    if (env.GSD_LIVE_TESTS !== "1") {
+      return "live lane skipped because GSD_LIVE_TESTS is not enabled"
+    }
+    if (![env.OPENAI_API_KEY, env.ANTHROPIC_API_KEY].some((value) => typeof value === "string" && value.trim().length > 0)) {
+      return "live lane skipped because GSD_LIVE_TESTS is enabled but no live provider API key is configured"
+    }
   }
 
   if (lane.skip === "requires-smoke-binary") {

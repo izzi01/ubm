@@ -48,7 +48,7 @@ test("release gate report marks repo/dev plus installed coding-loop lanes as the
 
   const report = releaseGate.createReleaseGateReport(baselineReport)
 
-  assert.equal(report.version, 1)
+  assert.equal(report.version, 2)
   assert.equal(report.verdict, "passed")
   assert.equal(report.requiredLanesPassed, true)
   assert.deepEqual(report.requiredLaneNames, ["repo-mode-coding-loop", "pack-install"])
@@ -56,7 +56,10 @@ test("release gate report marks repo/dev plus installed coding-loop lanes as the
   assert.deepEqual(report.failedPhases, [])
   assert.equal(report.optionalLive.status, "skipped")
   assert.equal(report.optionalLive.required, false)
+  assert.equal(report.optionalLive.includeLiveRequested, false)
+  assert.equal(report.optionalLive.enabled, false)
   assert.equal(report.optionalLive.configured, false)
+  assert.equal(report.optionalLive.skipReason, "not-enabled")
   assert.match(String(report.optionalLive.reason), /GSD_LIVE_TESTS/)
   assert.equal(report.baselineReportPath, "tests/parity/artifacts/baseline-report.json")
   assert.equal(report.artifactPaths.repoMode, repoArtifactPath)
@@ -119,7 +122,8 @@ test("release gate fails only when a required lane fails and preserves failed ph
   assert.match(rendered, /Parity release gate: verdict=failed/)
   assert.match(rendered, /requiredLanesPassed: no/)
   assert.match(rendered, /requiredLaneNames: repo-mode-coding-loop, pack-install/)
-  assert.match(rendered, /optionalLive: status=skipped required=no configured=no/)
+  assert.match(rendered, /optionalLive: status=skipped required=no includeLiveRequested=no enabled=no configured=no/)
+  assert.match(rendered, /optionalLiveSkipReason: not-enabled/)
   assert.match(rendered, /failedPhases: browser/)
   assert.match(rendered, /baselineReportPath: tests\/parity\/artifacts\/baseline-report\.json/)
   assert.match(rendered, /repoArtifactPath: \.tmp-release-gate\/repo-mode-parity-web-task\.failed\.json/)
@@ -165,6 +169,7 @@ test("release gate cli can consume the canonical report without rerunning and ex
     assert.equal(gateReport.artifactPaths.repoMode, "tests/fixtures/recordings/repo-mode-parity-web-task.failed-test.json")
     assert.equal(gateReport.artifactPaths.installedMode, installedArtifactPath)
     assert.equal(gateReport.optionalLive.status, "skipped")
+    assert.equal(gateReport.optionalLive.skipReason, "not-enabled")
   } finally {
     rmSync(tempDir, { recursive: true, force: true })
   }
@@ -176,7 +181,8 @@ test("release gate cli reruns the canonical baseline report, emits a stable text
   assert.equal(result.status, 0)
   assert.match(result.stdout, /Parity release gate: verdict=passed/)
   assert.match(result.stdout, /requiredLaneNames: repo-mode-coding-loop, pack-install/)
-  assert.match(result.stdout, /optionalLive: status=(passed|failed|skipped|timed_out) required=no configured=(yes|no)/)
+  assert.match(result.stdout, /optionalLive: status=(passed|failed|skipped|timed_out) required=no includeLiveRequested=no enabled=(yes|no) configured=(yes|no)/)
+  assert.match(result.stdout, /optionalLiveSkipReason: not-enabled/)
   assert.match(result.stdout, /baselineReportPath: tests\/parity\/artifacts\/baseline-report\.json/)
   assert.match(result.stdout, /repoArtifactPath: tests\/fixtures\/recordings\/repo-mode-parity-web-task\.json/)
   assert.match(result.stdout, /installedArtifactPath: tests\/fixtures\/recordings\/installed-mode-parity-web-task\.json/)

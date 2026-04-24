@@ -68,6 +68,7 @@
     "test:live": "node scripts/with-env.mjs GSD_LIVE_TESTS=1 -- node --experimental-strip-types tests/live/run.ts",
     "test:parity:baseline": "node --experimental-strip-types tests/parity/run.ts --format json",
     "test:parity:release-gate": "node --experimental-strip-types tests/parity/release-gate.ts --format text",
+    "test:parity:release-gate:live": "node --experimental-strip-types tests/parity/release-gate.ts --format text --include-live",
     "test:browser-tools": "node --test src/resources/extensions/browser-tools/tests/browser-tools-unit.test.cjs src/resources/extensions/browser-tools/tests/browser-tools-integration.test.mjs",
     "test:native": "node --test packages/native/src/__tests__/grep.test.mjs",
     "test:secret-scan": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/secret-scan.test.ts",

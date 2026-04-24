@@ -10,13 +10,15 @@ import {
 } from "./baseline-lanes.ts"
 import { collectActionableLaneDiagnostics, loadBaselineReport } from "./diagnostics.ts"
 import { INSTALLED_MODE_LANE_NAME } from "../../src/tests/integration/helpers/installed-mode-parity.ts"
+import { getLiveSpotCheckSkipReason } from "../live/run.ts"
 
-export const RELEASE_GATE_REPORT_VERSION = 1 as const
+export const RELEASE_GATE_REPORT_VERSION = 2 as const
 export const RELEASE_GATE_REQUIRED_LANES = [REPO_MODE_LANE_NAME, INSTALLED_MODE_LANE_NAME] as const
 
 export type ReleaseGateVerdict = "passed" | "failed"
 export type ReleaseGateFormat = "json" | "text"
 export type OptionalLiveStatus = Extract<LaneStatus, "passed" | "failed" | "skipped" | "timed_out">
+export type OptionalLiveSkipReason = "not-enabled" | "no-provider-configured" | null
 
 export interface ReleaseGateFailedLane {
   name: string
@@ -42,7 +44,10 @@ export interface ReleaseGateReport {
     laneName: "live-runner"
     status: OptionalLiveStatus
     configured: boolean
+    enabled: boolean
     required: false
+    includeLiveRequested: boolean
+    skipReason: OptionalLiveSkipReason
     reason: string | null
   }
   artifactPaths: {
@@ -55,16 +60,11 @@ export interface ReleaseGateReport {
   actionableDiagnostics: ReturnType<typeof collectActionableLaneDiagnostics>
 }
 
-type ReleaseGateCliOptions =
-  | {
-      mode: "rerun"
-      format: ReleaseGateFormat
-    }
-  | {
-      mode: "report"
-      reportPath: string
-      format: ReleaseGateFormat
-    }
+type ReleaseGateCliOptions = {
+  reportPath?: string
+  format: ReleaseGateFormat
+  includeLive: boolean
+}
 
 function normalizeMode(lane: BaselineLaneResult): string {
   if (lane.name === REPO_MODE_LANE_NAME || lane.parityScope === "repo-mode") {
@@ -87,7 +87,10 @@ function toFailedLane(lane: BaselineLaneResult): ReleaseGateFailedLane {
   }
 }
 
-export function createReleaseGateReport(baselineReport: BaselineReport): ReleaseGateReport {
+export function createReleaseGateReport(
+  baselineReport: BaselineReport,
+  options: { includeLive?: boolean; env?: NodeJS.ProcessEnv } = {},
+): ReleaseGateReport {
   const laneByName = new Map(baselineReport.lanes.map((lane) => [lane.name, lane]))
   const requiredLanes = RELEASE_GATE_REQUIRED_LANES
     .map((laneName) => laneByName.get(laneName))
@@ -97,6 +100,19 @@ export function createReleaseGateReport(baselineReport: BaselineReport): Release
   const failedPhases = [...new Set(failedRequiredLanes.flatMap((lane) => (lane.failedPhase ? [lane.failedPhase] : [])))]
   const liveLane = laneByName.get("live-runner")
   const optionalLiveStatus: OptionalLiveStatus = liveLane?.status ?? "skipped"
+  const liveGate = getLiveSpotCheckSkipReason(options.env)
+  const includeLiveRequested = options.includeLive === true
+  const liveConfigured = liveLane
+    ? liveLane.status === "passed" || liveLane.status === "failed" || liveLane.status === "timed_out"
+      ? true
+      : liveGate.configured
+    : liveGate.configured
+  const effectiveLiveReason = liveLane?.status === "skipped"
+    ? (liveGate.reason ?? liveLane?.skipReason ?? null)
+    : liveLane?.skipReason ?? liveGate.reason ?? null
+  const effectiveLiveSkipReason = liveLane?.status === "skipped"
+    ? (liveGate.skipReason ?? null)
+    : null
 
   return {
     version: RELEASE_GATE_REPORT_VERSION,
@@ -118,9 +134,12 @@ export function createReleaseGateReport(baselineReport: BaselineReport): Release
     optionalLive: {
       laneName: "live-runner",
       status: optionalLiveStatus,
-      configured: liveLane?.status === "passed" || liveLane?.status === "failed" || liveLane?.status === "timed_out",
+      configured: liveConfigured,
+      enabled: liveGate.enabled,
       required: false,
-      reason: liveLane?.skipReason ?? null,
+      includeLiveRequested,
+      skipReason: effectiveLiveSkipReason,
+      reason: effectiveLiveReason,
     },
     artifactPaths: {
       baselineReport: baselineReport.artifactPath,
@@ -138,7 +157,12 @@ export function renderReleaseGateReport(report: ReleaseGateReport): string {
   lines.push(`Parity release gate: verdict=${report.verdict}`)
   lines.push(`requiredLanesPassed: ${report.requiredLanesPassed ? "yes" : "no"}`)
   lines.push(`requiredLaneNames: ${report.requiredLaneNames.join(", ")}`)
-  lines.push(`optionalLive: status=${report.optionalLive.status} required=no configured=${report.optionalLive.configured ? "yes" : "no"}`)
+  lines.push(
+    `optionalLive: status=${report.optionalLive.status} required=no includeLiveRequested=${report.optionalLive.includeLiveRequested ? "yes" : "no"} enabled=${report.optionalLive.enabled ? "yes" : "no"} configured=${report.optionalLive.configured ? "yes" : "no"}`,
+  )
+  if (report.optionalLive.skipReason) {
+    lines.push(`optionalLiveSkipReason: ${report.optionalLive.skipReason}`)
+  }
   if (report.optionalLive.reason) {
     lines.push(`optionalLiveReason: ${report.optionalLive.reason}`)
   }
@@ -187,20 +211,28 @@ export async function resolveReleaseGateReport(options: {
   cwd?: string
   env?: NodeJS.ProcessEnv
   reportPath?: string
+  includeLive?: boolean
 } = {}): Promise<ReleaseGateReport> {
   const cwd = options.cwd ?? process.cwd()
+  const env = { ...process.env, ...(options.env ?? {}) }
+  const baselineEnv = options.includeLive ? { ...env, GSD_LIVE_TESTS: "1" } : env
+
   if (options.reportPath) {
-    return createReleaseGateReport(loadBaselineReport(options.reportPath, cwd))
+    return createReleaseGateReport(loadBaselineReport(options.reportPath, cwd), {
+      includeLive: options.includeLive,
+      env: baselineEnv,
+    })
   }
 
-  const baselineReport = await createBaselineReport({ cwd, env: options.env })
+  const baselineReport = await createBaselineReport({ cwd, env: baselineEnv })
   await writeBaselineReport(baselineReport, cwd)
-  return createReleaseGateReport(baselineReport)
+  return createReleaseGateReport(baselineReport, { includeLive: options.includeLive, env: baselineEnv })
 }
 
 export function parseReleaseGateCliArgs(argv: readonly string[]): ReleaseGateCliOptions {
-  let reportPath: string | null = null
+  let reportPath: string | undefined
   let format: ReleaseGateFormat = "text"
+  let includeLive = false
 
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index]
@@ -222,29 +254,30 @@ export function parseReleaseGateCliArgs(argv: readonly string[]): ReleaseGateCli
       index += 1
       continue
     }
+    if (token === "--include-live") {
+      includeLive = true
+      continue
+    }
     if (token === "--help" || token === "-h") {
       process.stdout.write(
-        "Usage: node --experimental-strip-types tests/parity/release-gate.ts [--report tests/parity/artifacts/baseline-report.json] [--format text|json]\n",
+        "Usage: node --experimental-strip-types tests/parity/release-gate.ts [--report tests/parity/artifacts/baseline-report.json] [--format text|json] [--include-live]\n",
       )
       process.exit(0)
     }
     throw new Error(`Unknown argument: ${token}`)
   }
 
-  if (reportPath) {
-    return { mode: "report", reportPath, format }
-  }
-
-  return { mode: "rerun", format }
+  return { reportPath, format, includeLive }
 }
 
 async function main(): Promise<void> {
   const options = parseReleaseGateCliArgs(process.argv.slice(2))
-  const report = await resolveReleaseGateReport(
-    options.mode === "report"
-      ? { cwd: process.cwd(), reportPath: options.reportPath, env: process.env }
-      : { cwd: process.cwd(), env: process.env },
-  )
+  const report = await resolveReleaseGateReport({
+    cwd: process.cwd(),
+    reportPath: options.reportPath,
+    env: process.env,
+    includeLive: options.includeLive,
+  })
 
   if (options.format === "json") {
     process.stdout.write(`${JSON.stringify(report, null, 2)}\n`)
