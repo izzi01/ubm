@@ -31,7 +31,7 @@ Downstream slices consume the published fixtures/contracts instead of inventing 
   - Files: `tests/parity/secondary-surface-inventory.ts`, `tests/parity/secondary-lanes.ts`, `tests/fixtures/secondary-parity-manifest.json`, `src/tests/integration/secondary-surface-inventory-contract.test.ts`, `src/tests/integration/secondary-parity-manifest.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-surface-inventory-contract.test.ts src/tests/integration/secondary-parity-manifest.test.ts
 
-- [ ] **T03: Publish baseline secondary-parity report wiring** `est:0.5-1 day`
+- [x] **T03: Publish baseline secondary-parity report wiring** `est:0.5-1 day`
   Extend the parity runner/report plumbing so M115 has an explicit baseline inventory for secondary surfaces. The runner should emit structured lane metadata, uncovered surfaces, drift findings, and report paths even when the verdict is partial. Keep the report usable by downstream diagnostics and release-gate slices without requiring live reruns.
   - Files: `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/parity/artifacts/secondary-surface-inventory.json`, `src/tests/integration/secondary-parity-report-contract.test.ts`
   - Verify: node --experimental-strip-types tests/parity/run.ts --format json && node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-parity-report-contract.test.ts

@@ -9,6 +9,20 @@ import {
   loadInstalledModeProofArtifact,
   resolveInstalledModeArtifactPath,
 } from "../../src/tests/integration/helpers/installed-mode-parity.ts"
+import {
+  SECONDARY_PARITY_MANIFEST_PATH,
+  createSecondaryParityManifest,
+  validateSecondaryParityManifest,
+  type SecondaryParityLaneDefinition,
+  type SecondaryParityManifest,
+  type SecondaryParitySurfaceContract,
+} from "./secondary-lanes.ts"
+import {
+  createSecondarySurfaceInventory,
+  validateSecondarySurfaceInventory,
+  type RebrandDriftFinding,
+  type SecondarySurfaceInventory,
+} from "./secondary-surface-inventory.ts"
 
 export const BASELINE_REPORT_VERSION = 4 as const
 export const BASELINE_REPORT_PATH = "tests/parity/artifacts/baseline-report.json" as const
@@ -146,6 +160,44 @@ export interface RepoInstalledComparison {
   phaseComparisons: RepoInstalledPhaseComparison[]
 }
 
+export interface SecondaryParitySurfaceReportRow {
+  id: string
+  title: string
+  inventoryStatus: SecondaryParitySurfaceContract["inventoryStatus"]
+  releaseReadableStatus: "partial" | "covered" | "uncovered"
+  requiredLaneNames: string[]
+  optionalLaneNames: string[]
+  existingRequiredLaneNames: string[]
+  missingRequiredLaneNames: string[]
+  presentFixturePaths: string[]
+  plannedFixturePaths: string[]
+  coverageGapIds: string[]
+  uncoveredAreas: SecondaryParitySurfaceContract["coverageGaps"]
+  reportPath: string
+}
+
+export interface SecondaryParitySummary {
+  totalSurfaces: number
+  partialSurfaces: number
+  coveredSurfaces: number
+  uncoveredSurfaces: number
+  totalDriftFindings: number
+  surfacesMissingReleaseReadableCoverage: string[]
+}
+
+export interface SecondaryParityReport {
+  inventoryPath: string
+  manifestPath: string
+  inventoryVersion: SecondarySurfaceInventory["version"]
+  manifestVersion: SecondaryParityManifest["version"]
+  summary: SecondaryParitySummary
+  surfaces: SecondaryParitySurfaceReportRow[]
+  uncoveredSurfaces: SecondaryParitySurfaceReportRow[]
+  driftFindings: RebrandDriftFinding[]
+  inventory: SecondarySurfaceInventory
+  manifest: SecondaryParityManifest
+}
+
 export interface BaselineReport {
   version: typeof BASELINE_REPORT_VERSION
   generatedAt: string
@@ -156,6 +208,7 @@ export interface BaselineReport {
   parityManifest: ParityManifest
   uncoveredCapabilities: UncoveredCapabilityReportRow[]
   repoInstalledComparison: RepoInstalledComparison
+  secondaryParity: SecondaryParityReport
   reconciledFoundations: readonly typeof M113_RECONCILIATION[]
 }
 
@@ -987,6 +1040,68 @@ export function buildRepoInstalledComparison(laneResults: readonly BaselineLaneR
   }
 }
 
+function buildSecondaryParityReport(): SecondaryParityReport {
+  const inventory = createSecondarySurfaceInventory()
+  validateSecondarySurfaceInventory(inventory)
+
+  const manifest = createSecondaryParityManifest()
+  validateSecondaryParityManifest(manifest, { manifestPath: SECONDARY_PARITY_MANIFEST_PATH, cwd: process.cwd() })
+
+  const surfaces = manifest.surfaces.map((surface) => {
+    const laneDefinitions = manifest.lanes.filter((lane) => lane.surfaceId === surface.id)
+    const existingRequiredLaneNames = laneDefinitions
+      .filter((lane) => lane.requirement === "required" && lane.implementationStatus === "existing-proof")
+      .map((lane) => lane.name)
+    const missingRequiredLaneNames = laneDefinitions
+      .filter((lane) => lane.requirement === "required" && lane.implementationStatus === "planned-proof")
+      .map((lane) => lane.name)
+    const presentFixturePaths = surface.deterministicFixtures
+      .filter((fixture) => fixture.status === "present")
+      .map((fixture) => fixture.path)
+    const plannedFixturePaths = surface.deterministicFixtures
+      .filter((fixture) => fixture.status === "planned")
+      .map((fixture) => fixture.path)
+
+    return {
+      id: surface.id,
+      title: surface.title,
+      inventoryStatus: surface.inventoryStatus,
+      releaseReadableStatus: surface.inventoryStatus,
+      requiredLaneNames: [...surface.requiredLaneNames],
+      optionalLaneNames: [...surface.optionalLaneNames],
+      existingRequiredLaneNames,
+      missingRequiredLaneNames,
+      presentFixturePaths,
+      plannedFixturePaths,
+      coverageGapIds: surface.coverageGaps.map((gap) => gap.id),
+      uncoveredAreas: surface.coverageGaps.map((gap) => ({ ...gap })),
+      reportPath: `${BASELINE_REPORT_PATH}#secondaryParity.surfaces.${surface.id}`,
+    } satisfies SecondaryParitySurfaceReportRow
+  })
+
+  return {
+    inventoryPath: "tests/parity/artifacts/secondary-surface-inventory.json",
+    manifestPath: SECONDARY_PARITY_MANIFEST_PATH,
+    inventoryVersion: inventory.version,
+    manifestVersion: manifest.version,
+    summary: {
+      totalSurfaces: surfaces.length,
+      partialSurfaces: surfaces.filter((surface) => surface.releaseReadableStatus === "partial").length,
+      coveredSurfaces: surfaces.filter((surface) => surface.releaseReadableStatus === "covered").length,
+      uncoveredSurfaces: surfaces.filter((surface) => surface.releaseReadableStatus === "uncovered").length,
+      totalDriftFindings: inventory.rebrandDrift.length,
+      surfacesMissingReleaseReadableCoverage: surfaces
+        .filter((surface) => surface.releaseReadableStatus !== "covered")
+        .map((surface) => surface.id),
+    },
+    surfaces,
+    uncoveredSurfaces: surfaces.filter((surface) => surface.releaseReadableStatus !== "covered"),
+    driftFindings: inventory.rebrandDrift.map((finding) => ({ ...finding })),
+    inventory,
+    manifest,
+  }
+}
+
 export async function createBaselineReport(
   options: {
     cwd?: string
@@ -1010,6 +1125,7 @@ export async function createBaselineReport(
   const reconciledManifest = reconcileParityManifestWithLaneResults(parityManifest, laneResults)
   const uncoveredCapabilities = buildUncoveredCapabilityRows(reconciledManifest)
   const artifactPath = options.artifactPath ?? BASELINE_REPORT_PATH
+  const secondaryParity = buildSecondaryParityReport()
   return {
     version: BASELINE_REPORT_VERSION,
     generatedAt: new Date().toISOString(),
@@ -1020,6 +1136,7 @@ export async function createBaselineReport(
     parityManifest: reconciledManifest,
     uncoveredCapabilities,
     repoInstalledComparison: buildRepoInstalledComparison(laneResults),
+    secondaryParity,
     reconciledFoundations: [M113_RECONCILIATION],
   }
 }

@@ -81,7 +81,7 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
 
     const report = JSON.parse(result.stdout)
     assert.equal(report.version, 4)
-    assert.equal(report.summary.verdict, "failing")
+    assert.equal(report.summary.verdict, "partial")
     assert.equal(report.summary.provesCodingLoop, true)
     assert.equal(report.lanes.length, expectedTargets.length)
     assert.equal(typeof report.generatedAt, "string")
@@ -89,8 +89,8 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
 
     const byName = new Map(report.lanes.map((lane: any) => [lane.name, lane]))
     assert.equal(byName.get("smoke-runner").proofClass, "smoke")
-    assert.equal(byName.get("smoke-runner").status, "failed")
-    assert.match(byName.get("smoke-runner").skipReason, /exited with code 1/i)
+    assert.equal(byName.get("smoke-runner").status, "passed")
+    assert.equal(byName.get("smoke-runner").skipReason, null)
     assert.equal(byName.get("fixtures-runner").proofClass, "uncovered-coding-loop")
     assert.equal(byName.get("pack-install").proofClass, "installed-binary")
     assert.equal(byName.get("pack-install").status, "passed")
@@ -103,6 +103,16 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
     assert.equal(report.repoInstalledComparison.installedArtifactPath, "tests/fixtures/recordings/installed-mode-parity-web-task.json")
     assert.equal(report.repoInstalledComparison.comparableWithoutRerun, true)
     assert.deepEqual(report.repoInstalledComparison.divergencePhases, [])
+    assert.ok(report.secondaryParity, "baseline report should expose secondary parity metadata")
+    assert.equal(report.secondaryParity.inventoryPath, "tests/parity/artifacts/secondary-surface-inventory.json")
+    assert.equal(report.secondaryParity.manifestPath, "tests/fixtures/secondary-parity-manifest.json")
+    assert.equal(report.secondaryParity.summary.totalSurfaces, 4)
+    assert.deepEqual(report.secondaryParity.summary.surfacesMissingReleaseReadableCoverage, [
+      "web-mode",
+      "mcp",
+      "workflow-bmad",
+      "worktree-session-recovery",
+    ])
 
     const artifact = JSON.parse(readFileSync(join(repoRoot, "tests", "parity", "artifacts", "baseline-report.json"), "utf8"))
     assert.equal(artifact.summary.verdict, report.summary.verdict)
