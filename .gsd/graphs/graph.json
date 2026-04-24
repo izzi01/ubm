@@ -9,8 +9,8 @@
       "sourceFile": "STATE.md"
     },
     {
-      "id": "concept:phase:planning",
-      "label": "Phase: planning",
+      "id": "concept:phase:validating-milestone",
+      "label": "Phase: validating-milestone",
       "type": "concept",
       "confidence": "EXTRACTED",
       "sourceFile": "STATE.md"
@@ -1114,6 +1114,25 @@
       "label": "T02: Publish the human-readable parity fixture UAT path",
       "type": "task",
       "confidence": "EXTRACTED"
+    },
+    {
+      "id": "slice:M114:S05",
+      "label": "S05: Release gate and live spot-check",
+      "type": "slice",
+      "confidence": "EXTRACTED",
+      "sourceFile": "milestones/M114/slices/S05/S05-PLAN.md"
+    },
+    {
+      "id": "task:M114:S05:T01",
+      "label": "T01: Assemble the strict release parity gate over the canonical report",
+      "type": "task",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "id": "task:M114:S05:T02",
+      "label": "T02: Integrate the optional live spot-check and lock release workflow semantics",
+      "type": "task",
+      "confidence": "EXTRACTED"
     }
   ],
   "edges": [
@@ -2058,7 +2077,25 @@
       "to": "task:M114:S04:T02",
       "type": "contains",
       "confidence": "EXTRACTED"
+    },
+    {
+      "from": "milestone:M114",
+      "to": "slice:M114:S05",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M114:S05",
+      "to": "task:M114:S05:T01",
+      "type": "contains",
+      "confidence": "EXTRACTED"
+    },
+    {
+      "from": "slice:M114:S05",
+      "to": "task:M114:S05:T02",
+      "type": "contains",
+      "confidence": "EXTRACTED"
     }
   ],
-  "builtAt": "2026-04-24T07:40:19.595Z"
+  "builtAt": "2026-04-24T08:06:15.473Z"
 }

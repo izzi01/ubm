@@ -23,8 +23,9 @@ Even if everything else is cut, `umb` must still be usable to make software end-
 - M114/S02 is complete: the repo has a deterministic parity web-task fixture, a recorded repo-mode coding-loop artifact, repo-mode fixture/parity contract tests, and parity-report wiring that surfaces inspect/edit/test/dev-server/browser diagnostics plus artifact paths for the repo-mode lane
 - M114/S03 is complete: the installed packaged `umb` path is represented as a first-class recorded parity lane backed by `tests/fixtures/recordings/installed-mode-parity-web-task.json`, the parity manifest truthfully marks both repo and installed coding-loop coverage, repo-vs-installed comparison data is emitted without reruns, and pack-install coverage asserts `umb` / `.umb` branding instead of stale `gsd` assumptions
 - M114/S04 is complete: `tests/parity/diagnostics.ts` renders operator-facing parity diagnostics from the canonical baseline report, `tests/parity/human-uat.md` provides the tracked repo/installed human UAT path, and contract tests validate both surfaces against tracked files and commands
-- The deterministic coding-loop proof is green in both repo and installed modes, but the full parity baseline remains truthfully red because `node --experimental-strip-types tests/parity/run.ts --format json` still reports `smoke-runner` failed and `live-runner` skipped without `GSD_LIVE_TESTS=1`
-- The remaining milestone work is S05: assemble the strict integrated release gate around the existing parity report, diagnostics renderer, UAT path, and optional live spot-check policy
+- M114/S05 is now assembled in tracked code: `tests/parity/release-gate.ts` provides the release-facing parity verdict, `npm run test:parity:release-gate` is the default deterministic pre-release command, `npm run test:parity:release-gate:live` is the explicit include-live variant, and the release report preserves required-lane failures, failed phases, artifact paths, repo-vs-installed comparison, diagnostics command, and redacted optional-live status metadata
+- The strict release gate is green when the deterministic repo/dev and installed coding-loop lanes are green, even if non-required baseline lanes still show existing gaps
+- The canonical baseline remains truthfully red overall because `smoke-runner` is still failing and `live-runner` skips unless explicitly enabled/configured; the new release gate surfaces those statuses without downgrading the deterministic required-lane release proof
 
 ## Architecture / Key Patterns
 
@@ -44,9 +45,10 @@ Even if everything else is cut, `umb` must still be usable to make software end-
   - `tests/parity/run.ts` emits a machine-readable baseline report even when the verdict is failing, so consumers can inspect truthful parity gaps
   - `tests/parity/diagnostics.ts` renders operator-facing summaries from the baseline report rather than introducing a second parity harness
   - `tests/parity/human-uat.md` is a tracked human-readable UAT script tied to repo-local fixture, report, and diagnostics artifacts
+  - `tests/parity/release-gate.ts` is the final release-facing contract over the canonical baseline report: it can rerun or consume the baseline artifact, requires only `repo-mode-coding-loop` and `pack-install`, and publishes explicit `optionalLive` metadata (`includeLiveRequested`, `enabled`, `configured`, `skipReason`) without exposing secrets
   - `tests/fixtures/parity-web-task-manifest.json` is the tracked source of truth for the downstream coding-loop acceptance contract
   - deterministic coding-loop proof is represented as recorded-artifact lanes (`repo-mode-coding-loop` and `pack-install`) with explicit `inspect`, `edit`, `test`, `dev-server`, and `browser` phase diagnostics
-  - `repoInstalledComparison` gives downstream slices a stable repo-vs-installed diff surface with artifact paths and per-phase matches/divergence
+  - `repoInstalledComparison` gives downstream slices and release operators a stable repo-vs-installed diff surface with artifact paths and per-phase matches/divergence
 - M114 follows a deterministic-main-proof pattern: a purpose-built fixture drives the main parity gate, while live-model checks stay secondary and non-blocking
 
 ## Capability Contract
@@ -71,4 +73,4 @@ See `.gsd/REQUIREMENTS.md` for the explicit capability contract, requirement sta
 - [x] M111: Fix pattern test compilation — repair vitest imports, ESM paths, and test typing
 - [x] M112: Implement BMAD method — add BMAD skill execution and multi-phase auto pipelines
 - [x] M113: Branchless worktree architecture — track planning artifacts in git and remove the sync layer
-- [ ] M114: AI coding app parity gate — prove umb can actually be used to make software through a strict core-loop parity suite in both repo/dev and installed `umb` modes
+- [ ] M114: AI coding app parity gate — prove umb can actually be used to make software through a strict core-loop parity suite in both repo/dev and installed `umb` modes, with release-gate and optional live spot-check policy now assembled and awaiting milestone-level validation/completion

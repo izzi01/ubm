@@ -24,7 +24,7 @@
 - [x] **S04: S04** `risk:medium` `depends:[]`
   > After this: After this: parity failures tell you what broke and where, and there is a human-readable UAT script that demonstrates the claim that umb can be used to make software on the parity fixture.
 
-- [ ] **S05: S05** `risk:medium` `depends:[]`
+- [x] **S05: S05** `risk:medium` `depends:[]`
   > After this: After this: one strict parity command/report can be run before release to prove umb behaves like a usable AI coding app for the agreed core loop in repo/dev and installed modes, with an optional live-model spot-check.
 
 ## Boundary Map

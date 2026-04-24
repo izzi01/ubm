@@ -1,6 +1,6 @@
 {
   "version": 4,
-  "generatedAt": "2026-04-24T08:01:04.257Z",
+  "generatedAt": "2026-04-24T08:03:50.621Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
@@ -41,7 +41,7 @@
       "status": "failed",
       "skipReason": "smoke-runner exited with code 1",
       "exitCode": 1,
-      "durationMs": 5536,
+      "durationMs": 7678,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -60,7 +60,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 21,
+      "durationMs": 26,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -77,7 +77,7 @@
       "parityScope": "live-only",
       "provesCodingLoop": false,
       "status": "skipped",
-      "skipReason": "live lane skipped because GSD_LIVE_TESTS is enabled but no live provider API key is configured",
+      "skipReason": "live lane skipped because GSD_LIVE_TESTS is not enabled",
       "exitCode": null,
       "durationMs": 0,
       "command": [
@@ -98,7 +98,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 17839,
+      "durationMs": 21450,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -117,7 +117,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 6866,
+      "durationMs": 7613,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -139,7 +139,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 8454,
+      "durationMs": 9156,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",

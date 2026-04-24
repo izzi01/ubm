@@ -2,19 +2,6 @@
 
 This file is the explicit capability and coverage contract for the project.
 
-## Active
-
-### R032 — A live-model spot-check exists to confirm real agenting still works, but it is non-blocking and must either pass or skip cleanly when secrets or model configuration are absent.
-- Class: quality-attribute
-- Status: active
-- Description: A live-model spot-check exists to confirm real agenting still works, but it is non-blocking and must either pass or skip cleanly when secrets or model configuration are absent.
-- Why it matters: The milestone should keep one reality check for live agent behavior without sacrificing deterministic release confidence.
-- Source: user
-- Primary owning slice: M114/S05
-- Supporting slices: M114/S04
-- Validation: mapped
-- Notes: Optional live checks must not make the main release gate flaky.
-
 ## Validated
 
 ### R001 — Operator can generate a new skill skeleton by providing a name and description via CLI. The skeleton follows the Agent Skills Spec (SKILL.md with YAML frontmatter) and is created in the .opencode/skills/ directory.
@@ -164,6 +151,17 @@ This file is the explicit capability and coverage contract for the project.
 - Validation: Validated by `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-diagnostics-contract.test.ts` and `node --experimental-strip-types tests/parity/diagnostics.ts --report tests/parity/artifacts/baseline-report.json`, which render mode-aware lane, phase, artifact path, command/browser evidence, and repo-vs-installed comparison surfaces from the canonical baseline report.
 - Notes: Diagnostics should cover dev-process, browser, and packaged-parity failures.
 
+### R032 — A live-model spot-check exists to confirm real agenting still works, but it is non-blocking and must either pass or skip cleanly when secrets or model configuration are absent.
+- Class: quality-attribute
+- Status: validated
+- Description: A live-model spot-check exists to confirm real agenting still works, but it is non-blocking and must either pass or skip cleanly when secrets or model configuration are absent.
+- Why it matters: The milestone should keep one reality check for live agent behavior without sacrificing deterministic release confidence.
+- Source: user
+- Primary owning slice: M114/S05
+- Supporting slices: M114/S04
+- Validation: Validated by passing `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-live-spot-check-contract.test.ts src/tests/integration/parity-human-uat-contract.test.ts src/tests/integration/parity-release-gate-contract.test.ts`, by `node --experimental-strip-types tests/parity/release-gate.ts --format text` returning a passed verdict with deterministic required lanes green and `optionalLive.skipReason: not-enabled`, and by `node --experimental-strip-types tests/parity/release-gate.ts --format json --include-live` returning `optionalLive.status: skipped`, `includeLiveRequested: true`, `enabled: true`, `configured: false`, `skipReason: no-provider-configured` in an environment without provider keys while keeping the release verdict tied to required deterministic lanes.
+- Notes: S05 integrated the live spot-check into the release workflow as opt-in and non-blocking, with explicit redacted pass/skip/fail metadata exposed in the release-gate report.
+
 ## Deferred
 
 ### R011 — System validates that skill content follows BMAD four-field persona rules (role, identity, communication style, principles), module assignment, and manifest registration.
@@ -270,7 +268,7 @@ This file is the explicit capability and coverage contract for the project.
 | R029 | integration | validated | M114/S02 | M114/S03, M114/S05 | The deterministic fixture under `tests/fixtures/parity-web-task/` is tracked in the manifest and backed by `tests/fixtures/recordings/repo-mode-parity-web-task.json`; repo-mode fixture/parity contract tests pass and the parity JSON report includes artifact-path and failedPhase diagnostics for the recorded lane. |
 | R030 | launchability | validated | M114/S04 | M114/S05 | Validated by `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-human-uat-contract.test.ts src/tests/integration/parity-diagnostics-contract.test.ts` passing on 2026-04-24 and by the tracked guide `tests/parity/human-uat.md`, which covers preconditions, repo-mode steps, installed-mode steps, expected outcomes, and failure-inspection flow against the parity fixture. |
 | R031 | failure-visibility | validated | M114/S04 | M114/S05 | Validated by `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-diagnostics-contract.test.ts` and `node --experimental-strip-types tests/parity/diagnostics.ts --report tests/parity/artifacts/baseline-report.json`, which render mode-aware lane, phase, artifact path, command/browser evidence, and repo-vs-installed comparison surfaces from the canonical baseline report. |
-| R032 | quality-attribute | active | M114/S05 | M114/S04 | mapped |
+| R032 | quality-attribute | validated | M114/S05 | M114/S04 | Validated by passing `node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-live-spot-check-contract.test.ts src/tests/integration/parity-human-uat-contract.test.ts src/tests/integration/parity-release-gate-contract.test.ts`, by `node --experimental-strip-types tests/parity/release-gate.ts --format text` returning a passed verdict with deterministic required lanes green and `optionalLive.skipReason: not-enabled`, and by `node --experimental-strip-types tests/parity/release-gate.ts --format json --include-live` returning `optionalLive.status: skipped`, `includeLiveRequested: true`, `enabled: true`, `configured: false`, `skipReason: no-provider-configured` in an environment without provider keys while keeping the release verdict tied to required deterministic lanes. |
 | R033 | constraint | deferred | none | none | unmapped |
 | R034 | constraint | deferred | none | none | unmapped |
 | R035 | anti-feature | out-of-scope | none | none | n/a |
@@ -278,7 +276,7 @@ This file is the explicit capability and coverage contract for the project.
 
 ## Coverage Summary
 
-- Active requirements: 1
-- Mapped to slices: 1
-- Validated: 14 (R001, R002, R003, R004, R010, R023, R024, R025, R026, R027, R028, R029, R030, R031)
+- Active requirements: 0
+- Mapped to slices: 0
+- Validated: 15 (R001, R002, R003, R004, R010, R023, R024, R025, R026, R027, R028, R029, R030, R031, R032)
 - Unmapped active requirements: 0
