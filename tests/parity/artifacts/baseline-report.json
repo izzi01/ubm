@@ -1,15 +1,15 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-24T04:45:52.395Z",
+  "generatedAt": "2026-04-24T05:33:04.979Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
     "verdict": "failing",
     "totalLanes": 7,
     "passed": 4,
-    "failed": 1,
+    "failed": 2,
     "skipped": 1,
-    "timedOut": 1,
+    "timedOut": 0,
     "provesCodingLoop": false,
     "uncoveredLaneNames": [
       "smoke-runner",
@@ -39,7 +39,7 @@
       "status": "failed",
       "skipReason": "smoke-runner exited with code 1",
       "exitCode": 1,
-      "durationMs": 8211,
+      "durationMs": 8454,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -55,7 +55,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 29,
+      "durationMs": 23,
       "command": [
         "--experimental-strip-types",
         "tests/fixtures/run.ts"
@@ -87,7 +87,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 23567,
+      "durationMs": 18807,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -103,7 +103,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 9860,
+      "durationMs": 8673,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -122,7 +122,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 10635,
+      "durationMs": 9221,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -138,10 +138,10 @@
       "proofClass": "installed-binary",
       "parityScope": "installed-mode",
       "provesCodingLoop": false,
-      "status": "timed_out",
-      "skipReason": "pack-install exceeded timeout of 120000ms",
+      "status": "failed",
+      "skipReason": "pack-install exited with code 1",
       "exitCode": 1,
-      "durationMs": 167300,
+      "durationMs": 63126,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -149,6 +149,17 @@
         "--test",
         "src/tests/integration/pack-install.test.ts"
       ]
+    }
+  ],
+  "reconciledFoundations": [
+    {
+      "milestoneId": "M113",
+      "requirementStatusById": {
+        "R023": "validated",
+        "R026": "validated"
+      },
+      "summaryLabel": "closed foundation",
+      "reportAnnotation": "M113 cleanup requirements R023 and R026 are already validated closed foundation work, not an open parity gap for M114."
     }
   ]
 }

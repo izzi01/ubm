@@ -71,7 +71,7 @@ Negative Tests (Q7): invalid lane metadata, missing script targets, and skipped 
   - Files: `package.json`, `tests/parity/run.ts`, `tests/parity/baseline-lanes.ts`, `src/tests/integration/parity-baseline-contract.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-baseline-contract.test.ts
 
-- [ ] **T02: Reconcile stale M113 cleanup bookkeeping and baseline truth claims** `est:60m`
+- [x] **T02: Reconcile stale M113 cleanup bookkeeping and baseline truth claims** `est:60m`
   Skills to load before coding: `test`, `verify-before-complete`, `debug-like-expert`.
 
 Use M113’s summary and validation evidence to reconcile the stale cleanup contract that M114 explicitly calls out. The implementation should update the project requirement bookkeeping and make the baseline report truthfully reflect that M113 already delivered its cleanup work, instead of letting S01 build new parity claims on top of known drift.

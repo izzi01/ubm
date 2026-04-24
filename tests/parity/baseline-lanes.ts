@@ -70,6 +70,19 @@ export interface BaselineReport {
   lanes: BaselineLaneResult[]
 }
 
+export const M113_RECONCILED_REQUIREMENT_IDS = ["R023", "R026"] as const
+
+export const M113_RECONCILIATION = {
+  milestoneId: "M113",
+  requirementStatusById: {
+    R023: "validated",
+    R026: "validated",
+  },
+  summaryLabel: "closed foundation",
+  reportAnnotation:
+    "M113 cleanup requirements R023 and R026 are already validated closed foundation work, not an open parity gap for M114.",
+} as const
+
 export const BASELINE_LANES: readonly BaselineLaneDefinition[] = [
   {
     name: "smoke-runner",
@@ -372,6 +385,7 @@ export async function createBaselineReport(
     artifactPath,
     summary: summarizeBaselineResults(lanes),
     lanes,
+    reconciledFoundations: [M113_RECONCILIATION],
   }
 }
 

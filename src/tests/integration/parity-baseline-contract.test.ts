@@ -76,11 +76,11 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
       GSD_LIVE_TESTS: "0",
     })
 
-    assert.equal(result.status, 0, `runner stderr:\n${result.stderr}`)
+    assert.equal(result.status, 1, `runner stderr:\n${result.stderr}`)
 
     const report = JSON.parse(result.stdout)
     assert.equal(report.version, 1)
-    assert.equal(report.summary.verdict, "partial")
+    assert.equal(report.summary.verdict, "failing")
     assert.equal(report.summary.provesCodingLoop, false)
     assert.equal(report.lanes.length, expectedTargets.length)
     assert.equal(typeof report.generatedAt, "string")
@@ -88,8 +88,12 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
 
     const byName = new Map(report.lanes.map((lane: any) => [lane.name, lane]))
     assert.equal(byName.get("smoke-runner").proofClass, "smoke")
+    assert.equal(byName.get("smoke-runner").status, "failed")
+    assert.match(byName.get("smoke-runner").skipReason, /exited with code 1/i)
     assert.equal(byName.get("fixtures-runner").proofClass, "uncovered-coding-loop")
     assert.equal(byName.get("pack-install").proofClass, "installed-binary")
+    assert.equal(byName.get("pack-install").status, "timed_out")
+    assert.match(byName.get("pack-install").skipReason, /exceeded timeout/i)
     assert.equal(byName.get("live-runner").status, "skipped")
     assert.match(byName.get("live-runner").skipReason, /GSD_LIVE_TESTS/i)
     assert.equal(byName.get("live-regression-runner").status, "passed")
@@ -151,8 +155,8 @@ test("baseline helpers classify invalid metadata, missing targets, skip semantic
     },
   )
   assert.equal(failed.status, "failed")
-  assert.equal(failed.exitCode, 1)
-  assert.match(failed.skipReason, /forced-failure exited with code 1/i)
+  assert.equal(failed.exitCode, 9)
+  assert.match(failed.skipReason, /forced-failure exited with code 9/i)
 
   const timedOut = await parity.executeBaselineLane(
     {

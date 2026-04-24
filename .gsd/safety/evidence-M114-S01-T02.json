@@ -1,0 +1,192 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_gIJLt6hwMC9qa4Qat8EDooLX",
+    "command": "ls src/tests/integration | sed -n '1,120p'",
+    "exitCode": 0,
+    "outputSnippet": "ci_monitor.test.ts\ne2e-headless.test.ts\ne2e-smoke.test.ts\npack-install.test.ts\nparity-baseline-contract.test.ts\nweb-auth-token.test.ts\nweb-auto-dashboard-lock-reconciliation.test.ts\nweb-boot-node24.test.ts\nweb-bridge-contract.test.ts\nweb-bridge-package-root.test.ts\nweb-bridge-terminal-contract.test.ts\nweb-cli-entry.test.ts\nweb-command-parity-contract.test.ts\nweb-continuity-contract.test.ts\nweb-dashboard-rtk-contract.test.ts\nweb-diagnostics-contract.test.ts\nweb-live-interaction-contract.test.ts\nw",
+    "timestamp": 1777006086123
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_5MwxTVLVbP9BdLTZptCuTwXO",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-baseline-contract.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "✔ baseline lane matrix is fixed, allowlisted, and tied to tracked in-repo targets (3.382362ms)\n✖ baseline runner emits machine-readable JSON plus an artifact file with proof labels and summary verdict (27567.481724ms)\n✖ baseline helpers classify invalid metadata, missing targets, skip semantics, failures, and timeouts deterministically (9.726366ms)\nℹ tests 3\nℹ suites 0\nℹ pass 1\nℹ fail 2\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 27672.298209\n\n✖ failing tests:\n\ntest at src/tests/integration",
+    "timestamp": 1777006093135
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_bqIQutwmPsfXybFIrKaShv0b",
+    "command": "node --experimental-strip-types tests/parity/run.ts --format json",
+    "exitCode": 1,
+    "outputSnippet": "{\n  \"version\": 1,\n  \"generatedAt\": \"2026-04-24T04:51:57.677Z\",\n  \"cwd\": \"/home/cid/projects-personal/umb\",\n  \"artifactPath\": \"/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json\",\n  \"summary\": {\n    \"verdict\": \"failing\",\n    \"totalLanes\": 7,\n    \"passed\": 4,\n    \"failed\": 1,\n    \"skipped\": 1,\n    \"timedOut\": 1,\n    \"provesCodingLoop\": false,\n    \"uncoveredLaneNames\": [\n      \"smoke-runner\",\n      \"fixtures-runner\",\n      \"live-runner\",\n      \"live-regression-runner\",\n    ",
+    "timestamp": 1777006093135
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_hBFJzImcMQI0m7ca3SurnblB",
+    "command": "node --experimental-strip-types tests/smoke/run.ts",
+    "exitCode": 1,
+    "outputSnippet": "  PASS  test-help\n  FAIL  test-init\n[gsd] Error: Interactive mode requires a terminal (TTY) but stdin and stdout are not a TTY.\n[gsd] Non-interactive alternatives:\n[gsd]   gsd auto                       Auto-mode (pipeable, no TUI)\n[gsd]   gsd --print \"your message\"     Single-shot prompt\n[gsd]   gsd --web [path]               Browser-only web mode\n[gsd]   gsd --mode rpc                 JSON-RPC over stdin/stdout\n[gsd]   gsd --mode mcp                 MCP server over stdin/stdout\n[gsd]   gsd --m",
+    "timestamp": 1777006332977
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_btYokRCaZ3KIO6KyvXOfCBo9",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/pack-install.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "✖ src/tests/integration/pack-install.test.ts (86989.614558ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 86996.00079\n\n✖ failing tests:\n\ntest at src/tests/integration/pack-install.test.ts:1:1\n✖ src/tests/integration/pack-install.test.ts (86989.614558ms)\n  'test failed'\n\n\nCommand exited with code 1",
+    "timestamp": 1777006332977
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_91FYKbX3y5kdLOOG0t5BT67i",
+    "command": "test -f src/tests/integration/parity-m113-reconciliation.test.ts && echo exists || echo missing",
+    "exitCode": 0,
+    "outputSnippet": "missing\n",
+    "timestamp": 1777006510081
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_dXCwnV26VpmgBWAjJlJb63LZ",
+    "command": "test -f tests/parity/baseline-lanes.ts && echo exists",
+    "exitCode": 0,
+    "outputSnippet": "exists\n",
+    "timestamp": 1777006510081
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_U7bvL4dNasyxD5hwqL6hBXJo",
+    "command": "test -f src/tests/integration/parity-baseline-contract.test.ts && echo exists",
+    "exitCode": 0,
+    "outputSnippet": "exists\n",
+    "timestamp": 1777006510082
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_85WGa8zcjoh7FEpFCHuwGVxW",
+    "path": "src/tests/integration/parity-m113-reconciliation.test.ts",
+    "timestamp": 1777006532030
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_03EX9cgYQOMCsR0ddqsMqKwo",
+    "path": "tests/parity/baseline-lanes.ts",
+    "timestamp": 1777006555629
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_fv0yEwpaGrJOvH32WofKpPSF",
+    "path": "src/tests/integration/parity-baseline-contract.test.ts",
+    "timestamp": 1777006570494
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_Ueqldo5YwQGtzxezRVob7Lcj",
+    "path": "src/tests/integration/parity-baseline-contract.test.ts",
+    "timestamp": 1777006575374
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_DwP73sg1iIcQdGiiPsUuMoI6",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-m113-reconciliation.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ M113 summary and validation both record R023 and R026 as validated outcomes (1.835665ms)\n✔ requirements bookkeeping now matches the reconciled M113 evidence (0.909918ms)\n✔ baseline reconciliation metadata labels M113 cleanup as closed foundation rather than an open parity gap (9.578963ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 143.028006\n",
+    "timestamp": 1777006582572
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_ajQ1NxLQdK52f3FMVfyXyE9r",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-baseline-contract.test.ts",
+    "exitCode": -1,
+    "outputSnippet": "",
+    "timestamp": 1777006582572
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_Ol5upe69Q61TWv4F0KneZNaU",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-m113-reconciliation.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ M113 summary and validation both record R023 and R026 as validated outcomes (0.695991ms)\n✔ requirements bookkeeping now matches the reconciled M113 evidence (3.616746ms)\n✔ baseline reconciliation metadata labels M113 cleanup as closed foundation rather than an open parity gap (3.869827ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 85.827336\n",
+    "timestamp": 1777007016495
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_2NShy6kKhq7zMFGzNPHSeDx0",
+    "path": "tests/parity/baseline-lanes.ts",
+    "timestamp": 1777007055825
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_qIbgQzyL9ojFlLDWBRU6uvMg",
+    "path": "tests/parity/baseline-lanes.ts",
+    "timestamp": 1777007055825
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_5BS0xk84jXiXU8jSaWh6NjDS",
+    "path": "tests/parity/baseline-lanes.ts",
+    "timestamp": 1777007055826
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_dS11JUxIbzNUr1F91oAFe88r",
+    "path": "src/tests/integration/parity-m113-reconciliation.test.ts",
+    "timestamp": 1777007055826
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_2pDZ4mFiLYErQ0j5EG3j8tpv",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-m113-reconciliation.test.ts",
+    "exitCode": 1,
+    "outputSnippet": "✔ M113 summary and validation both record R023 and R026 as validated outcomes (0.680482ms)\n✔ requirements bookkeeping now matches the reconciled M113 evidence (0.292002ms)\n✖ baseline reconciliation metadata labels M113 cleanup as closed foundation rather than an open parity gap (9.371949ms)\nℹ tests 3\nℹ suites 0\nℹ pass 2\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 122.556005\n\n✖ failing tests:\n\ntest at src/tests/integration/parity-m113-reconciliation.test.ts:51:1\n✖ baseline reconcili",
+    "timestamp": 1777007063965
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_ifhaEFQDe16tOCqGOy2XJc9m",
+    "command": "node --experimental-strip-types tests/parity/run.ts --format json",
+    "exitCode": 1,
+    "outputSnippet": "node:internal/modules/run_main:107\n    triggerUncaughtException(\n    ^\n\nfile:///home/cid/projects-personal/umb/tests/parity/baseline-lanes.ts:398\n}\nwd, report.artifactPath)\n                       ^\n  await mkdir(dirname(outputPath), { recursive: true })\n\nSyntaxError [ERR_INVALID_TYPESCRIPT_SYNTAX]: Expected ';', '}' or <eof>\n    at parseTypeScript (node:internal/modules/typescript:72:36)\n    at processTypeScriptCode (node:internal/modules/typescript:146:42)\n    at stripTypeScriptModuleTypes (nod",
+    "timestamp": 1777007063965
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_isR4NJtVz2fIhxBSlnYH62Sm",
+    "path": "tests/parity/baseline-lanes.ts",
+    "timestamp": 1777007074182
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_yGAq8ZHnXzVYZwCqCJisjP0l",
+    "command": "ls src/tests/integration | grep parity",
+    "exitCode": 0,
+    "outputSnippet": "parity-baseline-contract.test.ts\nparity-m113-reconciliation.test.ts\nweb-command-parity-contract.test.ts\nweb-session-parity-contract.test.ts\n",
+    "timestamp": 1777008604322
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_gSfNkV4XLXQi4hnixEq6zgJh",
+    "command": "node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/parity-m113-reconciliation.test.ts",
+    "exitCode": 0,
+    "outputSnippet": "✔ M113 summary and validation both record R023 and R026 as validated outcomes (0.678267ms)\n✔ requirements bookkeeping now matches the reconciled M113 evidence (0.294965ms)\n✔ baseline reconciliation metadata labels M113 cleanup as closed foundation rather than an open parity gap (32222.052126ms)\nℹ tests 3\nℹ suites 0\nℹ pass 3\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 32296.127712\n",
+    "timestamp": 1777008621032
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_yV4apI4T7oAOiwFYkl5e7LsO",
+    "command": "node --experimental-strip-types tests/parity/run.ts --format json",
+    "exitCode": 1,
+    "outputSnippet": "{\n  \"version\": 1,\n  \"generatedAt\": \"2026-04-24T05:33:04.975Z\",\n  \"cwd\": \"/home/cid/projects-personal/umb\",\n  \"artifactPath\": \"/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json\",\n  \"summary\": {\n    \"verdict\": \"failing\",\n    \"totalLanes\": 7,\n    \"passed\": 4,\n    \"failed\": 2,\n    \"skipped\": 1,\n    \"timedOut\": 0,\n    \"provesCodingLoop\": false,\n    \"uncoveredLaneNames\": [\n      \"smoke-runner\",\n      \"fixtures-runner\",\n      \"live-runner\",\n      \"live-regression-runner\",\n    ",
+    "timestamp": 1777008676553
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_ekrubceFPcoCllQdmCaszBnG",
+    "command": "npm run test:parity:baseline",
+    "exitCode": 1,
+    "outputSnippet": "\n> umb-cli@2.70.1 test:parity:baseline\n> node --experimental-strip-types tests/parity/run.ts --format json\n\n{\n  \"version\": 1,\n  \"generatedAt\": \"2026-04-24T05:33:04.979Z\",\n  \"cwd\": \"/home/cid/projects-personal/umb\",\n  \"artifactPath\": \"/home/cid/projects-personal/umb/tests/parity/artifacts/baseline-report.json\",\n  \"summary\": {\n    \"verdict\": \"failing\",\n    \"totalLanes\": 7,\n    \"passed\": 4,\n    \"failed\": 2,\n    \"skipped\": 1,\n    \"timedOut\": 0,\n    \"provesCodingLoop\": false,\n    \"uncoveredLaneNames\"",
+    "timestamp": 1777008676553
+  }
+]
