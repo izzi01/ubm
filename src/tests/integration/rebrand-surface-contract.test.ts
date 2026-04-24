@@ -29,13 +29,7 @@ test("rebrand drift contract keeps the remaining worktree/session operator drift
 
   assert.deepEqual(
     manifest.rebrandDrift.map((entry) => entry.id),
-    [
-      "drift-cli-warning-prefix",
-      "drift-cli-noninteractive-guidance",
-      "drift-cli-web-guidance",
-      "drift-worktree-usage-merge",
-      "drift-worktree-usage-remove",
-    ],
+    [],
   )
 
   for (const entry of manifest.rebrandDrift) {

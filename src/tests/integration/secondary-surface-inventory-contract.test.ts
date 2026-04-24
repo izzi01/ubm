@@ -100,22 +100,15 @@ test("secondary surface inventory records the expected rebrand drift bands and s
   const inventoryModule = await importInventoryModule()
   const inventory = inventoryModule.createSecondarySurfaceInventory()
 
-  assert.equal(inventory.summary.totalDriftFindings, 12)
+  assert.equal(inventory.summary.totalDriftFindings, 5)
   assert.deepEqual(inventory.summary.severityCounts, {
-    high: 7,
+    high: 0,
     medium: 4,
     low: 1,
   })
 
   const driftIds = inventory.rebrandDrift.map((finding: { id: string }) => finding.id)
   assert.deepEqual(driftIds, [
-    "drift-cli-warning-prefix",
-    "drift-cli-noninteractive-guidance",
-    "drift-cli-web-guidance",
-    "drift-worktree-usage-merge",
-    "drift-worktree-usage-remove",
-    "drift-mcp-startup-prefix",
-    "drift-web-startup-prefix",
     "drift-package-docker-image",
     "drift-web-subprocess-comment",
     "drift-live-regression-install-comment",
@@ -126,14 +119,14 @@ test("secondary surface inventory records the expected rebrand drift bands and s
   const highSeverityRuntime = inventory.rebrandDrift.filter(
     (finding: { severity: string; kind: string }) => finding.severity === "high" && finding.kind === "runtime-diagnostic",
   )
-  assert.ok(highSeverityRuntime.length >= 6, "expected the main drift band to stay focused on user-visible runtime diagnostics")
+  assert.equal(highSeverityRuntime.length, 0, "high-severity runtime drift should be retired from the residual inventory")
 
   const paths = inventory.rebrandDrift.map((finding: { path: string }) => finding.path)
-  assert.ok(paths.includes("src/cli.ts"))
-  assert.ok(paths.includes("src/worktree-cli.ts"))
-  assert.ok(paths.includes("src/mcp-server.ts"))
-  assert.ok(paths.includes("src/web-mode.ts"))
   assert.ok(paths.includes("package.json"))
+  assert.ok(paths.includes("src/web/ts-subprocess-flags.ts"))
+  assert.ok(paths.includes("tests/live-regression/run.ts"))
+  assert.ok(paths.includes("src/tests/docker-template.test.ts"))
+  assert.ok(paths.includes("src/tests/integration/web-subprocess-module-resolution.test.ts"))
 })
 
 test("secondary surface inventory validation rejects summary drift and unknown surface references", async () => {

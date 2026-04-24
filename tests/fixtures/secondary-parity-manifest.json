@@ -166,7 +166,7 @@
       "id": "web-mode",
       "title": "Browser-only web mode parity surface",
       "inventoryStatus": "partial",
-      "scopeBoundary": "Covers the shipped `umb --web` / `umb web` launch path, host/network flags, onboarding lock state, command-surface parity, and recovery/session diagnostics exposed in the web UI. It does not yet prove a dedicated parity fixture through the release-gate artifact.",
+      "scopeBoundary": "Covers the shipped `umb --web` / `umb web` launch path, host/network flags, onboarding lock state, command-surface parity, runtime startup diagnostics, and recovery/session diagnostics exposed in the web UI. It does not yet prove a dedicated parity fixture through the release-gate artifact.",
       "requiredLaneNames": [
         "secondary-parity-report",
         "integration:web-mode"
@@ -227,7 +227,7 @@
       "id": "mcp",
       "title": "MCP server and client parity surface",
       "inventoryStatus": "partial",
-      "scopeBoundary": "Covers `--mode mcp` startup, packaged MCP module importability, bundled MCP extension conflicts, and MCP-related package server contracts. It does not yet prove an end-to-end secondary parity lane that a downstream release gate can read as MCP parity.",
+      "scopeBoundary": "Covers `--mode mcp` startup, operator-visible startup branding, packaged MCP module importability, bundled MCP extension conflicts, and MCP-related package server contracts. It does not yet prove an end-to-end secondary parity lane that a downstream release gate can read as MCP parity.",
       "requiredLaneNames": [
         "secondary-parity-report:mcp",
         "unit:mcp"
