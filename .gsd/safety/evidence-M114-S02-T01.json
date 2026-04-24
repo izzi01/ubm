@@ -1,0 +1,114 @@
+[
+  {
+    "kind": "bash",
+    "toolCallId": "call_6RnvZ2e2C5wQeSo2PSdybdhZ",
+    "command": "ls -la tests/fixtures && printf '\\n---\\n' && find tests/fixtures -maxdepth 2 -type d | sort && printf '\\n---\\n' && find src/tests/integration -maxdepth 1 -type f | sort",
+    "exitCode": 0,
+    "outputSnippet": "total 20\ndrwxr-xr-x 1 cid cid  130 Apr 24 12:37 .\ndrwxr-xr-x 1 cid cid  112 Apr 24 11:40 ..\n-rw-r--r-- 1 cid cid 4962 Apr 24 12:37 parity-web-task-manifest.json\n-rw-r--r-- 1 cid cid 3457 Apr 11 10:05 provider.ts\ndrwxr-xr-x 1 cid cid  200 Apr 11 10:05 recordings\n-rw-r--r-- 1 cid cid 1661 Apr 11 10:05 record.ts\n-rw-r--r-- 1 cid cid 3202 Apr 11 10:05 run.ts\n\n---\ntests/fixtures\ntests/fixtures/recordings\n\n---\nsrc/tests/integration/ci_monitor.test.ts\nsrc/tests/integration/e2e-headless.test.ts\nsrc/test",
+    "timestamp": 1777010442795
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_wH9KJ586BZWDSSVQv3R4BtYk",
+    "command": "rg -n \"materializ|fixture.*manifest|parity-web-task|recordingsDir|GSD_FIXTURE_DIR\" src tests -S",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/artifacts/baseline-report.json:163:    \"fixtureId\": \"parity-web-task\",\ntests/parity/baseline-lanes.ts:8:export const PARITY_MANIFEST_PATH = \"tests/fixtures/parity-web-task-manifest.json\" as const\ntests/fixtures/parity-web-task-manifest.json:3:  \"fixtureId\": \"parity-web-task\",\ntests/fixtures/run.ts:8:const recordingsDir = join(__dirname, \"recordings\");\ntests/fixtures/run.ts:10:const files = readdirSync(recordingsDir)\ntests/fixtures/run.ts:23:  const filePath = join(recordingsDir, fil",
+    "timestamp": 1777010449223
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_caqXbYTzjVuDSNq1wEMvF7oH",
+    "command": "find tests/fixtures/parity-web-task -maxdepth 3 -type f | sort",
+    "exitCode": 0,
+    "outputSnippet": "find: ‘tests/fixtures/parity-web-task’: No such file or directory\n",
+    "timestamp": 1777010454410
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_DKN7DLHawtzLls7OMHKkwviY",
+    "command": "rg -n \"mkdtempSync|execFileSync\\(|npm run dev|package.json\\\"|spawn\\(\" src/tests/integration tests -S | head -n 200",
+    "exitCode": 0,
+    "outputSnippet": "tests/parity/baseline-lanes.ts:316:    const child = spawn(process.execPath, command, {\nsrc/tests/integration/parity-baseline-contract.test.ts:4:import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from \"node:fs\"\nsrc/tests/integration/parity-baseline-contract.test.ts:24:    const stdout = execFileSync(process.execPath, args, {\nsrc/tests/integration/parity-baseline-contract.test.ts:64:  const tempHome = mkdtempSync(join(tmpdir(), \"umb-parity-home-\"))\nsrc/tests/integration/parit",
+    "timestamp": 1777010465950
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_QFvu2tk2XZGOxd8dyEonlLuA",
+    "path": "tests/fixtures/parity-web-task/package.json",
+    "timestamp": 1777010506533
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_NRHihcvAJVkMcZcoYvl6Q34z",
+    "path": "tests/fixtures/parity-web-task/index.html",
+    "timestamp": 1777010520791
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_I18Zan6EXxJtKEZTGvn17bOe",
+    "path": "tests/fixtures/parity-web-task/src/task.ts",
+    "timestamp": 1777010520792
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_F2FKvvZ3BmONkVODA5sDNWz9",
+    "path": "tests/fixtures/parity-web-task/src/main.ts",
+    "timestamp": 1777010520792
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_EmSmhQ7koH4g6K7nmEkalYUR",
+    "path": "tests/fixtures/parity-web-task/tests/task.spec.ts",
+    "timestamp": 1777010520792
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_YuD6m0KQHtGE3Tlii7BGyKnr",
+    "path": "tests/fixtures/parity-web-task/TASK.md",
+    "timestamp": 1777010520792
+  },
+  {
+    "kind": "write",
+    "toolCallId": "call_1gyPg7Z0JKTaCmNmHIOOmyFn",
+    "path": "src/tests/integration/repo-mode-fixture-contract.test.ts",
+    "timestamp": 1777010565963
+  },
+  {
+    "kind": "bash",
+    "toolCallId": "call_zowKCFCD7QVBCEOXLCvELB3O",
+    "command": "node --experimental-strip-types --test tests/fixtures/parity-web-task/tests/task.spec.ts",
+    "exitCode": 1,
+    "outputSnippet": "✖ getStatusMessage returns the completed UI copy required by TASK.md (0.848503ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 67.342226\n\n✖ failing tests:\n\ntest at tests/fixtures/parity-web-task/tests/task.spec.ts:6:1\n✖ getStatusMessage returns the completed UI copy required by TASK.md (0.848503ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'Build status: In progress'\n  - 'Build status: Complete'",
+    "timestamp": 1777010602985
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_NBFsP2TXu2WqYBJIN134ziNy",
+    "path": "src/tests/integration/repo-mode-fixture-contract.test.ts",
+    "timestamp": 1777010602985
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_VOoiEtgRsJErWzPdPimaUQnU",
+    "path": "src/tests/integration/repo-mode-fixture-contract.test.ts",
+    "timestamp": 1777010602986
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_KRAyxciuzb3Nu2cFJORcbRat",
+    "path": "src/tests/integration/repo-mode-fixture-contract.test.ts",
+    "timestamp": 1777010613754
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_ILs9oh59BRrGzKS5VboTS7l0",
+    "path": "src/tests/integration/repo-mode-fixture-contract.test.ts",
+    "timestamp": 1777010658179
+  },
+  {
+    "kind": "edit",
+    "toolCallId": "call_GTgPl9J7AFCRcLslXLvX9dv5",
+    "path": "src/tests/integration/repo-mode-fixture-contract.test.ts",
+    "timestamp": 1777010688066
+  }
+]

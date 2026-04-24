@@ -12,10 +12,10 @@
 
 ## Slices
 
-- [ ] **S01: S01** `risk:high` `depends:[]`
+- [x] **S01: S01** `risk:high` `depends:[]`
   > After this: After this: one baseline parity command/report shows what the repo already proves, what it does not, and the stale M113 cleanup drift is reconciled so downstream work starts from a truthful contract.
 
-- [ ] **S02: Repo-mode coding-loop proof** `risk:high` `depends:[S01]`
+- [ ] **S02: S02** `risk:high` `depends:[]`
   > After this: After this: the repo/dev build of umb can complete the agreed small web-task fixture end-to-end, including code edits, test execution, dev-server management, and browser verification.
 
 - [ ] **S03: Installed-binary packaged parity** `risk:high` `depends:[S02]`

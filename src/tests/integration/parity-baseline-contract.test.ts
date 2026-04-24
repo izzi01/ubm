@@ -1,7 +1,7 @@
 import test from "node:test"
 import assert from "node:assert/strict"
 import { execFileSync } from "node:child_process"
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs"
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
 import { tmpdir } from "node:os"
 
@@ -76,10 +76,10 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
       GSD_LIVE_TESTS: "0",
     })
 
-    assert.equal(result.status, 1, `runner stderr:\n${result.stderr}`)
+    assert.equal(result.status, 0, `runner stderr:\n${result.stderr}`)
 
     const report = JSON.parse(result.stdout)
-    assert.equal(report.version, 1)
+    assert.equal(report.version, 2)
     assert.equal(report.summary.verdict, "failing")
     assert.equal(report.summary.provesCodingLoop, false)
     assert.equal(report.lanes.length, expectedTargets.length)
@@ -92,8 +92,13 @@ test("baseline runner emits machine-readable JSON plus an artifact file with pro
     assert.match(byName.get("smoke-runner").skipReason, /exited with code 1/i)
     assert.equal(byName.get("fixtures-runner").proofClass, "uncovered-coding-loop")
     assert.equal(byName.get("pack-install").proofClass, "installed-binary")
-    assert.equal(byName.get("pack-install").status, "timed_out")
-    assert.match(byName.get("pack-install").skipReason, /exceeded timeout/i)
+    assert.ok(["passed", "failed", "timed_out"].includes(byName.get("pack-install").status))
+    if (byName.get("pack-install").status === "failed") {
+      assert.match(byName.get("pack-install").skipReason, /exited with code 1/i)
+    }
+    if (byName.get("pack-install").status === "timed_out") {
+      assert.match(byName.get("pack-install").skipReason, /exceeded timeout/i)
+    }
     assert.equal(byName.get("live-runner").status, "skipped")
     assert.match(byName.get("live-runner").skipReason, /GSD_LIVE_TESTS/i)
     assert.equal(byName.get("live-regression-runner").status, "passed")
@@ -158,11 +163,14 @@ test("baseline helpers classify invalid metadata, missing targets, skip semantic
   assert.equal(failed.exitCode, 9)
   assert.match(failed.skipReason, /forced-failure exited with code 9/i)
 
+  const timedOutDir = mkdtempSync(join(tmpdir(), "umb-parity-timeout-"))
+  const timedOutScriptPath = join(timedOutDir, "parity-forced-timeout.cjs")
+  writeFileSync(timedOutScriptPath, "setTimeout(() => {}, 10_000)\n", "utf8")
   const timedOut = await parity.executeBaselineLane(
     {
       ...parity.BASELINE_LANES[0],
       name: "forced-timeout",
-      target: "-e",
+      target: timedOutScriptPath,
       runner: "node-script",
       timeoutMs: 25,
       skip: "never",

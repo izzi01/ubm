@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "generatedAt": "2026-04-24T05:43:07.709Z",
+  "generatedAt": "2026-04-24T05:53:13.565Z",
   "cwd": "/home/cid/projects-personal/umb",
   "artifactPath": "tests/parity/artifacts/baseline-report.json",
   "summary": {
@@ -46,7 +46,7 @@
       "status": "failed",
       "skipReason": "smoke-runner exited with code 1",
       "exitCode": 1,
-      "durationMs": 8221,
+      "durationMs": 9910,
       "command": [
         "--experimental-strip-types",
         "tests/smoke/run.ts"
@@ -94,7 +94,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 21108,
+      "durationMs": 22019,
       "command": [
         "--experimental-strip-types",
         "tests/live-regression/run.ts"
@@ -110,7 +110,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 8373,
+      "durationMs": 7916,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -129,7 +129,7 @@
       "status": "passed",
       "skipReason": null,
       "exitCode": 0,
-      "durationMs": 9357,
+      "durationMs": 8877,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",
@@ -148,7 +148,7 @@
       "status": "failed",
       "skipReason": "pack-install exited with code 1",
       "exitCode": 1,
-      "durationMs": 65177,
+      "durationMs": 60749,
       "command": [
         "--import",
         "./src/resources/extensions/gsd/tests/resolve-ts.mjs",

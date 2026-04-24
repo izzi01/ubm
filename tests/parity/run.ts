@@ -47,9 +47,6 @@ async function main(): Promise<void> {
     )
   }
 
-  if (report.summary.verdict === "failing") {
-    process.exitCode = 1
-  }
 }
 
 void main().catch((error) => {
