@@ -71,6 +71,7 @@ docs/coherence-audit/
 .plans/
 
 # ── GSD runtime files (planning artifacts are tracked) ──
+.gsd/
 .gsd/gsd.db*
 .gsd/STATE.md
 .gsd/activity/
