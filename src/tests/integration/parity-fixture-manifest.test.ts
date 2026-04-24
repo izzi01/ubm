@@ -1,5 +1,4 @@
-import test from "node:test"
-import assert from "node:assert/strict"
+import { test, expect } from "vitest"
 
 const repoRoot = process.cwd()
 
@@ -11,29 +10,26 @@ test("tracked fixture manifest defines the core coding-loop contract with explic
   const parity = await importParityModule()
   const manifest = parity.loadParityManifest(parity.PARITY_MANIFEST_PATH, repoRoot)
 
-  assert.equal(manifest.fixtureId, "parity-web-task")
-  assert.match(manifest.title, /web-task/i)
-  assert.deepEqual(
-    manifest.capabilities.map((capability: { name: string }) => capability.name),
-    [
-      "inspect-repository-context",
-      "edit-application-code",
-      "run-targeted-tests",
-      "manage-dev-server-lifecycle",
-      "verify-browser-behavior",
-    ],
-  )
+  expect(manifest.fixtureId).toBe("parity-web-task")
+  expect(manifest.title).toMatch(/web-task/i)
+  expect(manifest.capabilities.map((capability: { name: string }) => capability.name)).toEqual([
+    "inspect-repository-context",
+    "edit-application-code",
+    "run-targeted-tests",
+    "manage-dev-server-lifecycle",
+    "verify-browser-behavior",
+  ])
 
   for (const capability of manifest.capabilities) {
-    assert.equal(capability.proof, "uncovered")
-    assert.ok(capability.observableCompletionCriteria.length > 0)
-    assert.equal(Object.keys(capability.laneCoverage).length, parity.BASELINE_LANES.length)
-    assert.equal(capability.laneCoverage[parity.REPO_MODE_LANE_NAME], "covered")
-    assert.equal(capability.laneCoverage["pack-install"], "covered")
+    expect(capability.proof).toBe("uncovered")
+    expect(capability.observableCompletionCriteria.length).toBeGreaterThan(0)
+    expect(Object.keys(capability.laneCoverage).length).toBe(parity.BASELINE_LANES.length)
+    expect(capability.laneCoverage[parity.REPO_MODE_LANE_NAME]).toBe("covered")
+    expect(capability.laneCoverage["pack-install"]).toBe("covered")
   }
 })
 
-test("baseline report surfaces uncovered coding-loop capability rows instead of over-claiming parity", async () => {
+test("baseline report surfaces uncovered coding-loop capability rows instead of over-claiming parity", { timeout: 20000 }, async () => {
   const parity = await importParityModule()
   const report = await parity.createBaselineReport({
     cwd: repoRoot,
@@ -43,109 +39,103 @@ test("baseline report surfaces uncovered coding-loop capability rows instead of 
     },
   })
 
-  assert.equal(report.parityManifest.fixtureId, "parity-web-task")
-  assert.equal(report.uncoveredCapabilities.length, 5)
-  assert.deepEqual(report.summary.uncoveredCapabilityNames, [
+  expect(report.parityManifest.fixtureId).toBe("parity-web-task")
+  expect(report.uncoveredCapabilities.length).toBe(5)
+  expect(report.summary.uncoveredCapabilityNames).toEqual([
     "inspect-repository-context",
     "edit-application-code",
     "run-targeted-tests",
     "manage-dev-server-lifecycle",
     "verify-browser-behavior",
   ])
-  assert.equal(report.summary.provesCodingLoop, true)
-  assert.equal(report.summary.verdict, "failing")
+  expect(report.summary.provesCodingLoop).toBe(true)
+  expect(report.summary.verdict).toBe("failing")
 
   const browserVerification = report.uncoveredCapabilities.find(
     (capability: { capabilityName: string }) => capability.capabilityName === "verify-browser-behavior",
   )
-  assert.ok(browserVerification)
-  assert.equal(browserVerification.uncovered, true)
-  assert.ok(browserVerification.coveringLaneNames.includes(parity.REPO_MODE_LANE_NAME))
-  assert.ok(browserVerification.coveringLaneNames.includes("pack-install"))
-  assert.ok(browserVerification.uncoveredLaneNames.includes("fixtures-runner"))
-  assert.ok(browserVerification.uncoveredLaneNames.includes("live-regression-runner"))
-  assert.match(browserVerification.currentGap, /remaining parity gaps stay in|remaining gaps|broader parity gaps remain in/i)
+  expect(browserVerification).toBeTruthy()
+  expect(browserVerification?.uncovered).toBe(true)
+  expect(browserVerification?.coveringLaneNames).toContain(parity.REPO_MODE_LANE_NAME)
+  expect(browserVerification?.coveringLaneNames).toContain("pack-install")
+  expect(browserVerification?.uncoveredLaneNames).toContain("fixtures-runner")
+  expect(browserVerification?.uncoveredLaneNames).toContain("live-regression-runner")
+  expect(browserVerification?.currentGap ?? "").toMatch(/remaining parity gaps stay in|remaining gaps|broader parity gaps remain in/i)
 })
 
 test("manifest validation fails fast for missing required capability mappings", async () => {
   const parity = await importParityModule()
 
-  assert.throws(
-    () =>
-      parity.validateParityManifest(
-        {
-          version: 1,
-          fixtureId: "parity-web-task",
-          title: "Broken manifest",
-          capabilities: [
-            {
-              name: "inspect-repository-context",
-              description: "broken",
-              observableCompletionCriteria: ["criterion"],
-              proof: "uncovered",
-              currentGap: "broken",
-              laneCoverage: {
-                "smoke-runner": "not-covered",
-              },
+  expect(() =>
+    parity.validateParityManifest(
+      {
+        version: 1,
+        fixtureId: "parity-web-task",
+        title: "Broken manifest",
+        capabilities: [
+          {
+            name: "inspect-repository-context",
+            description: "broken",
+            observableCompletionCriteria: ["criterion"],
+            proof: "uncovered",
+            currentGap: "broken",
+            laneCoverage: {
+              "smoke-runner": "not-covered",
             },
-          ],
-        },
-        { manifestPath: "tests/fixtures/broken.json", lanes: parity.BASELINE_LANES },
-      ),
-    /missing required mapping for fixtures-runner/i,
-  )
+          },
+        ],
+      },
+      { manifestPath: "tests/fixtures/broken.json", lanes: parity.BASELINE_LANES },
+    ),
+  ).toThrow(/missing required mapping for fixtures-runner/i)
 })
 
 test("manifest validation rejects unknown proof labels and unknown lane coverage statuses", async () => {
   const parity = await importParityModule()
 
-  assert.throws(
-    () =>
-      parity.validateParityManifest(
-        {
-          version: 1,
-          fixtureId: "parity-web-task",
-          title: "Broken manifest",
-          capabilities: [
-            {
-              name: "inspect-repository-context",
-              description: "broken",
-              observableCompletionCriteria: ["criterion"],
-              proof: "future",
-              currentGap: "broken",
-              laneCoverage: Object.fromEntries(parity.BASELINE_LANES.map((lane: { name: string }) => [lane.name, "not-covered"])),
-            },
-          ],
-        },
-        { manifestPath: "tests/fixtures/broken.json", lanes: parity.BASELINE_LANES },
-      ),
-    /proof must be one of covered, uncovered/i,
-  )
+  expect(() =>
+    parity.validateParityManifest(
+      {
+        version: 1,
+        fixtureId: "parity-web-task",
+        title: "Broken manifest",
+        capabilities: [
+          {
+            name: "inspect-repository-context",
+            description: "broken",
+            observableCompletionCriteria: ["criterion"],
+            proof: "future",
+            currentGap: "broken",
+            laneCoverage: Object.fromEntries(parity.BASELINE_LANES.map((lane: { name: string }) => [lane.name, "not-covered"])),
+          },
+        ],
+      },
+      { manifestPath: "tests/fixtures/broken.json", lanes: parity.BASELINE_LANES },
+    ),
+  ).toThrow(/proof must be one of covered, uncovered/i)
 
-  assert.throws(
-    () =>
-      parity.validateParityManifest(
-        {
-          version: 1,
-          fixtureId: "parity-web-task",
-          title: "Broken manifest",
-          capabilities: [
-            {
-              name: "inspect-repository-context",
-              description: "broken",
-              observableCompletionCriteria: ["criterion"],
-              proof: "uncovered",
-              currentGap: "broken",
-              laneCoverage: Object.fromEntries(
-                parity.BASELINE_LANES.map((lane: { name: string }) => [lane.name, lane.name === "smoke-runner" ? "unknown" : "not-covered"]),
-              ),
-            },
-          ],
-        },
-        { manifestPath: "tests/fixtures/broken.json", lanes: parity.BASELINE_LANES },
-      ),
-    /laneCoverage\.smoke-runner must be one of covered, partial, not-covered/i,
-  )
+  expect(() =>
+    parity.validateParityManifest(
+      {
+        version: 1,
+        fixtureId: "parity-web-task",
+        title: "Broken manifest",
+        capabilities: [
+          {
+            name: "inspect-repository-context",
+            description: "broken",
+            observableCompletionCriteria: ["criterion"],
+            proof: "uncovered",
+            currentGap: "broken",
+            laneCoverage: Object.fromEntries(
+              parity.BASELINE_LANES.map((lane: { name: string }) => [lane.name, lane.name === "smoke-runner" ? "unknown" : "not-covered"]),
+            ),
+          },
+        ],
+      },
+      { manifestPath: "tests/fixtures/broken.json", lanes: parity.BASELINE_LANES },
+    ),
+  ).toThrow(/laneCoverage\.smoke-runner must be one of covered, partial, not-covered/i)
 })
 
 test("report generation rejects a manifest that claims covered while still marking lanes as not-covered", async () => {
@@ -171,9 +161,5 @@ test("report generation rejects a manifest that claims covered while still marki
     { manifestPath: "tests/fixtures/broken.json", lanes: parity.BASELINE_LANES },
   )
 
-  assert.throws(
-    () => parity.buildUncoveredCapabilityRows(manifest),
-    /marked covered but still has uncovered lanes/i,
-  )
+  expect(() => parity.buildUncoveredCapabilityRows(manifest)).toThrow(/marked covered but still has uncovered lanes/i)
 })
-

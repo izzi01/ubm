@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "recordings": [
+    {
+      "id": "agent-creates-file",
+      "path": "tests/fixtures/recordings/agent-creates-file.json",
+      "expectedName": "agent-creates-file",
+      "minimumTurns": 2,
+      "minimumAssistantTurns": 1,
+      "requiredRoles": ["user", "assistant"]
+    },
+    {
+      "id": "agent-handles-error",
+      "path": "tests/fixtures/recordings/agent-handles-error.json",
+      "expectedName": "agent-handles-error",
+      "minimumTurns": 2,
+      "minimumAssistantTurns": 1,
+      "requiredRoles": ["user", "assistant"]
+    },
+    {
+      "id": "agent-multi-turn-tools",
+      "path": "tests/fixtures/recordings/agent-multi-turn-tools.json",
+      "expectedName": "agent-multi-turn-tools",
+      "minimumTurns": 4,
+      "minimumAssistantTurns": 2,
+      "requiredRoles": ["user", "assistant"]
+    },
+    {
+      "id": "agent-reads-and-edits",
+      "path": "tests/fixtures/recordings/agent-reads-and-edits.json",
+      "expectedName": "agent-reads-and-edits",
+      "minimumTurns": 2,
+      "minimumAssistantTurns": 1,
+      "requiredRoles": ["user", "assistant"]
+    },
+    {
+      "id": "installed-mode-parity-web-task",
+      "path": "tests/fixtures/recordings/installed-mode-parity-web-task.json",
+      "expectedName": "installed-mode-parity-web-task",
+      "minimumTurns": 2,
+      "minimumAssistantTurns": 1,
+      "requiredRoles": ["user", "assistant"]
+    },
+    {
+      "id": "repo-mode-parity-web-task",
+      "path": "tests/fixtures/recordings/repo-mode-parity-web-task.json",
+      "expectedName": "repo-mode-parity-web-task",
+      "minimumTurns": 2,
+      "minimumAssistantTurns": 1,
+      "requiredRoles": ["user", "assistant"]
+    }
+  ]
+}
