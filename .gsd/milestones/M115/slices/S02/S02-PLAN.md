@@ -31,7 +31,7 @@ The resulting diagnostics and artifacts are consumable by the milestone's final 
   - Files: `tests/parity/secondary-lanes.ts`, `tests/parity/run.ts`, `tests/parity/diagnostics.ts`, `tests/fixtures/recordings/web-mode-parity.json`, `src/tests/integration/web-mode-parity-contract.test.ts`, `src/web-mode.ts`, `src/cli-web-branch.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/web-mode-parity-contract.test.ts && node --experimental-strip-types tests/parity/run.ts --format json
 
-- [ ] **T03: Lock web-mode diagnostic and report contract** `est:0.5 day`
+- [x] **T03: Lock web-mode diagnostic and report contract** `est:0.5 day`
   Add operator-facing verification for the browser-hosted path, ensuring the surfaced diagnostics are actionable and the report remains truthful when the lane is partial, passing, or failing. Confirm the artifact/report output names the web-mode evidence path and preserves expected/actual browser-facing details where appropriate.
   - Files: `tests/parity/diagnostics.ts`, `src/tests/integration/web-mode-diagnostics-contract.test.ts`, `tests/parity/artifacts/web-mode-parity.json`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/web-mode-diagnostics-contract.test.ts
