@@ -1,0 +1,418 @@
+{
+  "version": 1,
+  "generatedFrom": "M115/S01/T02 parity lane definitions",
+  "inventoryVersion": 1,
+  "uncoveredSurfaceSemantics": {
+    "partial": "A partial surface must cite existing deterministic evidence, retain one or more coverage gaps, and still be missing at least one required planned-proof lane or planned deterministic fixture.",
+    "uncovered": "An uncovered surface has scoped contract metadata but no currently implemented required proof lane and must enumerate the missing deterministic fixture/report path needed for downstream work.",
+    "covered": "A covered surface is only truthful when every required lane is already implemented and no coverage gaps or planned deterministic fixtures remain."
+  },
+  "proofClasses": [
+    {
+      "name": "report-contract",
+      "description": "Machine-readable release/report surfaces that downstream gates can consume without rediscovering the underlying tests."
+    },
+    {
+      "name": "integration-contract",
+      "description": "Deterministic integration tests that lock scoped behavior for a secondary surface."
+    },
+    {
+      "name": "unit-contract",
+      "description": "Deterministic unit/schema contracts for lower-level secondary surfaces such as MCP."
+    },
+    {
+      "name": "repo-recording",
+      "description": "Representative recorded repo/dev proof intended to show a realistic secondary-surface parity path without live reruns."
+    },
+    {
+      "name": "installed-recording",
+      "description": "Representative recorded packaged/install proof intended to show the same parity surface under installed mode where required."
+    }
+  ],
+  "lanes": [
+    {
+      "name": "secondary-parity-report",
+      "title": "Release-readable secondary parity report",
+      "surfaceId": "web-mode",
+      "proofClass": "report-contract",
+      "requirement": "required",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Publishes the machine-readable report row that downstream release gates consume for web-mode parity."
+    },
+    {
+      "name": "integration:web-mode",
+      "title": "Web-mode integration contract lane",
+      "surfaceId": "web-mode",
+      "proofClass": "integration-contract",
+      "requirement": "required",
+      "implementationStatus": "existing-proof",
+      "releaseReadable": false,
+      "description": "Uses the tracked web-mode integration tests as the current deterministic proof lane for launch, onboarding, and session/recovery command-surface behavior."
+    },
+    {
+      "name": "repo-recording:web-mode",
+      "title": "Representative repo-mode web recording",
+      "surfaceId": "web-mode",
+      "proofClass": "repo-recording",
+      "requirement": "optional",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Defines a future deterministic repo/dev recording for browser-only web mode beyond the current integration contracts."
+    },
+    {
+      "name": "installed-recording:web-mode",
+      "title": "Representative installed-mode web recording",
+      "surfaceId": "web-mode",
+      "proofClass": "installed-recording",
+      "requirement": "optional",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Defines a future packaged web-mode parity recording if the matrix needs repo/install dual proof instead of a documented exception."
+    },
+    {
+      "name": "secondary-parity-report:mcp",
+      "title": "Release-readable MCP parity report",
+      "surfaceId": "mcp",
+      "proofClass": "report-contract",
+      "requirement": "required",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Publishes the machine-readable report row that downstream release gates consume for MCP parity."
+    },
+    {
+      "name": "unit:mcp",
+      "title": "MCP contract/unit lane",
+      "surfaceId": "mcp",
+      "proofClass": "unit-contract",
+      "requirement": "required",
+      "implementationStatus": "existing-proof",
+      "releaseReadable": false,
+      "description": "Uses the existing deterministic MCP server and client schema tests as the current scoped proof lane."
+    },
+    {
+      "name": "integration:mcp-session",
+      "title": "Representative MCP interaction lane",
+      "surfaceId": "mcp",
+      "proofClass": "installed-recording",
+      "requirement": "optional",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Defines a future representative MCP client/server interaction recording for parity closure."
+    },
+    {
+      "name": "secondary-parity-report:workflow-bmad",
+      "title": "Release-readable workflow parity report",
+      "surfaceId": "workflow-bmad",
+      "proofClass": "report-contract",
+      "requirement": "required",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Publishes the machine-readable report row that downstream release gates consume for representative workflow/BMAD parity."
+    },
+    {
+      "name": "integration:workflow-contracts",
+      "title": "Workflow action contract lane",
+      "surfaceId": "workflow-bmad",
+      "proofClass": "integration-contract",
+      "requirement": "required",
+      "implementationStatus": "existing-proof",
+      "releaseReadable": false,
+      "description": "Uses tracked web workflow control/action contracts and command-routing coverage as the current deterministic workflow proof lane."
+    },
+    {
+      "name": "repo-recording:workflow-bmad",
+      "title": "Representative workflow fixture lane",
+      "surfaceId": "workflow-bmad",
+      "proofClass": "repo-recording",
+      "requirement": "optional",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Defines a future deterministic workflow/BMAD fixture proving one representative end-to-end guided flow."
+    },
+    {
+      "name": "secondary-parity-report:worktree-session-recovery",
+      "title": "Release-readable worktree/session parity report",
+      "surfaceId": "worktree-session-recovery",
+      "proofClass": "report-contract",
+      "requirement": "required",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Publishes the machine-readable report row that downstream release gates consume for worktree/session/recovery parity."
+    },
+    {
+      "name": "integration:session-recovery",
+      "title": "Session and recovery integration lane",
+      "surfaceId": "worktree-session-recovery",
+      "proofClass": "integration-contract",
+      "requirement": "required",
+      "implementationStatus": "existing-proof",
+      "releaseReadable": false,
+      "description": "Uses tracked session, resume, headless, and web recovery diagnostics contracts as the current deterministic parity lane."
+    },
+    {
+      "name": "installed-recording:worktree-session-recovery",
+      "title": "Representative installed worktree/session recording",
+      "surfaceId": "worktree-session-recovery",
+      "proofClass": "installed-recording",
+      "requirement": "optional",
+      "implementationStatus": "planned-proof",
+      "releaseReadable": true,
+      "description": "Defines a future packaged representative worktree/session recovery recording if parity closure requires installed-mode proof beyond contract coverage."
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "web-mode",
+      "title": "Browser-only web mode parity surface",
+      "inventoryStatus": "partial",
+      "scopeBoundary": "Covers the shipped `umb --web` / `umb web` launch path, host/network flags, onboarding lock state, command-surface parity, and recovery/session diagnostics exposed in the web UI. It does not yet prove a dedicated parity fixture through the release-gate artifact.",
+      "requiredLaneNames": [
+        "secondary-parity-report",
+        "integration:web-mode"
+      ],
+      "optionalLaneNames": [
+        "repo-recording:web-mode",
+        "installed-recording:web-mode"
+      ],
+      "deterministicFixtures": [
+        {
+          "id": "web-mode-inventory-artifact",
+          "surfaceId": "web-mode",
+          "title": "Secondary surface inventory artifact",
+          "kind": "artifact",
+          "status": "present",
+          "path": "tests/parity/artifacts/secondary-surface-inventory.json",
+          "deterministic": true,
+          "purpose": "Provides the truthful current-state audit row that anchors web-mode parity scope and known gaps.",
+          "laneName": "secondary-parity-report"
+        },
+        {
+          "id": "web-mode-command-contract",
+          "surfaceId": "web-mode",
+          "title": "Web-mode integration contract",
+          "kind": "integration-test",
+          "status": "present",
+          "path": "src/tests/integration/web-mode-cli.test.ts",
+          "deterministic": true,
+          "purpose": "Locks the current deterministic launch/path/behavior contract for web mode.",
+          "laneName": "integration:web-mode"
+        },
+        {
+          "id": "web-mode-release-row-artifact",
+          "surfaceId": "web-mode",
+          "title": "Future release-readable web-mode parity row",
+          "kind": "artifact",
+          "status": "planned",
+          "path": "tests/parity/artifacts/secondary-parity-report.json#web-mode",
+          "deterministic": true,
+          "purpose": "Reserved output path for the downstream release-readable web-mode report row.",
+          "laneName": "secondary-parity-report"
+        }
+      ],
+      "coverageGaps": [
+        {
+          "id": "web-parity-artifact-missing",
+          "summary": "No dedicated secondary-surface parity artifact reports web-mode coverage in the parity release workflow.",
+          "downstreamNeed": "Publish a machine-readable lane/report entry so release-gate consumers can read web-mode parity without re-inferring it from individual tests."
+        },
+        {
+          "id": "web-installed-mode-proof-missing",
+          "summary": "Current web-mode evidence is integration-heavy but not framed as installed-mode parity proof alongside repo-mode parity.",
+          "downstreamNeed": "Define whether web mode needs repo/install dual proof or an explicit scoped exception in the parity matrix."
+        }
+      ]
+    },
+    {
+      "id": "mcp",
+      "title": "MCP server and client parity surface",
+      "inventoryStatus": "partial",
+      "scopeBoundary": "Covers `--mode mcp` startup, packaged MCP module importability, bundled MCP extension conflicts, and MCP-related package server contracts. It does not yet prove an end-to-end secondary parity lane that a downstream release gate can read as MCP parity.",
+      "requiredLaneNames": [
+        "secondary-parity-report:mcp",
+        "unit:mcp"
+      ],
+      "optionalLaneNames": [
+        "integration:mcp-session"
+      ],
+      "deterministicFixtures": [
+        {
+          "id": "mcp-inventory-artifact",
+          "surfaceId": "mcp",
+          "title": "Secondary surface inventory artifact",
+          "kind": "artifact",
+          "status": "present",
+          "path": "tests/parity/artifacts/secondary-surface-inventory.json",
+          "deterministic": true,
+          "purpose": "Provides the truthful current-state audit row that anchors MCP parity scope and known gaps.",
+          "laneName": "secondary-parity-report:mcp"
+        },
+        {
+          "id": "mcp-schema-contract",
+          "surfaceId": "mcp",
+          "title": "MCP schema contract",
+          "kind": "unit-test",
+          "status": "present",
+          "path": "src/tests/mcp-client-schema.test.ts",
+          "deterministic": true,
+          "purpose": "Locks the deterministic MCP tool-schema contract already shipping in-repo.",
+          "laneName": "unit:mcp"
+        },
+        {
+          "id": "mcp-representative-session-recording",
+          "surfaceId": "mcp",
+          "title": "Future representative MCP interaction recording",
+          "kind": "recording",
+          "status": "planned",
+          "path": "tests/fixtures/recordings/secondary-mcp-session.json",
+          "deterministic": true,
+          "purpose": "Reserved tracked recording path for a representative MCP interaction proof.",
+          "laneName": "integration:mcp-session"
+        }
+      ],
+      "coverageGaps": [
+        {
+          "id": "mcp-parity-lane-missing",
+          "summary": "No secondary parity lane currently emits MCP-specific covered/uncovered status into a tracked parity artifact.",
+          "downstreamNeed": "Add a deterministic MCP parity contract/report lane so downstream slices stop treating MCP support as an implicit side effect of unit tests."
+        },
+        {
+          "id": "mcp-installed-session-proof-missing",
+          "summary": "Existing MCP tests do not yet demonstrate the installed packaged CLI serving a representative MCP parity interaction in the parity report surface.",
+          "downstreamNeed": "Define a representative MCP interaction and attach it to the parity matrix."
+        }
+      ]
+    },
+    {
+      "id": "workflow-bmad",
+      "title": "Workflow / BMAD representative parity surface",
+      "inventoryStatus": "partial",
+      "scopeBoundary": "Covers representative workflow command routing, workflow CTA execution, and the shipped skill/workflow assets that shape guided flows. It does not yet include a deterministic parity fixture that proves a representative workflow/BMAD loop end to end.",
+      "requiredLaneNames": [
+        "secondary-parity-report:workflow-bmad",
+        "integration:workflow-contracts"
+      ],
+      "optionalLaneNames": [
+        "repo-recording:workflow-bmad"
+      ],
+      "deterministicFixtures": [
+        {
+          "id": "workflow-inventory-artifact",
+          "surfaceId": "workflow-bmad",
+          "title": "Secondary surface inventory artifact",
+          "kind": "artifact",
+          "status": "present",
+          "path": "tests/parity/artifacts/secondary-surface-inventory.json",
+          "deterministic": true,
+          "purpose": "Provides the truthful current-state audit row that anchors workflow/BMAD parity scope and known gaps.",
+          "laneName": "secondary-parity-report:workflow-bmad"
+        },
+        {
+          "id": "workflow-action-contract",
+          "surfaceId": "workflow-bmad",
+          "title": "Workflow action execution contract",
+          "kind": "integration-test",
+          "status": "present",
+          "path": "src/tests/integration/web-workflow-action-execution.test.ts",
+          "deterministic": true,
+          "purpose": "Locks the deterministic workflow action plumbing already present in the repo.",
+          "laneName": "integration:workflow-contracts"
+        },
+        {
+          "id": "workflow-representative-fixture",
+          "surfaceId": "workflow-bmad",
+          "title": "Future representative workflow/BMAD fixture",
+          "kind": "manifest",
+          "status": "planned",
+          "path": "tests/fixtures/secondary-workflow-bmad-manifest.json",
+          "deterministic": true,
+          "purpose": "Reserved tracked manifest path for one representative workflow/BMAD parity loop.",
+          "laneName": "repo-recording:workflow-bmad"
+        }
+      ],
+      "coverageGaps": [
+        {
+          "id": "workflow-fixture-missing",
+          "summary": "No tracked parity fixture yet exercises one representative workflow/BMAD path as a release-readable contract.",
+          "downstreamNeed": "Define a deterministic workflow fixture or manifest entry so the parity report can state exactly what workflow parity means."
+        },
+        {
+          "id": "bmad-scope-not-explicit",
+          "summary": "BMAD-relevant workflow coverage exists only indirectly through command/action contracts and shipped workflow assets.",
+          "downstreamNeed": "Publish explicit scope semantics describing which workflow/BMAD experiences are in or out of parity scope."
+        }
+      ]
+    },
+    {
+      "id": "worktree-session-recovery",
+      "title": "Worktree, session, and recovery parity surface",
+      "inventoryStatus": "partial",
+      "scopeBoundary": "Covers CLI session listing/resume, headless resume semantics, worktree subcommands/help, and web command-surface recovery/session diagnostics. It does not yet publish a dedicated parity artifact that unifies those proofs and the remaining drift points.",
+      "requiredLaneNames": [
+        "secondary-parity-report:worktree-session-recovery",
+        "integration:session-recovery"
+      ],
+      "optionalLaneNames": [
+        "installed-recording:worktree-session-recovery"
+      ],
+      "deterministicFixtures": [
+        {
+          "id": "worktree-inventory-artifact",
+          "surfaceId": "worktree-session-recovery",
+          "title": "Secondary surface inventory artifact",
+          "kind": "artifact",
+          "status": "present",
+          "path": "tests/parity/artifacts/secondary-surface-inventory.json",
+          "deterministic": true,
+          "purpose": "Provides the truthful current-state audit row that anchors worktree/session/recovery parity scope and known gaps.",
+          "laneName": "secondary-parity-report:worktree-session-recovery"
+        },
+        {
+          "id": "session-recovery-contract",
+          "surfaceId": "worktree-session-recovery",
+          "title": "Session and recovery integration contract",
+          "kind": "integration-test",
+          "status": "present",
+          "path": "src/tests/integration/web-session-parity-contract.test.ts",
+          "deterministic": true,
+          "purpose": "Locks deterministic session-browser, resume, rename, and settings contracts already tracked in-repo.",
+          "laneName": "integration:session-recovery"
+        },
+        {
+          "id": "worktree-installed-recording",
+          "surfaceId": "worktree-session-recovery",
+          "title": "Future installed worktree/session recovery recording",
+          "kind": "recording",
+          "status": "planned",
+          "path": "tests/fixtures/recordings/secondary-worktree-session-recovery.json",
+          "deterministic": true,
+          "purpose": "Reserved tracked recording path for a representative installed worktree/session recovery proof.",
+          "laneName": "installed-recording:worktree-session-recovery"
+        }
+      ],
+      "coverageGaps": [
+        {
+          "id": "worktree-parity-artifact-missing",
+          "summary": "Worktree/session/recovery evidence is scattered across CLI and web tests but not summarized in a parity artifact.",
+          "downstreamNeed": "Publish one machine-readable matrix row that downstream slices and release gates can consume directly."
+        },
+        {
+          "id": "worktree-installed-proof-missing",
+          "summary": "There is no deterministic installed-mode parity fixture demonstrating representative worktree/session recovery behavior beyond individual contract tests.",
+          "downstreamNeed": "Decide whether a worktree/session fixture is required or whether scoped contract coverage is sufficient for parity closure."
+        }
+      ]
+    }
+  ],
+  "summary": {
+    "totalSurfaces": 4,
+    "totalLanes": 13,
+    "requiredLanes": 8,
+    "optionalLanes": 5,
+    "presentFixtures": 8,
+    "plannedFixtures": 4,
+    "partialSurfaces": 4,
+    "uncoveredSurfaces": 0,
+    "coveredSurfaces": 0
+  }
+}

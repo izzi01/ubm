@@ -26,7 +26,7 @@ Downstream slices consume the published fixtures/contracts instead of inventing 
   - Files: `tests/parity/run.ts`, `tests/parity/baseline-lanes.ts`, `tests/smoke/test-help.ts`, `tests/smoke/test-init.ts`, `tests/smoke/test-version.ts`, `src/help-text.ts`, `src/cli.ts`, `package.json`
   - Verify: rg -n "gsd-pi|Usage: gsd|\[gsd\]" src tests package.json && node --experimental-strip-types tests/parity/run.ts --format json
 
-- [ ] **T02: Define secondary parity matrix and fixture manifests** `est:1 day`
+- [x] **T02: Define secondary parity matrix and fixture manifests** `est:1 day`
   Turn the audit into tracked parity contracts. Define the scoped surfaces, proof classes, required vs optional lanes, and deterministic fixtures/manifests for web mode, MCP, representative workflow parity, and worktree/session/recovery parity. Lock the report shape and uncovered-surface semantics in contract tests so future slices extend a stable truth surface rather than mutating expectations ad hoc.
   - Files: `tests/parity/secondary-surface-inventory.ts`, `tests/parity/secondary-lanes.ts`, `tests/fixtures/secondary-parity-manifest.json`, `src/tests/integration/secondary-surface-inventory-contract.test.ts`, `src/tests/integration/secondary-parity-manifest.test.ts`
   - Verify: node --import ./src/resources/extensions/gsd/tests/resolve-ts.mjs --experimental-strip-types --test src/tests/integration/secondary-surface-inventory-contract.test.ts src/tests/integration/secondary-parity-manifest.test.ts
